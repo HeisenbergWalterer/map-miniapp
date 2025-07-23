@@ -1,0 +1,219 @@
+/* point-select.wxss */
+page {
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+.scrollarea {
+  width: 100%;
+  height: 100vh;
+  background: linear-gradient(180deg, #ff6b6b 0%, #ff8e53 50%, #ffa8a8 100%);
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  width: 100%;
+  padding: 40rpx 30rpx 60rpx 30rpx;
+  margin: 0;
+}
+
+/* 通用样式 */
+.section-title {
+  margin-bottom: 24rpx;
+  display: flex;
+  align-items: center;
+}
+
+.title-text {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.count-text {
+  font-size: 28rpx;
+  color: #666;
+  margin-left: 12rpx;
+}
+
+/* 种类选择区域 */
+.category-section {
+  width: 85%;
+  background-color: #fff;
+  border-radius: 16rpx;
+  padding: 40rpx 32rpx 50rpx 32rpx;
+  margin: 0 auto 30rpx auto;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
+  box-sizing: border-box;
+  position: relative;
+  top: 0;
+  min-height: 320rpx;
+}
+
+.category-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+  justify-content: space-between;
+}
+
+.category-item {
+  width: calc(50% - 8rpx);
+  padding: 40rpx 20rpx;
+  background-color: #f8f9fa;
+  border-radius: 16rpx;
+  margin-bottom: 20rpx;
+  text-align: center;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+  min-height: 140rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.category-item.selected {
+  background-color: #ffe6e6;
+  border: 2rpx solid #ff6b6b;
+}
+
+.category-text {
+  font-size: 32rpx;
+  color: #333;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+/* 搜索栏 */
+.search-section {
+  width: 85%;
+  background-color: #fff;
+  border-radius: 16rpx;
+  padding: 40rpx 32rpx;
+  margin: 0 auto 30rpx auto;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
+  box-sizing: border-box;
+  position: relative;
+  top: -100rpx;
+  min-height: 120rpx;
+}
+
+.search-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-input {
+  flex: 1;
+  padding: 28rpx 60rpx 28rpx 24rpx;
+  background-color: #f8f9fa;
+  border-radius: 12rpx;
+  font-size: 32rpx;
+  color: #333;
+  border: none;
+  min-height: 60rpx;
+  box-sizing: border-box;
+}
+
+.search-icon {
+  position: absolute;
+  right: 24rpx;
+  font-size: 32rpx;
+  color: #999;
+}
+
+/* 点位列表 */
+.point-list-section {
+  width: 85%;
+  background-color: #fff;
+  border-radius: 16rpx;
+  padding: 40rpx 32rpx 20rpx 32rpx;
+  margin: 0 auto;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
+  box-sizing: border-box;
+  position: relative;
+  top: -200rpx;
+  height: 620rpx;
+}
+
+.point-list-scroll {
+  height: 500rpx;
+  width: 100%;
+  border-radius: 12rpx;
+}
+
+.point-list {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 20rpx;
+  min-height: 100%;
+}
+
+.point-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24rpx;
+  background-color: #f8f9fa;
+  border-radius: 12rpx;
+  margin-bottom: 16rpx;
+  transition: all 0.2s ease;
+}
+
+.point-item:last-child {
+  margin-bottom: 0;
+}
+
+.point-item-hover {
+  background-color: #e9ecef !important;
+  transform: scale(0.98);
+}
+
+.point-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.point-name {
+  font-size: 32rpx;
+  color: #333;
+  font-weight: 500;
+  margin-bottom: 8rpx;
+}
+
+.point-category {
+  font-size: 24rpx;
+  color: #666;
+}
+
+.point-select-btn {
+  padding: 16rpx 24rpx;
+  background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
+  border-radius: 20rpx;
+}
+
+.select-text {
+  font-size: 28rpx;
+  color: #fff;
+  font-weight: 500;
+}
+
+/* 空状态 */
+.empty-state {
+  text-align: center;
+  padding: 80rpx 40rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300rpx;
+}
+
+.empty-text {
+  font-size: 32rpx;
+  color: #999;
+} 

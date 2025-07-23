@@ -1,0 +1,68 @@
+<!--point-select.wxml-->
+<navigation-bar title="选择点位" back="{{true}}" color="white" background="linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%)"></navigation-bar>
+<scroll-view class="scrollarea" scroll-y type="list">
+  <view class="container">
+    
+    <!-- 种类选择区域 -->
+    <view class="category-section">
+      <view class="section-title">
+        <text class="title-text">点位种类</text>
+      </view>
+      <view class="category-grid">
+        <view class="category-item {{selectedCategory === '公共卫生间' ? 'selected' : ''}}" bindtap="selectCategory" data-category="公共卫生间">
+          <text class="category-text">公共卫生间</text>
+        </view>
+        <view class="category-item {{selectedCategory === '暖心服务站' ? 'selected' : ''}}" bindtap="selectCategory" data-category="暖心服务站">
+          <text class="category-text">暖心服务站</text>
+        </view>
+        <view class="category-item {{selectedCategory === '司机休息室' ? 'selected' : ''}}" bindtap="selectCategory" data-category="司机休息室">
+          <text class="category-text">司机休息室</text>
+        </view>
+        <view class="category-item {{selectedCategory === '合作商户' ? 'selected' : ''}}" bindtap="selectCategory" data-category="合作商户">
+          <text class="category-text">合作商户</text>
+        </view>
+      </view>
+    </view>
+    
+    <!-- 搜索栏 -->
+    <view class="search-section">
+      <view class="search-wrapper">
+        <input class="search-input" placeholder="搜索点位名称..." value="{{searchKeyword}}" bind:input="onSearchInput" />
+        <view class="search-icon">🔍</view>
+      </view>
+    </view>
+    
+    <!-- 点位列表 -->
+    <view class="point-list-section">
+      <view class="section-title">
+        <text class="title-text">点位列表</text>
+        <text class="count-text">（{{filteredPoints.length}}个）</text>
+      </view>
+      <scroll-view class="point-list-scroll" scroll-y enhanced show-scrollbar="{{false}}" fast-deceleration="{{true}}" bounces="{{true}}" paging-enabled="{{false}}">
+        <view class="point-list">
+          <view class="point-item" 
+                wx:for="{{filteredPoints}}" 
+                wx:key="id" 
+                bindtap="selectPoint" 
+                data-point="{{item}}"
+                hover-class="point-item-hover"
+                hover-stay-time="100">
+            <view class="point-info">
+              <text class="point-name">{{item.name}}</text>
+              <text class="point-category">{{item.category}}</text>
+            </view>
+            <view class="point-select-btn">
+              <text class="select-text">选择</text>
+            </view>
+          </view>
+          
+          <!-- 空状态 -->
+          <view class="empty-state" wx:if="{{filteredPoints.length === 0}}">
+            <text class="empty-text">暂无符合条件的点位</text>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+    
+  </view>
+</scroll-view> 

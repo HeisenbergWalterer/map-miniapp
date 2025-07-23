@@ -1,0 +1,14 @@
+<!--index.wxml-->
+<navigation-bar title="首页" back="{{false}}" color="black" background="#FFF"></navigation-bar>
+<scroll-view class="scrollarea" scroll-y type="list">
+  <view class="container">
+    <view class="home-header">
+      <text class="page-title">首页</text>
+      <text class="page-desc">这里是首页内容，内容待添加...</text>
+    </view>
+    
+    <view class="home-content">
+      <!-- 这里可以添加轮播图、功能入口等内容 -->
+    </view>
+  </view>
+</scroll-view>

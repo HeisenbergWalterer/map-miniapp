@@ -1,0 +1,68 @@
+<!--feedback.wxml-->
+<navigation-bar title="反馈中心" back="{{true}}" color="white" background="linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%)"></navigation-bar>
+<scroll-view class="scrollarea" scroll-y type="list">
+  <view class="container">
+    
+    <!-- 反馈类型选择栏 -->
+    <view class="feedback-type-section">
+      <view class="section-title">
+        <text class="title-text">反馈类型</text>
+      </view>
+      <view class="type-options">
+        <view class="type-option {{feedbackType === 'point' ? 'selected' : ''}}" bindtap="selectType" data-type="point">
+          <text class="option-text">异常点位反馈</text>
+          <text class="option-check" wx:if="{{feedbackType === 'point'}}">✓</text>
+        </view>
+        <view class="type-option {{feedbackType === 'suggestion' ? 'selected' : ''}}" bindtap="selectType" data-type="suggestion">
+          <text class="option-text">日常使用建议</text>
+          <text class="option-check" wx:if="{{feedbackType === 'suggestion'}}">✓</text>
+        </view>
+      </view>
+    </view>
+    
+    <!-- 点位选择区域（仅异常点位反馈时显示） -->
+    <view class="point-select-section" wx:if="{{feedbackType === 'point'}}">
+      <view class="section-title">
+        <text class="title-text">选择点位</text>
+      </view>
+      <view class="point-select-btn" bindtap="selectPoint">
+        <text class="btn-text">{{selectedPoint || '请选择异常点位'}}</text>
+        <text class="arrow-right">></text>
+      </view>
+      <view class="selected-point" wx:if="{{selectedPoint}}">
+        <text class="point-label">已选择：</text>
+        <text class="point-name">{{selectedPoint}}</text>
+      </view>
+    </view>
+    
+    <!-- 反馈意见输入框 -->
+    <view class="feedback-content-section">
+      <view class="section-title">
+        <text class="title-text">反馈内容</text>
+        <text class="required-mark">*</text>
+      </view>
+      <view class="textarea-wrapper">
+        <textarea 
+          class="feedback-textarea" 
+          placeholder="请详细描述您的问题或建议..." 
+          value="{{feedbackContent}}" 
+          bind:input="onContentInput" 
+          maxlength="500" 
+          auto-height
+          show-confirm-bar="{{false}}">
+        </textarea>
+        <view class="char-count">
+          <text class="count-text">{{feedbackContent.length}}/500</text>
+        </view>
+      </view>
+    </view>
+    
+    <!-- 提交按钮 -->
+    <view class="submit-section">
+      <button class="submit-btn" bindtap="submitFeedback" hover-class="submit-btn-hover">提交反馈</button>
+    </view>
+    
+  </view>
+</scroll-view>
+
+ 

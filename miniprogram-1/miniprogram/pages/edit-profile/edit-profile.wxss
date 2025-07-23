@@ -1,0 +1,315 @@
+/* edit-profile.wxss */
+page {
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+.scrollarea {
+  width: 100%;
+  height: 100vh;
+  background: linear-gradient(180deg, #ff6b6b 0%, #ff8e53 50%, #ffa8a8 100%);
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+/* 头像编辑区域 */
+.avatar-section {
+  background: transparent;
+  padding: 80rpx 0 0 0;
+  text-align: center;
+  margin-bottom: 0;
+  position: relative;
+  top: 0;
+}
+
+.avatar-edit-wrapper {
+  display: inline-block;
+  position: relative;
+}
+
+.avatar-edit-btn {
+  position: relative;
+  width: 220rpx;
+  height: 220rpx;
+  border: none;
+  padding: 0;
+  background: none;
+  border-radius: 110rpx;
+  overflow: hidden;
+  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.15);
+}
+
+.avatar-container {
+  width: 220rpx;
+  height: 220rpx;
+  border-radius: 110rpx;
+  overflow: hidden;
+}
+
+.avatar-edit-img {
+  width: 100%;
+  height: 100%;
+}
+
+.avatar-edit-mask {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60rpx;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-edit-text {
+  color: #fff;
+  font-size: 24rpx;
+}
+
+/* 个人信息编辑列表 */
+.info-section {
+  background: transparent;
+  margin-bottom: 0;
+  padding: 0 30rpx;
+  position: relative;
+  top: -200rpx;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  padding: 32rpx 30rpx;
+  background-color: #fff;
+  border-radius: 16rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
+  transition: all 0.2s ease;
+}
+
+.info-item:last-child {
+  margin-bottom: 0;
+}
+
+/* info-item hover效果 */
+.info-item-hover {
+  background-color: #f8f9fa !important;
+  transform: scale(0.98);
+}
+
+.info-label {
+  width: 160rpx;
+  flex-shrink: 0;
+}
+
+.label-text {
+  font-size: 32rpx;
+  color: #333;
+  font-weight: 500;
+}
+
+.label-required {
+  color: #ff4d4f;
+  margin-left: 4rpx;
+}
+
+.info-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.content-text {
+  font-size: 32rpx;
+  color: #666;
+  flex: 1;
+  text-align: right;
+  margin-right: 20rpx;
+}
+
+.content-placeholder {
+  color: #bbb;
+}
+
+.arrow-right {
+  font-size: 32rpx;
+  color: #ccc;
+  font-weight: bold;
+}
+
+/* 保存按钮 */
+.save-section {
+  padding: 40rpx 30rpx 60rpx 30rpx;
+  position: relative;
+  top: -400rpx;
+}
+
+.save-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
+  color: #fff;
+  border: none;
+  border-radius: 50rpx;
+  padding: 36rpx;
+  font-size: 36rpx;
+  font-weight: bold;
+  box-shadow: 0 8rpx 24rpx rgba(255, 107, 107, 0.4);
+}
+
+.save-btn-hover {
+  transform: scale(0.98);
+  box-shadow: 0 4rpx 16rpx rgba(255, 107, 107, 0.6);
+}
+
+/* 编辑弹窗 */
+.edit-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40rpx;
+}
+
+.modal-content {
+  width: 100%;
+  max-width: 600rpx;
+  background-color: #fff;
+  border-radius: 20rpx;
+  overflow: hidden;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 32rpx 40rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.modal-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.close-btn {
+  width: 48rpx;
+  height: 48rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36rpx;
+  color: #999;
+  background-color: #f5f5f5;
+  border-radius: 50%;
+}
+
+.modal-body {
+  padding: 40rpx;
+}
+
+.modal-footer {
+  display: flex;
+  padding: 32rpx 40rpx;
+  border-top: 1rpx solid #f0f0f0;
+}
+
+.modal-footer .modal-cancel-btn {
+  margin-right: 20rpx;
+}
+
+.modal-cancel-btn,
+.modal-confirm-btn {
+  flex: 1;
+  padding: 24rpx;
+  border-radius: 12rpx;
+  font-size: 32rpx;
+  border: none;
+}
+
+.modal-cancel-btn {
+  background-color: #f5f5f5;
+  color: #666;
+}
+
+.modal-confirm-btn {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
+  color: #fff;
+}
+
+/* 昵称输入框 */
+.nickname-edit-input {
+  width: 100%;
+  padding: 24rpx;
+  background-color: #f8f9fa;
+  border-radius: 12rpx;
+  font-size: 32rpx;
+  color: #333;
+  border: none;
+}
+
+/* 性别选择 */
+.gender-options {
+  display: flex;
+  flex-direction: column;
+}
+
+.gender-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24rpx;
+  background-color: #f8f9fa;
+  border-radius: 12rpx;
+  transition: all 0.2s ease;
+  margin-bottom: 20rpx;
+}
+
+.gender-options .gender-option:last-child {
+  margin-bottom: 0;
+}
+
+.gender-option.selected {
+  background-color: #ffe6e6;
+  border: 2rpx solid #ff6b6b;
+}
+
+.gender-text {
+  font-size: 32rpx;
+  color: #333;
+}
+
+.gender-check {
+  font-size: 32rpx;
+  color: #ff6b6b;
+  font-weight: bold;
+}
+
+/* 个人简介输入框 */
+.desc-edit-textarea {
+  width: 100%;
+  min-height: 200rpx;
+  padding: 24rpx;
+  background-color: #f8f9fa;
+  border-radius: 12rpx;
+  font-size: 32rpx;
+  color: #333;
+  border: none;
+  box-sizing: border-box;
+} 
