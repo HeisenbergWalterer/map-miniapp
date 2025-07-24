@@ -66,7 +66,7 @@ Page({
 
     if (feedbackType === 'point' && !selectedPoint) {
       wx.showToast({
-        title: '请选择异常点位',
+        title: '请选择地点',
         icon: 'none'
       })
       return

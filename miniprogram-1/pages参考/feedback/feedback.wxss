@@ -1,54 +1,36 @@
 /**feedback.wxss**/
 
 /* 页面基础样式 */
-page {
+.page {
   width: 100%;
   min-height: 100vh;
-  margin: 0;
-  padding: 0;
-  background: linear-gradient(to bottom, 
-    #ff6b6b 0%, 
-    #ff8e53 450rpx, 
-    #f5f5f5 450rpx, 
-    #f5f5f5 100%);
+  background: linear-gradient(135deg, #FF6B6B 0%, #FF8E8E 50%, #FFB5B5 100%);
 }
 
 .scrollarea {
   width: 100%;
   height: 100vh;
-  background: linear-gradient(to bottom, 
-    #ff6b6b 0%, 
-    #ff8e53 450rpx, 
-    #f5f5f5 450rpx, 
-    #f5f5f5 100%);
-  margin: 0;
-  padding: 0;
-  padding-top: 0;
 }
 
 .container {
   width: 100%;
   min-height: 100vh;
-  background: transparent;
-  padding: 0 0 80rpx 0;
+  background: linear-gradient(135deg, #FF6B6B 0%, #FF8E8E 50%, #FFB5B5 100%);
+  padding: 40rpx 0 80rpx 0;
   box-sizing: border-box;
 }
-
-
 
 /* 反馈类型选择区域 */
 .feedback-type-section {
   width: 90%;
+  margin: 0 auto 40rpx auto;
   background-color: #fff;
   border-radius: 20rpx;
   padding: 40rpx;
   box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
-  position: absolute;
-  top: 20rpx;
-  left: 5%;
-  right: 5%;
-  z-index: 2;
+  position: relative;
+  top: -20rpx;
 }
 
 .section-title {
@@ -72,7 +54,6 @@ page {
   border: 2rpx solid #e0e0e0;
   border-radius: 16rpx;
   text-align: center;
-  transition: all 0.2s ease;
 }
 
 .type-option:first-child {
@@ -100,16 +81,14 @@ page {
 /* 地点选择区域 */
 .point-selection-section {
   width: 90%;
+  margin: 0 auto 40rpx auto;
   background-color: #fff;
   border-radius: 20rpx;
   padding: 40rpx;
   box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
-  position: absolute;
-  top: 230rpx;
-  left: 5%;
-  right: 5%;
-  z-index: 2;
+  position: relative;
+  top: -10rpx;
 }
 
 .point-select-btn {
@@ -122,7 +101,6 @@ page {
   border-radius: 16rpx;
   padding: 24rpx 20rpx;
   box-sizing: border-box;
-  transition: all 0.2s ease;
 }
 
 .btn-text {
@@ -140,31 +118,19 @@ page {
 /* 反馈内容区域 */
 .feedback-content-section {
   width: 90%;
+  margin: 0 auto 40rpx auto;
   background-color: #fff;
   border-radius: 20rpx;
   padding: 40rpx;
   box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
-  position: absolute;
-  left: 5%;
-  right: 5%;
-  z-index: 2;
-  transition: top 0.3s ease;
-}
-
-/* 有地点选择时的反馈内容位置 */
-.feedback-content-section.with-point-selection {
-  top: 490rpx;
-}
-
-/* 无地点选择时的反馈内容位置 */
-.feedback-content-section.without-point-selection {
-  top: 290rpx;
+  position: relative;
+  top: -10rpx;
 }
 
 .feedback-textarea {
   width: 100%;
-  min-height: 400rpx;
+  min-height: 200rpx;
   padding: 24rpx 20rpx;
   border: 2rpx solid #e0e0e0;
   border-radius: 16rpx;
@@ -172,8 +138,6 @@ page {
   color: #333;
   box-sizing: border-box;
   margin-bottom: 20rpx;
-  background-color: #f9f9f9;
-  line-height: 1.5;
 }
 
 .char-count {
@@ -185,21 +149,9 @@ page {
 /* 提交按钮区域 */
 .submit-section {
   width: 90%;
-  position: absolute;
-  left: 5%;
-  right: 5%;
-  z-index: 2;
-  transition: top 0.3s ease;
-}
-
-/* 有地点选择时的提交按钮位置 */
-.submit-section.with-point-selection {
-  top: 1200rpx;
-}
-
-/* 无地点选择时的提交按钮位置 */
-.submit-section.without-point-selection {
-  top: 1000rpx;
+  margin: 0 auto;
+  position: relative;
+  top: 0rpx;
 }
 
 .submit-btn {
@@ -212,18 +164,14 @@ page {
   font-size: 36rpx;
   font-weight: bold;
   box-shadow: 0 8rpx 20rpx rgba(255, 107, 107, 0.3);
-  transition: all 0.2s ease;
 }
 
 /* 悬停效果 */
 .point-select-btn-hover {
   background-color: #f0f0f0;
-  border-color: #ccc;
 }
 
 .submit-btn-hover {
   opacity: 0.8;
   transform: scale(0.98);
-}
-
- 
+} 

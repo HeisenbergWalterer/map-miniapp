@@ -1,0 +1,10 @@
+<!--index.wxml-->
+<scroll-view class="scrollarea" scroll-y type="list">
+  <view class="container">
+    <view class="page-title">首页</view>
+    <view class="content">
+      <!-- 这里可以添加首页内容 -->
+      <text class="placeholder-text">欢迎使用微信小程序</text>
+    </view>
+  </view>
+</scroll-view> 
