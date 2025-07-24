@@ -1,142 +1,395 @@
 /**index.wxss**/
 
 page {
-  padding-top: 54rpx;
-  background-color: #f6f6f6;
-  padding-bottom: 60rpx;
+  background-color: #f8f9fa;
+  padding: 0;
+  margin: 0;
+  /* 设置页面级别的导航栏样式 */
+  --navigation-bar-text-style: white;
 }
 
-.container {
-  font-family: PingFang SC;
+.page {
+  min-height: 100vh;
+  background-color: #f8f9fa;
 }
 
-.title {
-  font-family: PingFang SC;
-  font-weight: 500;
-  color: #000000;
-  font-size: 44rpx;
-  margin-bottom: 40rpx;
-}
-.function_title {
-  font-family: PingFang SC;
-  font-weight: 500;
-  color: #000000;
-  font-size: 36rpx;
-  text-align: left;
-  width: 93%;
-  margin-top: 50rpx;
-}
-
-.top_tip {
-  font-size: 28rpx;
-  font-family: PingFang SC;
-  font-weight: 400;
-  color: #888888;
-  margin-bottom: 28rpx;
+/* 头部区域 - 全屏橘黄色渐变，贴合屏幕顶部 */
+.page__header {
+  position: relative;
+  background: linear-gradient(135deg, #FF6B35 0%, #FF7A45 20%, #FF8955 50%, #FF9E66 80%, #FFA575 100%); 
+  /* background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 紫蓝渐变 */
+  /* background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); 粉红渐变 */
+  /* background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); 蓝绿渐变 */
+  /* background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); 绿青渐变 */
+  padding: 0;
+  margin: 0;
+  padding-top: var(--status-bar-height, 44rpx); /* 适配状态栏高度 */
+  padding-bottom: 120rpx; /* 适度减少底部间距 */
+  min-height: 320rpx; /* 减少最小高度 */
+  overflow: hidden;
 }
 
-.examples_container {
+.page__header::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 160rpx; /* 增加渐变高度，提供更长的过渡 */
+  background: linear-gradient(to bottom, 
+    rgba(255, 107, 53, 0) 0%,
+    rgba(255, 107, 53, 0.1) 15%, 
+    rgba(255, 107, 53, 0.3) 30%,
+    rgba(255, 107, 53, 0.5) 50%,
+    rgba(255, 107, 53, 0.7) 70%,
+    rgba(248, 249, 250, 0.9) 100%
+  );
+  z-index: 3;
+}
+
+.page__header::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 80rpx; /* 增加最底部的过渡区域高度 */
+  background: linear-gradient(to bottom, 
+    transparent 0%,
+    rgba(248, 249, 250, 0.6) 30%,
+    rgba(248, 249, 250, 0.8) 60%,
+    #f8f9fa 100%
+  );
+  z-index: 4;
+}
+
+.header-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: white;
+  padding: 130rpx 20rpx 0rpx; /* 调整间距 - 图片下移 */
   display: flex;
   flex-direction: column;
-  gap: 16rpx;
-  width: 100%;
+  justify-content: center; /* 改回居中对齐 */
   align-items: center;
+  min-height: 160rpx;
 }
 
-.example_item {
-  border: 3rpx solid #e5e5e5;
-  border-radius: 10rpx;
-  padding: 24rpx;
-  width: 90%;
-  background-color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+/* 标题卡片样式 - 简洁设计 */
+.title-card {
+  width: 1000rpx; /* 大幅扩大宽度 */
+  height: 340rpx; /* 减少高度，创造更宽的长条形比例 */
+  max-width: 98%; /* 增加最大宽度限制以适应更宽的图片 */
+  border-radius: 20rpx; /* 现代圆角设计 */
+  border: 1rpx solid rgba(255, 255, 255, 0.1); /* 调整边框透明度，更好融入橘红色背景 */
+  overflow: hidden; /* 确保圆角生效 */
+  object-fit: cover; /* 强制图片填充容器 */
+  position: relative;
+  /* 使用mask创建边缘淡化效果 */
+  mask: 
+    radial-gradient(ellipse at center, black 30%, transparent 85%),
+    linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%),
+    linear-gradient(to bottom, transparent 0%, black 5%, black 95%, transparent 100%);
+  mask-composite: intersect;
+  /* 为不支持mask的情况添加box-shadow作为备选 */
+  box-shadow: 
+    inset 0 0 120rpx 30rpx rgba(255, 107, 53, 0.4),
+    inset 0 0 60rpx 15rpx rgba(255, 107, 53, 0.3);
 }
 
-.power {
-  margin-top: 30rpx;
-  border-radius: 5px;
-  background-color: white;
-  width: 93%;
-  padding-bottom: 1rpx;
+.app-title {
+  font-size: 56rpx;
+  font-weight: bold;
+  margin-bottom: 16rpx;
+  text-shadow: 0 2rpx 4rpx rgba(0, 0, 0, 0.2);
+  letter-spacing: 2rpx;
 }
 
-.power_info {
-  display: flex;
-  padding: 30rpx 25rpx;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.power_info_more {
-  width: 30rpx;
-  height: 30rpx;
-  transform: rotate(90deg);
-}
-
-.power_info_less {
-  width: 30rpx;
-  height: 30rpx;
-  transform: rotate(270deg);
-}
-
-.power_info_text {
-  display: flex;
-  flex-direction: column;
-}
-
-.power_info_text_title {
-  margin-bottom: 10rpx;
-  font-weight: 400;
-  font-size: 32rpx;
-  display: flex;
-  align-items: center;
-  font-family: 'PingFang SC';
-  color: #000;
-}
-
-.power_info_text_tag {
-  margin-left: 20rpx;
-  background-color: #fbe0e0;
-  color: #e54545;
-  padding: 0 7px;
-  font-size: 14px;
-  vertical-align: middle;
-  border-radius: 3px;
-}
-
-.power_info_text_tip {
-  color: rgba(0, 0, 0, 0.6);
+.app-subtitle {
   font-size: 28rpx;
-  padding-right: 30rpx;
+  opacity: 0.95;
+  text-shadow: 0 1rpx 2rpx rgba(0, 0, 0, 0.1);
 }
 
-.power_item {
-  padding: 30rpx 25rpx;
+/* 渐变遮罩 - 已由::before和::after伪元素替代，保留此注释作为标记 */
+.header-gradient {
+  display: none; /* 禁用原来简单的渐变遮罩 */
+}
+
+/* 主要内容区域 */
+.page__content {
+  position: relative;
+  margin-top: -50rpx; /* 稍微增加重叠，与新的渐变效果配合 */
+  z-index: 10;
+  padding: 0 30rpx 40rpx;
+}
+
+/* 欢迎信息窄边框 */
+.welcome-bar {
+  background: linear-gradient(90deg, #fff7f0 0%, #ffffff 100%);
+  border-radius: 50rpx;
+  padding: 20rpx 30rpx;
+  margin-bottom: 30rpx;
+  margin-top: 20rpx; /* 增加顶部边距，与渐变效果配合 */
+  border-left: 6rpx solid #FF6B35;
+  box-shadow: 0 4rpx 20rpx rgba(255, 107, 53, 0.1);
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(10rpx); /* 添加毛玻璃效果 */
+  border: 1rpx solid rgba(255, 255, 255, 0.2); /* 添加微妙边框 */
+  display: flex; /* 添加flexbox布局 */
+  align-items: center; /* 垂直居中对齐 */
+  gap: 15rpx; /* 图标与文字间距 */
+}
+
+.welcome-bar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100rpx;
+  height: 100%;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 107, 53, 0.05) 100%);
+}
+
+.welcome-text {
+  font-size: 24rpx; /* 缩小字体，使文字能在一行显示 */
+  color: #333;
+  line-height: 1.6;
+  position: relative;
+  z-index: 2;
+  flex: 1; /* 占据剩余空间 */
+}
+
+/* 扬声器图标样式 */
+.speaker-icon {
+  width: 40rpx;
+  height: 40rpx;
+  flex-shrink: 0; /* 防止图标被压缩 */
+  filter: drop-shadow(0 1rpx 2rpx rgba(255, 107, 53, 0.3));
+}
+
+/* 暖心公告区域 */
+.notice-section {
+  background: #ffffff;
+  border-radius: 24rpx;
+  padding: 30rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 8rpx 30rpx rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(255, 107, 53, 0.1);
+}
+
+.notice-header {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
 }
 
-.power_item_title {
+.notice-title {
+  font-size: 40rpx; /* 增大字体尺寸 */
+  font-weight: bold;
+  color: #FF6B35;
+  font-family: "PingFang SC", "Helvetica Neue", sans-serif;
+  text-shadow: 0 1rpx 2rpx rgba(255, 107, 53, 0.2);
+}
+
+.notice-more {
+  font-size: 26rpx;
+  color: #999;
+  padding: 8rpx 16rpx;
+  border-radius: 20rpx;
+  background: #f8f9fa;
+}
+
+.notice-content {
+  padding: 20rpx 0;
+}
+
+.notice-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.notice-text {
+  flex: 1;
   font-size: 28rpx;
-  color: rgba(0, 0, 0, 0.9);
+  color: #555;
+  line-height: 1.6;
+  margin-right: 20rpx;
+  font-weight: bold; /* 加粗字体 */
+  font-family: "SimHei", "Microsoft YaHei", "黑体", sans-serif; /* 黑体字族 */
 }
 
-.power_item_icon {
-  width: 30rpx;
-  height: 30rpx;
-}
-
-.line {
-  width: 95%;
-  margin: 0 auto;
-  height: 2rpx;
-  background-color: rgba(0, 0, 0, 0.1);
-}
-
-.environment {
-  color: rgba(0, 0, 0, 0.4);
+.notice-date {
   font-size: 24rpx;
-  margin-top: 25%;
+  color: #999;
+  background: #f0f0f0;
+  padding: 4rpx 12rpx;
+  border-radius: 16rpx;
+  white-space: nowrap;
+}
+
+/* 服务功能区域 - 整体圆角矩形容器 */
+.function-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4列布局，与图片一致 */
+  grid-template-rows: repeat(2, 1fr); /* 2行布局，为8个按钮准备 */
+  gap: 0rpx; /* 移除间距，让按钮紧密排列 */
+  margin-bottom: 40rpx;
+  padding: 35rpx 25rpx; /* 增加内边距，为放大的图标提供空间 */
+  background: #ffffff; /* 整体容器的白色背景 */
+  border-radius: 24rpx; /* 整体容器的圆角 */
+  box-shadow: 0 8rpx 30rpx rgba(0, 0, 0, 0.06); /* 整体容器的阴影 */
+  border: 1px solid rgba(255, 107, 53, 0.1); /* 整体容器的边框 */
+  margin: 0 0 40rpx 0; /* 左右边距设为0，与暖心公告对齐 */
+}
+
+.function-card {
+  background: transparent; /* 移除单个按钮的背景 */
+  border-radius: 0; /* 移除单个按钮的圆角 */
+  padding: 35rpx 20rpx; /* 增加内边距，为放大的图标提供空间 */
+  text-align: center;
+  box-shadow: none; /* 移除单个按钮的阴影 */
+  border: none; /* 移除单个按钮的边框 */
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: visible; /* 允许悬停效果溢出 */
+  aspect-ratio: 1; /* 保持正方形比例 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.function-card::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 107, 53, 0.1);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: all 0.3s ease;
+  z-index: 0;
+}
+
+.function-card:active,
+.function-card-hover {
+  transform: scale(0.95); /* 轻微缩放效果 */
+}
+
+.function-card:active::before,
+.function-card-hover::before {
+  width: 160rpx; /* 调整悬停效果大小，适应放大的图标 */
+  height: 160rpx; /* 调整悬停效果大小，适应放大的图标 */
+}
+
+.function-icon {
+  font-size: 48rpx; /* 减小图标尺寸 */
+  margin-bottom: 10rpx; /* 减小间距 */
+  display: block;
+  filter: drop-shadow(0 2rpx 4rpx rgba(0, 0, 0, 0.1));
+  position: relative;
+  z-index: 1;
+}
+
+/* 图片图标样式 */
+.function-icon-img {
+  width: 130rpx;  /* 放大2倍图标尺寸 */
+  height: 130rpx; /* 放大2倍图标尺寸 */
+  margin-bottom: 15rpx; /* 增加与文字的间距 */
+  filter: drop-shadow(0 2rpx 4rpx rgba(0, 0, 0, 0.1));
+  position: relative;
+  z-index: 1;
+}
+
+.function-name {
+  font-size: 28rpx; /* 增大文字尺寸，与放大的图标协调 */
+  color: #333;
+  font-weight: 500;
+  letter-spacing: 1rpx;
+  line-height: 1.2; /* 调整行高 */
+  position: relative;
+  z-index: 1;
+  white-space: nowrap; /* 防止文字换行 */
+}
+
+/* 底部装饰区域 */
+.bottom-decoration {
+  text-align: center;
+  padding: 40rpx 0;
+  position: relative;
+}
+
+.decoration-text {
+  font-size: 26rpx;
+  color: #999;
+  position: relative;
+  padding: 0 30rpx;
+  background: #f8f9fa;
+}
+
+.decoration-text::before,
+.decoration-text::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 60rpx;
+  height: 2rpx;
+  background: linear-gradient(90deg, transparent 0%, #ddd 50%, transparent 100%);
+}
+
+.decoration-text::before {
+  left: -80rpx;
+}
+
+.decoration-text::after {
+  right: -80rpx;
+}
+
+/* 响应式优化 */
+@media (max-width: 375px) {
+  .function-grid {
+    gap: 0rpx;
+    padding: 25rpx 20rpx; /* 小屏幕下适当减少内边距 */
+  }
+  
+  .function-card {
+    padding: 25rpx 15rpx; /* 小屏幕下减少按钮内边距 */
+  }
+  
+  .function-icon-img {
+    width: 110rpx; /* 小屏幕下适当减小图标，但保持清晰 */
+    height: 110rpx;
+  }
+  
+  .function-name {
+    font-size: 24rpx; /* 小屏幕下减小文字 */
+  }
+}
+
+/* 动画优化 */
+.function-card {
+  animation: cardSlideIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  opacity: 0;
+  transform: translateY(30rpx);
+}
+
+.function-card:nth-child(1) { animation-delay: 0.1s; }
+.function-card:nth-child(2) { animation-delay: 0.2s; }
+.function-card:nth-child(3) { animation-delay: 0.3s; }
+.function-card:nth-child(4) { animation-delay: 0.4s; }
+.function-card:nth-child(5) { animation-delay: 0.5s; }
+.function-card:nth-child(6) { animation-delay: 0.6s; }
+
+@keyframes cardSlideIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

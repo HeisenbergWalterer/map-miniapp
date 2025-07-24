@@ -1,0 +1,138 @@
+<!--edit-profile.wxml-->
+<navigation-bar title="编辑资料" back="{{true}}" color="white" background="linear-gradient(135deg, #FF6B35 0%, #ff8e53 100%)"></navigation-bar>
+<scroll-view class="scrollarea" scroll-y type="list">
+  <view class="container">
+    
+    <!-- 头像编辑区域 -->
+    <view class="avatar-section">
+             <view class="avatar-edit-wrapper">
+         <button class="avatar-edit-btn" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
+           <view class="avatar-container">
+             <image class="avatar-edit-img" src="{{userInfo.avatarUrl || '/images/default-avatar.png'}}" mode="aspectFill"></image>
+           </view>
+           <view class="avatar-edit-mask">
+             <text class="avatar-edit-text">更换头像</text>
+           </view>
+         </button>
+       </view>
+    </view>
+    
+    <!-- 个人信息编辑列表 -->
+    <view class="info-section">
+      
+                    <!-- 昵称 -->
+        <view class="info-item" bindtap="editNickname" hover-class="info-item-hover" hover-stay-time="100">
+         <view class="info-label">
+           <text class="label-text">昵称</text>
+           <text class="label-required">*</text>
+         </view>
+         <view class="info-content">
+           <text class="content-text {{!userInfo.nickName ? 'content-placeholder' : ''}}">{{userInfo.nickName || '请输入昵称'}}</text>
+           <text class="arrow-right">></text>
+         </view>
+       </view>
+       
+       <!-- 性别 -->
+        <view class="info-item" bindtap="editGender" hover-class="info-item-hover" hover-stay-time="100">
+         <view class="info-label">
+           <text class="label-text">性别</text>
+           <text class="label-required">*</text>
+         </view>
+         <view class="info-content">
+           <text class="content-text {{!userInfo.gender ? 'content-placeholder' : ''}}">{{userInfo.gender || '请选择性别'}}</text>
+           <text class="arrow-right">></text>
+         </view>
+       </view>
+       
+       <!-- 手机号 -->
+        <view class="info-item" bindtap="editPhone" hover-class="info-item-hover" hover-stay-time="100">
+         <view class="info-label">
+           <text class="label-text">手机号</text>
+           <text class="label-required">*</text>
+         </view>
+         <view class="info-content">
+           <text class="content-text {{!userInfo.phoneNumber ? 'content-placeholder' : ''}}">{{userInfo.phoneNumber || '请绑定手机号'}}</text>
+           <text class="arrow-right">></text>
+         </view>
+       </view>
+       
+       <!-- 个人简介 -->
+        <view class="info-item" bindtap="editDescription" hover-class="info-item-hover" hover-stay-time="100">
+         <view class="info-label">
+           <text class="label-text">个人简介</text>
+         </view>
+         <view class="info-content">
+           <text class="content-text {{!userInfo.description ? 'content-placeholder' : ''}}">{{userInfo.description || '请输入个人简介'}}</text>
+           <text class="arrow-right">></text>
+         </view>
+       </view>
+      
+    </view>
+    
+    <!-- 保存按钮 -->
+    <view class="save-section">
+      <button class="save-btn" bindtap="saveProfile" hover-class="save-btn-hover">保存修改</button>
+    </view>
+    
+  </view>
+</scroll-view>
+
+<!-- 昵称编辑弹窗 -->
+<view class="edit-modal" wx:if="{{showNicknameModal}}" bindtap="hideModal">
+  <view class="modal-content" catchtap="stopPropagation">
+    <view class="modal-header">
+      <text class="modal-title">编辑昵称</text>
+      <view class="close-btn" bindtap="hideModal">×</view>
+    </view>
+    <view class="modal-body">
+      <input type="nickname" class="nickname-edit-input" placeholder="请输入昵称" value="{{tempNickname}}" bind:input="onNicknameInput" maxlength="20" />
+    </view>
+    <view class="modal-footer">
+      <button class="modal-cancel-btn" bindtap="hideModal">取消</button>
+      <button class="modal-confirm-btn" bindtap="confirmNickname">确定</button>
+    </view>
+  </view>
+</view>
+
+<!-- 性别选择弹窗 -->
+<view class="edit-modal" wx:if="{{showGenderModal}}" bindtap="hideModal">
+  <view class="modal-content" catchtap="stopPropagation">
+    <view class="modal-header">
+      <text class="modal-title">选择性别</text>
+      <view class="close-btn" bindtap="hideModal">×</view>
+    </view>
+    <view class="modal-body">
+      <view class="gender-options">
+        <view class="gender-option {{tempGender === '男' ? 'selected' : ''}}" bindtap="selectGender" data-gender="男">
+          <text class="gender-text">男</text>
+          <text class="gender-check" wx:if="{{tempGender === '男'}}">✓</text>
+        </view>
+        <view class="gender-option {{tempGender === '女' ? 'selected' : ''}}" bindtap="selectGender" data-gender="女">
+          <text class="gender-text">女</text>
+          <text class="gender-check" wx:if="{{tempGender === '女'}}">✓</text>
+        </view>
+      </view>
+    </view>
+    <view class="modal-footer">
+      <button class="modal-cancel-btn" bindtap="hideModal">取消</button>
+      <button class="modal-confirm-btn" bindtap="confirmGender">确定</button>
+    </view>
+  </view>
+</view>
+
+<!-- 个人简介编辑弹窗 -->
+<view class="edit-modal" wx:if="{{showDescModal}}" bindtap="hideModal">
+  <view class="modal-content" catchtap="stopPropagation">
+    <view class="modal-header">
+      <text class="modal-title">编辑个人简介</text>
+      <view class="close-btn" bindtap="hideModal">×</view>
+    </view>
+    <view class="modal-body">
+      <textarea class="desc-edit-textarea" placeholder="请输入个人简介" value="{{tempDescription}}" bind:input="onDescInput" maxlength="100" auto-height></textarea>
+    </view>
+    <view class="modal-footer">
+      <button class="modal-cancel-btn" bindtap="hideModal">取消</button>
+      <button class="modal-confirm-btn" bindtap="confirmDescription">确定</button>
+    </view>
+  </view>
+</view>

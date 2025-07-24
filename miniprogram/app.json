@@ -1,14 +1,39 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/example/index"
+    "pages/profile/profile",
+    "pages/map/map",
+    "pages/feedback/feedback",
+    "pages/point-select/point-select",
+    "pages/edit-profile/edit-profile",
+    "pages/favorite/favorite"
   ],
   "window": {
-    "backgroundColor": "#F6F6F6",
+    "backgroundColor": "#FFFFFF",
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#F6F6F6",
-    "navigationBarTitleText": "云开发 QuickStart",
+    "navigationBarBackgroundColor": "#FFFFFF",
+    "navigationBarTitleText": "微光驿站",
     "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#FF6B35",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "images/icons/首页.png",
+        "selectedIconPath": "images/icons/首页.png"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "个人中心",
+        "iconPath": "images/icons/usercenter.png",
+        "selectedIconPath": "images/icons/usercenter-active.png"
+      }
+    ]
   },
   "sitemapLocation": "sitemap.json",
   "style": "v2",

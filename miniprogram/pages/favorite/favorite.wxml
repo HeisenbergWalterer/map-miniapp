@@ -1,0 +1,41 @@
+<!--favorite.wxml-->
+<view class="page">
+  <!-- 收藏内容区域 -->
+  <view class="favorite-content">
+    <!-- 空状态显示 -->
+    <view class="empty-state">
+      <view class="empty-icon">❤️</view>
+      <text class="empty-title">暂无收藏</text>
+      <text class="empty-desc">您还没有收藏任何地点或服务</text>
+      <view class="empty-action">
+        <button class="browse-btn" bindtap="goToMap">去发现更多</button>
+      </view>
+    </view>
+
+    <!-- 收藏列表框架（暂时隐藏） -->
+    <view class="favorite-list" style="display: none;">
+      <!-- 收藏分类标签 -->
+      <view class="category-tabs">
+        <view class="tab-item active">
+          <text class="tab-text">全部</text>
+        </view>
+        <view class="tab-item">
+          <text class="tab-text">地点</text>
+        </view>
+        <view class="tab-item">
+          <text class="tab-text">服务</text>
+        </view>
+      </view>
+
+      <!-- 收藏项目列表 -->
+      <view class="favorite-items">
+        <!-- 这里将来会显示实际的收藏内容 -->
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部提示 -->
+  <view class="bottom-tip">
+    <text class="tip-text">收藏功能正在开发中，敬请期待</text>
+  </view>
+</view> 

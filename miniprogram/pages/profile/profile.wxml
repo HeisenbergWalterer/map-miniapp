@@ -1,0 +1,125 @@
+<!--profile.wxml-->
+<scroll-view class="scrollarea" scroll-y type="list">
+  <view class="container">
+    
+    <!-- 页面标题 -->
+    <view class="page-title-section">
+      <text class="page-title">个人中心</text>
+    </view>
+    
+    <!-- 个人信息显示板块 -->
+    <view class="user-info-section {{!isLoggedIn ? 'login-clickable' : ''}}" bindtap="{{!isLoggedIn ? 'showLoginModal' : ''}}" hover-class="{{!isLoggedIn ? 'login-hover' : ''}}" hover-stay-time="100">
+      <!-- 未登录状态 -->
+      <block wx:if="{{!isLoggedIn}}">
+        <view class="user-avatar">
+          <image class="avatar-img" src="/images/default-avatar.png" mode="aspectFill"></image>
+        </view>
+        <view class="user-details">
+          <text class="user-name">未登录</text>
+          <text class="user-desc">点击此处登录获取个人信息</text>
+        </view>
+        <view class="login-arrow">
+          <text class="arrow-icon">></text>
+        </view>
+      </block>
+      
+      <!-- 已登录状态 -->
+      <block wx:else>
+        <view class="logged-in-header">
+          <view class="user-avatar">
+            <image class="avatar-img" src="{{userInfo.avatarUrl || '/images/default-avatar.png'}}" mode="aspectFill"></image>
+          </view>
+          <view class="user-details-inline">
+            <text class="user-name">{{userInfo.nickName || '未设置昵称'}}</text>
+            <text class="user-desc" wx:if="{{userInfo.phoneNumber}}">手机号：{{userInfo.phoneNumber}}</text>
+            <text class="user-desc" wx:else>暂未绑定手机号</text>
+          </view>
+          <view class="logout-btn-wrapper">
+            <view class="logout-btn" catchtap="logout" hover-class="logout-btn-hover">退出登录</view>
+          </view>
+        </view>
+      </block>
+    </view>
+    
+    <!-- 登录授权弹窗 -->
+    <view class="login-modal" wx:if="{{showModal}}" bindtap="hideLoginModal">
+      <view class="modal-content" catchtap="stopPropagation">
+        <view class="modal-header">
+          <text class="modal-title">授权登录</text>
+          <view class="close-btn" bindtap="hideLoginModal">×</view>
+        </view>
+        <view class="modal-body">
+          <view class="auth-step">
+            <text class="step-title">步骤1：获取头像昵称</text>
+            <view class="avatar-input-section">
+              <button class="avatar-wrapper" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
+                <image class="temp-avatar" src="{{tempUserInfo.avatarUrl || '/images/default-avatar.png'}}" mode="aspectFill"></image>
+                <text class="avatar-tip">点击设置头像</text>
+              </button>
+              <view class="nickname-wrapper">
+                <text class="nickname-label">昵称：</text>
+                <input type="nickname" class="nickname-input" placeholder="请输入昵称" value="{{tempUserInfo.nickName}}" bind:change="onNicknameChange" />
+              </view>
+            </view>
+          </view>
+          
+          <view class="auth-step">
+            <text class="step-title">步骤2：绑定手机号（可选）</text>
+            <button class="phone-btn" open-type="getPhoneNumber" bind:getphonenumber="onGetPhoneNumber" hover-class="phone-btn-hover">
+              <text>{{tempUserInfo.phoneNumber ? '已绑定：' + tempUserInfo.phoneNumber : '点击绑定手机号'}}</text>
+            </button>
+          </view>
+          
+          <view class="modal-actions">
+            <button class="confirm-btn" bindtap="confirmLogin" disabled="{{!tempUserInfo.nickName}}" hover-class="confirm-btn-hover">确认登录</button>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <!-- 内容容器 (包含编辑按钮和服务板块) -->
+    <view class="content-container">
+      <!-- 个人资料编辑按钮 -->
+      <view class="edit-profile-section">
+        <view class="edit-btn" bindtap="editProfile" hover-class="edit-btn-hover" hover-stay-time="100">
+          <view class="edit-icon-wrapper">
+            <image class="edit-icon" src="/images/edit.png" mode="aspectFit"></image>
+          </view>
+          <view class="edit-text-wrapper">
+            <text class="edit-title">个人资料</text>
+            <text class="edit-subtitle">{{isLoggedIn ? '编辑个人信息' : '登录后可编辑'}}</text>
+          </view>
+        </view>
+      </view>
+      
+      <!-- 我的服务板块 -->
+      <view class="my-services-section">
+        <view class="section-title">
+          <text class="title-text">我的服务</text>
+        </view>
+        <view class="services-grid">
+          <view class="service-item" bindtap="goToFeedback" hover-class="service-item-hover" hover-stay-time="100">
+            <image class="service-icon" src="/images/feedback.png" mode="aspectFit"></image>
+            <text class="service-text">反馈中心</text>
+          </view>
+          <view class="service-item" bindtap="goToFavorite" hover-class="service-item-hover" hover-stay-time="100">
+            <image class="service-icon" src="/images/favorite.png" mode="aspectFit"></image>
+            <text class="service-text">我的收藏</text>
+          </view>
+          <view class="service-item hidden">
+            <!-- 预留位置3 -->
+          </view>
+          <view class="service-item hidden">
+            <!-- 预留位置4 -->
+          </view>
+          <view class="service-item hidden">
+            <!-- 预留位置5 -->
+          </view>
+          <view class="service-item hidden">
+            <!-- 预留位置6 -->
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</scroll-view>

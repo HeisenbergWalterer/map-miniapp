@@ -1,187 +1,52 @@
 // index.js
 Page({
   data: {
-    showTip: false,
-    powerList: [
-      {
-        title: '云托管',
-        tip: '不限语言的全托管容器服务',
-        showItem: false,
-        item: [
-          {
-            type: 'cloudbaserun',
-            title: '云托管调用',
-          },
-        ],
-      },
-      {
-        title: '云函数',
-        tip: '安全、免鉴权运行业务代码',
-        showItem: false,
-        item: [
-          {
-            type: 'getOpenId',
-            title: '获取OpenId',
-          },
-          {
-            type: 'getMiniProgramCode',
-            title: '生成小程序码',
-          },
-        ],
-      },
-      {
-        title: '数据库',
-        tip: '安全稳定的文档型数据库',
-        showItem: false,
-        item: [
-          {
-            type: 'createCollection',
-            title: '创建集合',
-          },
-          {
-            type: 'selectRecord',
-            title: '增删改查记录',
-          },
-          // {
-          //   title: '聚合操作',
-          //   page: 'sumRecord',
-          // },
-        ],
-      },
-      {
-        title: '云存储',
-        tip: '自带CDN加速文件存储',
-        showItem: false,
-        item: [
-          {
-            type: 'uploadFile',
-            title: '上传文件',
-          },
-        ],
-      },
-      // {
-      //   type: 'singleTemplate',
-      //   title: '云模板',
-      //   tip: '基于页面模板，快速配置、搭建小程序页面',
-      //   tag: 'new',
-      // },
-      // {
-      //   type: 'cloudBackend',
-      //   title: '云后台',
-      //   tip: '开箱即用的小程序后台管理系统',
-      // },
-      {
-        title: '拓展能力-AI',
-        tip: '云开发 AI 拓展能力',
-        showItem: false,
-        item: [
-          {
-            type: 'model-guide',
-            title: '大模型对话指引'
-          },
-        ],
-      },
-    ],
-    haveCreateCollection: false,
-    title: "",
-    content: ""
-  },
-  onClickPowerInfo(e) {
-    const app = getApp()
-    if(!app.globalData.env) {
-      wx.showModal({
-        title: '提示',
-        content: '请在 `miniprogram/app.js` 中正确配置 `env` 参数'
-      })
-      return 
-    }
-    console.log("click e", e)
-    const index = e.currentTarget.dataset.index;
-    const powerList = this.data.powerList;
-    const selectedItem = powerList[index];
-    console.log("selectedItem", selectedItem)
-    if (selectedItem.link) {
-      wx.navigateTo({
-        url: `../web/index?url=${selectedItem.link}&title=${selectedItem.title}`,
-      });
-    } else if (selectedItem.type) {
-      console.log("selectedItem", selectedItem)
-      wx.navigateTo({
-        url: `/pages/example/index?envId=${this.data.selectedEnv?.envId}&type=${selectedItem.type}`,
-      });
-    } else if (selectedItem.page) {
-      wx.navigateTo({
-        url: `/pages/${selectedItem.page}/index`,
-      });
-    } else if (
-      selectedItem.title === '数据库' &&
-      !this.data.haveCreateCollection
-    ) {
-      this.onClickDatabase(powerList,selectedItem);
-    } else {
-      selectedItem.showItem = !selectedItem.showItem;
-      this.setData({
-        powerList,
-      });
-    }
+    userInfo: {},
+    serviceDays: 1,
+    noticeText: '【活动预告】微光驿站便民服务活动即将开始，敬请期待！',
+    noticeDate: '07-23'
   },
 
-  jumpPage(e) {
-    const { type, page } = e.currentTarget.dataset;
-    console.log("jump page", type, page)
-    if (type) {
-      wx.navigateTo({
-        url: `/pages/example/index?envId=${this.data.selectedEnv?.envId}&type=${type}`,
-      });
-    } else {
-      wx.navigateTo({
-        url: `/pages/${page}/index?envId=${this.data.selectedEnv?.envId}`,
-      });
-    }
-  },
-
-  onClickDatabase(powerList,selectedItem) {
-    wx.showLoading({
-      title: '',
+  onLoad() {
+    // 设置导航栏样式 - 优化胶囊按钮显示效果
+    wx.setNavigationBarColor({
+      frontColor: '#ffffff',
+      backgroundColor: '#FF8E66', // 使用中间渐变色，让胶囊按钮更融合
+      animation: {
+        duration: 300, // 增加过渡动画
+        timingFunc: 'easeOut'
+      }
     });
-    wx.cloud
-      .callFunction({
-        name: 'quickstartFunctions',
-        data: {
-          type: 'createCollection',
-        },
-      })
-      .then((resp) => {
-        if (resp.result.success) {
-          this.setData({
-            haveCreateCollection: true,
-          });
-        }
-        selectedItem.showItem = !selectedItem.showItem;
-        this.setData({
-          powerList,
-        });
-        wx.hideLoading();
-      })
-      .catch((e) => {
-        wx.hideLoading();
-        const { errCode, errMsg } = e
-        if (errMsg.includes('Environment not found')) {
-          this.setData({
-            showTip: true,
-            title: "云开发环境未找到",
-            content: "如果已经开通云开发，请检查环境ID与 `miniprogram/app.js` 中的 `env` 参数是否一致。"
-          });
-          return
-        }
-        if (errMsg.includes('FunctionName parameter could not be found')) {
-          this.setData({
-            showTip: true,
-            title: "请上传云函数",
-            content: "在'cloudfunctions/quickstartFunctions'目录右键，选择【上传并部署-云端安装依赖】，等待云函数上传完成后重试。"
-          });
-          return
-        }
-      });
+    
+    // 获取用户信息
+    this.getUserInfo();
+    // 计算服务天数
+    this.calculateServiceDays();
   },
+
+  // 获取用户信息
+  getUserInfo() {
+    const userInfo = wx.getStorageSync('userInfo') || {};
+    this.setData({
+      userInfo: userInfo
+    });
+  },
+
+  // 计算服务天数
+  calculateServiceDays() {
+    const today = new Date();
+    const startDate = new Date('2025-01-01'); // 服务开始日期
+    const diffTime = Math.abs(today - startDate);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+    this.setData({
+      serviceDays: diffDays
+    });
+  },
+
+  // 跳转到暖心地图页面
+  goToMap() {
+    wx.navigateTo({
+      url: '/pages/map/map'
+    });
+  }
 });

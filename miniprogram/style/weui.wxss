@@ -1,0 +1,402 @@
+/*!
+ * WeUI v2.5.16 (https://github.com/weui/weui-wxss)
+ * Copyright 2023 Tencent, Inc.
+ * Licensed under the MIT license
+ */
+
+/* WeUI 基础样式 */
+page {
+  background-color: #f8f8f8;
+  font-size: 16px;
+  font-family: -apple-system-font, Helvetica Neue, Helvetica, sans-serif;
+}
+
+/* WeUI 容器 */
+.weui-cells_after-title {
+  margin-top: 10px;
+}
+
+.weui-cells {
+  margin-top: 20px;
+  background-color: #FFFFFF;
+  line-height: 1.41176471;
+  font-size: 17px;
+  overflow: hidden;
+  position: relative;
+}
+
+.weui-cells:before {
+  content: " ";
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  height: 1px;
+  border-top: 1rpx solid #D9D9D9;
+  color: #D9D9D9;
+}
+
+.weui-cells:after {
+  content: " ";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: 1px;
+  border-bottom: 1rpx solid #D9D9D9;
+  color: #D9D9D9;
+}
+
+/* WeUI 单元格 */
+.weui-cell {
+  padding: 10px 15px;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.weui-cell:before {
+  content: " ";
+  position: absolute;
+  left: 15px;
+  top: 0;
+  right: 0;
+  height: 1px;
+  border-top: 1rpx solid #D9D9D9;
+  color: #D9D9D9;
+}
+
+.weui-cell:first-child:before {
+  display: none;
+}
+
+.weui-cell__bd {
+  flex: 1;
+}
+
+.weui-cell__ft {
+  text-align: right;
+  color: #999999;
+}
+
+/* WeUI 按钮 */
+.weui-btn {
+  position: relative;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 14px;
+  padding-right: 14px;
+  box-sizing: border-box;
+  font-size: 18px;
+  text-align: center;
+  text-decoration: none;
+  color: #FFFFFF;
+  line-height: 2.55555556;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.weui-btn_primary {
+  background-color: #1AAD19;
+}
+
+.weui-btn_default {
+  color: #000000;
+  background-color: #F8F8F8;
+}
+
+.weui-btn_warn {
+  background-color: #E64340;
+}
+
+.weui-btn_mini {
+  display: inline-block;
+  line-height: 2.3;
+  font-size: 13px;
+  padding: 0 1.32em;
+}
+
+/* WeUI 网格 */
+.weui-grids {
+  position: relative;
+  overflow: hidden;
+  background-color: #FFFFFF;
+}
+
+.weui-grids:before {
+  content: " ";
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  height: 1px;
+  border-top: 1rpx solid #D9D9D9;
+  color: #D9D9D9;
+}
+
+.weui-grid {
+  position: relative;
+  float: left;
+  padding: 20px 10px;
+  width: 33.33333333%;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.weui-grid:before {
+  content: " ";
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 1px;
+  bottom: 0;
+  border-right: 1rpx solid #D9D9D9;
+  color: #D9D9D9;
+}
+
+.weui-grid:after {
+  content: " ";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: 1px;
+  border-bottom: 1rpx solid #D9D9D9;
+  color: #D9D9D9;
+}
+
+.weui-grid:active {
+  background-color: #ECECEC;
+}
+
+.weui-grid__icon {
+  display: block;
+  width: 28px;
+  height: 28px;
+  margin: 0 auto;
+}
+
+.weui-grid__label {
+  margin-top: 5px;
+  display: block;
+  color: #000000;
+  font-size: 14px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+/* WeUI 面板 */
+.weui-panel {
+  background-color: #FFFFFF;
+  margin-top: 10px;
+  position: relative;
+  overflow: hidden;
+}
+
+.weui-panel:first-child {
+  margin-top: 0;
+}
+
+.weui-panel:before {
+  content: " ";
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  height: 1px;
+  border-top: 1rpx solid #D9D9D9;
+  color: #D9D9D9;
+}
+
+.weui-panel:after {
+  content: " ";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: 1px;
+  border-bottom: 1rpx solid #D9D9D9;
+  color: #D9D9D9;
+}
+
+.weui-panel__hd {
+  padding: 14px 15px 10px;
+  color: #999999;
+  font-size: 13px;
+  position: relative;
+}
+
+.weui-panel__bd {
+  overflow: hidden;
+}
+
+.weui-panel__ft {
+  padding: 10px 15px;
+  color: #3CC51F;
+  font-size: 16px;
+  text-align: center;
+  position: relative;
+}
+
+.weui-panel__ft:before {
+  content: " ";
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  height: 1px;
+  border-top: 1rpx solid #D9D9D9;
+  color: #D9D9D9;
+}
+
+.weui-panel__ft:active {
+  background-color: #ECECEC;
+}
+
+/* WeUI 媒体盒子 */
+.weui-media-box {
+  padding: 15px;
+  position: relative;
+}
+
+.weui-media-box:before {
+  content: " ";
+  position: absolute;
+  left: 15px;
+  top: 0;
+  right: 0;
+  height: 1px;
+  border-top: 1rpx solid #D9D9D9;
+  color: #D9D9D9;
+}
+
+.weui-media-box:first-child:before {
+  display: none;
+}
+
+.weui-media-box_text {
+  color: #000000;
+  font-size: 15px;
+}
+
+.weui-media-box__title {
+  font-weight: 400;
+  font-size: 17px;
+  width: auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-wrap: normal;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+
+.weui-media-box__desc {
+  color: #999999;
+  font-size: 13px;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.weui-media-box__info {
+  margin-top: 15px;
+  padding-bottom: 5px;
+  font-size: 13px;
+  color: #CECECE;
+  line-height: 1em;
+  list-style: none;
+  overflow: hidden;
+}
+
+.weui-media-box__info__meta {
+  float: left;
+  padding-right: 1em;
+}
+
+.weui-media-box__info__meta_extra {
+  padding-left: 1em;
+}
+
+/* WeUI 标题栏 */
+.weui-msg {
+  padding-top: 36px;
+  text-align: center;
+}
+
+.weui-msg__link {
+  display: inline;
+  color: #586C94;
+}
+
+.weui-msg__icon-area {
+  margin-bottom: 30px;
+}
+
+.weui-msg__text-area {
+  margin-bottom: 25px;
+  padding: 0 20px;
+}
+
+.weui-msg__title {
+  margin-bottom: 5px;
+  font-weight: 400;
+  font-size: 20px;
+}
+
+.weui-msg__desc {
+  font-size: 14px;
+  color: #999999;
+}
+
+/* WeUI 页脚 */
+.weui-footer {
+  color: #999999;
+  font-size: 14px;
+  text-align: center;
+}
+
+.weui-footer_fixed-bottom {
+  position: fixed;
+  bottom: 0.52em;
+  left: 0;
+  right: 0;
+}
+
+.weui-footer__links {
+  font-size: 0;
+}
+
+.weui-footer__link {
+  display: inline-block;
+  vertical-align: top;
+  margin: 0 0.62em;
+  position: relative;
+  font-size: 14px;
+  color: #586C94;
+}
+
+.weui-footer__link:before {
+  content: " ";
+  position: absolute;
+  left: -0.65em;
+  top: 0.5em;
+  width: 1px;
+  bottom: 0.5em;
+  border-left: 1rpx solid #C7C7C7;
+  color: #C7C7C7;
+}
+
+.weui-footer__link:first-child:before {
+  display: none;
+}
+
+.weui-footer__text {
+  padding: 0 0.34em;
+  font-size: 12px;
+}
