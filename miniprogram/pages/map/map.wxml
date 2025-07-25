@@ -1,4 +1,12 @@
 <!--map.wxml-->
-<view class="page">
-  <!-- 页面内容将在这里开发 -->
+<view class="map_container">
+<map class ="map"
+     id ="map" longitude ="{{longtidue}}" lattitude ="{{lattitude}}" scale ="14" show-location ="true" makrkers ="{{markers}}" bindmarkertap ="markertap" polyline="{{polyline}}" include-points="{{includePoints}}"></map>
+</view>
+<view class="map_text">
+  <text class="h1">{{textData.name}}</text>
+  <text>{{textData.desc}}</text>
+  <view class ="text_box" wx::if="{{daohang}}">
+    <view class="text">{{distance}} </view>
+  </view>
 </view>

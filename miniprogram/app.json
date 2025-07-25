@@ -15,6 +15,14 @@
     "navigationBarTitleText": "微光驿站",
     "navigationBarTextStyle": "black"
   },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于小程序位置接口的效果展示"
+    }
+  },
+  "requiredPrivateInfos": [
+    "getLocation"
+  ],
   "tabBar": {
     "color": "#999999",
     "selectedColor": "#FF6B35",
