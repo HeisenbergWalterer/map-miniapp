@@ -42,8 +42,9 @@
      include-points="{{includePoints}}"></map>
 </view>
 <view class="map_text">
+  <!-- 显示选中的位置点信息 -->
   <text class="h1">{{textData.name}}</text>
-  <text>{{textData.desc}}</text>
+  <text class="h2">{{textData.desc}}</text>
   <view class="text_box" wx:if="{{daohang}}">
     <view class="text">{{distance}}</view>
   </view>

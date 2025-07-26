@@ -17,4 +17,7 @@ App({
       });
     }
   },
+  img: {
+    defaultIcon: "/images/icons/point.png"
+  }
 });
