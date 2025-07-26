@@ -1,6 +1,33 @@
 <!--map.wxml-->
-<view class="section">
-  <input placeholder="搜索地点" bindinput="inputSearch" bindconfirm="searchNearby" />
+<view class="search-container">
+  <view class="search-input-wrapper">
+    <input 
+      class="search-input" 
+      placeholder="搜索地点" 
+      value="{{searchKeyword}}" 
+      bind:input="inputSearch"
+      bind:focus="onSearchFocus"
+      bind:blur="onSearchBlur"
+      bind:confirm="searchNearby"
+    />
+    <button class="search-btn" bindtap="searchNearby">搜索</button>
+  </view>
+  
+  <!-- 搜索建议下拉列表 -->
+  <view class="search-suggestions" wx:if="{{showSuggestions && searchSuggestions.length > 0}}">
+    <scroll-view scroll-y class="suggestions-scroll">
+      <view 
+        class="suggestion-item" 
+        wx:for="{{searchSuggestions}}" 
+        wx:key="id"
+        bindtap="selectSuggestion"
+        data-suggestion="{{item}}"
+      >
+        <text class="suggestion-name">{{item.name}}</text>
+        <text class="suggestion-address">{{item.district}}{{item.address}}</text>
+      </view>
+    </scroll-view>
+  </view>
 </view>
 <view class="map_container">
 <map class="map"

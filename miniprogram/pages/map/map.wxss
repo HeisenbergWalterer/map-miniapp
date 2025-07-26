@@ -1,3 +1,98 @@
+/* 搜索容器 */
+.search-container {
+  position: relative;
+  z-index: 100;
+  background: white;
+  height: 80px;
+  width: 100%;
+}
+
+/* 搜索输入框包装器 */
+.search-input-wrapper {
+  display: flex;
+  padding: 10px;
+  align-items: center;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+/* 搜索输入框 */
+.search-input {
+  flex: 1.5;
+  height: 35px;
+  padding: 0 10px;
+  border: 1px solid #c3c3c3;
+  border-radius: 20px;
+  background: #f8f8f8;
+  font-size: 14px;
+  margin-right: 10px;
+}
+
+/* 搜索按钮 */
+.search-btn {
+  flex: 0.5;
+  height: 35px;
+  line-height: 35px;
+  background: linear-gradient(135deg, #FF6B35 0%, #ff8e53 100%);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-size: 12px;
+  text-align: center;
+  padding: 0;
+}
+
+/* 搜索建议容器 */
+.search-suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #eee;
+  border-top: none;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  z-index: 1000;
+}
+
+/* 建议列表滚动容器 */
+.suggestions-scroll {
+  max-height: 300px;
+}
+
+/* 建议项 */
+.suggestion-item {
+  padding: 10px 15px;
+  border-bottom: 1px solid #f0f0f0;
+  display: flex;
+  flex-direction: column;
+}
+
+.suggestion-item:hover {
+  background: #f8f8f8;
+}
+
+.suggestion-item:last-child {
+  border-bottom: none;
+}
+
+/* 建议名称 */
+.suggestion-name {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 4px;
+  font-weight: 500;
+  display: block;
+}
+
+/* 建议地址 */
+.suggestion-address {
+  font-size: 12px;
+  color: #666;
+  line-height: 1.4;
+  display: block;
+}
+
 .section{
   height: 80px;
   width: 100%;
