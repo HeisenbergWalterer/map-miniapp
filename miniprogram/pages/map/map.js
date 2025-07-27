@@ -1,10 +1,9 @@
-// 获取app实例
-const app = getApp();
-
 // 引入高德地图API
 var gaode_key = require('../../components/config')
 // 引入高德地图SDK
 var amapFile = require('../../components/amap-wx.130')
+// 获取app实例
+const app = getApp();
 // 创建一个高德地图实例
 var myAmap = new amapFile.AMapWX({
   key: gaode_key.Config.key
@@ -13,51 +12,57 @@ var myAmap = new amapFile.AMapWX({
 var markersData = []
 // 测试用的地址
 const test_word = "上海市嘉定区百安公路528号"
-
 // 搜索建议的最大数量
 const MAX_TIPS = 8;
 
+// 页面定义
 Page({
   data: {
     markers: [],
-    latitude: '',
-    longitude: '',
-    city: '',
-    city_e: '', //目的地
-    latitude_e: '', //目的地x
-    longitude_e: '',//目的地y
-    textData:{}, //地点描述信息
+    latitude: '',   //当前位置纬度
+    longitude: '',  //当前位置经度
+    city: '',       //当前位置
+    city_e: '',     //目的地
+    latitude_e: '', //目的地纬度
+    longitude_e: '',//目的地经度
+    textData:{},    //地点描述信息
     gaode_type: 'car', //默认驾车导航，后续可改为步行或者公交
     polyline: [],
     includePoints: [],
-    transits: [], //公交车信息
-    mapEndObj: {}, //目的地信息
-    cost: '', //打车费用
+    transits: [],   //公交车信息
+    mapEndObj: {},  //目的地信息
+    cost: '',     //打车费用
     distance: '', //导航总距离
     daohang: false, //是否开始导航
     mapState: true, //目的地搜索状态
-    searchKeyword: '', //搜索关键词
+    searchKeyword: '',      //搜索关键词
     showSuggestions: false, //是否显示搜索建议
-    searchSuggestions: [], //搜索建议列表
-    searchTimer: null, //搜索防抖定时器
+    searchSuggestions: [],  //搜索建议列表
+    searchTimer: null,      //搜索防抖定时器
   },
 
+  // 页面加载时获取当前位置
   onLoad: function(){
     this.getPoiData() //获取当前位置
   },
-
+  // 页面初次渲染完成
   onReady: function(){
     console.log('地图页面初次渲染完成')
   },
 
+  // 页面显示时
   onShow: function(){
     console.log('地图页面显示')
+    this.clearInfo(); // 清空之前的信息显示
+    this.clearInput(); // 清空输入框
   },
 
+  // 页面隐藏时
   onHide: function(){
     console.log('地图页面隐藏')
   },
 
+  // 页面卸载时
   onUnload: function(){
     console.log('地图页面卸载')
   },
@@ -142,6 +147,8 @@ Page({
       this.searchByLocation(parseFloat(location[0]), parseFloat(location[1]), suggestion.name);
       // 显示选中的建议地点
       this.setData({
+        latitude_e: parseFloat(location[1]),
+        longitude_e: parseFloat(location[0]),
         searchKeyword: suggestion.name,
         showSuggestions: false,
         textData: {
@@ -151,29 +158,31 @@ Page({
       });
     } else {
       // 否则显示建议的所有地点
-      const that = this;
       console.log("建议数据：", this.data.searchSuggestions);
-      markersData = this.data.searchSuggestions.slice(1, MAX_TIPS);
-      var count = 0;
-      markersData = markersData.map(item => ({
-        ...item,
-        id : count++,
-        longitude: item.location.split(',')[0],
-        latitude: item.location.split(',')[1],
-      }))
-      this.showMarker(markersData);
+      this.searchBySuggestion();
     }
+    this.clearInput(); // 清空输入框
+  },
+
+  // 根据建议搜索
+  searchBySuggestion: function() {
+    markersData = this.data.searchSuggestions.slice(1, MAX_TIPS);
+    var count = 0;
+    markersData = markersData.map(item => ({
+      ...item,
+      id : count++,
+      longitude: item.location.split(',')[0],
+      latitude: item.location.split(',')[1],
+    }))
+    this.showMarker(markersData);
+    this.clearInput(); // 清空输入框
   },
 
   // 根据坐标搜索
   searchByLocation: function(lng, lat, name) {
     const that = this;
-    
-    const myAmapFun = new amapFile.AMapWX({
-      key: gaode_key.Config.key
-    });
     // 用坐标进行逆地理编码搜索
-    myAmapFun.getRegeo({
+    myAmap.getRegeo({
       location: `${lng},${lat}`,
       success: function(data) {
         console.log('逆地理编码结果:', data);
@@ -242,17 +251,51 @@ Page({
     console.log('标记点被点击，ID:', id);
     this.showMarker([markersData[id]]);
     this.setData({
+      latitude_e: markersData[id].latitude,
+      longitude_e: markersData[id].longitude,
       textData: {
         name: markersData[id].name,
         desc: markersData[id].address || '详细地址信息'
       }
     })
+    this.clearInput(); // 清空输入框
+  },
+
+  // 开始导航
+  startNavigation: function() {
+    var that = this;
+    console.log('开始导航');
+    wx.openLocation({
+      latitude: parseFloat(that.data.latitude_e),
+      longitude: parseFloat(that.data.longitude_e),
+      name: that.data.textData.name || '目的地',
+      address: that.data.textData.desc || '目的地地址',
+      scale: 18,
+      success: function(data){
+        console.log("调用成功");
+      },
+      fail: function(info){
+        console.error('导航失败：', info);
+      },
+      complete: function(){
+        console.log('导航请求完成');
+      }
+    });
   },
 
   // 清空信息显示栏
   clearInfo: function() {
     this.setData({
       textData: {}
+    });
+  },
+
+  // 清空输入框
+  clearInput: function() {
+    this.setData({
+      searchKeyword: '',
+      showSuggestions: false,
+      searchSuggestions: []
     });
   },
 })

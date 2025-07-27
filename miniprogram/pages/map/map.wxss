@@ -119,8 +119,8 @@
 /* 定位按钮 */
 .location-btn {
   position: absolute;
-  bottom: 30px; /* 距离底部80px，避免遮挡地点信息 */
-  right: 15px;   /* 距离右侧20px */
+  bottom: 30px;
+  right: 15px;
   width: 40px;
   height: 40px;
   display: flex;
@@ -138,6 +138,7 @@
   height: 30px; /* 图标尺寸 */
 }
 
+/* 信息框 */
 .map_text{
   position: absolute;
   left: 0;
@@ -147,11 +148,36 @@
   background: #fff;
   padding: 0 15px;
 }
+
+/* 信息字段 */
 text{
   margin: 5px 0;
   display: block;
   font-size: 12px;
 }
+
+/* 导航按钮 */
+.nav {
+  position: absolute;
+  right: 15px;
+  bottom: 15px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  border-radius: 25%;
+  /* border: 1px solid #453e3e; */
+  box-shadow: #666 0px 0px 3px;
+  z-index: 999;
+}
+/* 导航图标图标 */
+.nav_icon {
+  width: 30px;  
+  height: 30px;
+}
+
 .h1{
   margin: 15px 0;
   font-size: 15px;

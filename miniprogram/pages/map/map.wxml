@@ -8,9 +8,9 @@
       bind:input="inputSearch"
       bind:focus="onSearchFocus"
       bind:blur="onSearchBlur"
-      bind:confirm="searchNearby"
+      bind:confirm="searchBySuggestion"
     />
-    <button class="search-btn" bindtap="searchNearby">搜索</button>
+    <button class="search-btn" bindtap="searchBySuggestion">搜索</button>
   </view>
   
   <!-- 搜索建议下拉列表 -->
@@ -52,5 +52,8 @@
   <text class="h2">{{textData.desc}}</text>
   <view class="text_box" wx:if="{{daohang}}">
     <view class="text">{{distance}}</view>
+  </view>
+  <view class="nav" bindtap="startNavigation" wx:if="{{textData.name}}">
+    <image src="../../images/icons/navigate.png" class="nav_icon" mode="aspectFit"></image>
   </view>
 </view>
