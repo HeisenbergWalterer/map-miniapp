@@ -30,16 +30,21 @@
   </view>
 </view>
 <view class="map_container">
-<map class="map"
-     id="map" 
-     longitude="{{longitude}}" 
-     latitude="{{latitude}}" 
-     scale="14" 
-     show-location="true" 
-     markers="{{markers}}" 
-     bindmarkertap="markertap" 
-     polyline="{{polyline}}" 
-     include-points="{{includePoints}}"></map>
+  <map class="map"
+      id="map" 
+      longitude="{{longitude}}" 
+      latitude="{{latitude}}" 
+      scale="14" 
+      show-location="true" 
+      markers="{{markers}}" 
+      bindmarkertap="markertap" 
+      polyline="{{polyline}}" 
+      include-points="{{includePoints}}">
+  </map>
+  <!-- 定位按钮 -->
+  <view class="location-btn" bindtap="getPoiData">
+    <image src="../../images/icons/mylocation.png" class="location-icon" mode="aspectFit"></image>
+  </view>
 </view>
 <view class="map_text">
   <!-- 显示选中的位置点信息 -->

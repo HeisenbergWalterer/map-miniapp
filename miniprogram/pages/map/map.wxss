@@ -116,6 +116,28 @@
   width: 100%;
   height: 100%;
 }
+/* 定位按钮 */
+.location-btn {
+  position: absolute;
+  bottom: 30px; /* 距离底部80px，避免遮挡地点信息 */
+  right: 15px;   /* 距离右侧20px */
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  /* border: 1px solid #e0e0e0; */
+  background-color: #ffffff;
+  border-radius: 25%;
+}
+
+/* 定位图标 */
+.location-icon {
+  width: 30px;  /* 图标尺寸 */
+  height: 30px; /* 图标尺寸 */
+}
+
 .map_text{
   position: absolute;
   left: 0;

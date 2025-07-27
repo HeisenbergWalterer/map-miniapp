@@ -134,6 +134,7 @@ Page({
   selectSuggestion: function(e) {
     const suggestion = e.currentTarget.dataset.suggestion;
     console.log('选中的建议:', suggestion);
+    this.clearInfo(); // 清空之前的信息显示
     // 根据选中的建议进行搜索
     if (suggestion.location.length > 0) {
       // 如果有具体坐标，直接定位
@@ -152,15 +153,15 @@ Page({
       // 否则显示建议的所有地点
       const that = this;
       console.log("建议数据：", this.data.searchSuggestions);
-      var marklist = this.data.searchSuggestions.slice(1, MAX_TIPS);
+      markersData = this.data.searchSuggestions.slice(1, MAX_TIPS);
       var count = 0;
-      marklist = marklist.map(item => ({
+      markersData = markersData.map(item => ({
         ...item,
         id : count++,
         longitude: item.location.split(',')[0],
         latitude: item.location.split(',')[1],
       }))
-      this.showMarker(marklist);
+      this.showMarker(markersData);
     }
   },
 
@@ -187,25 +188,14 @@ Page({
       },
       fail: function(error) {
         console.error('逆地理编码失败:', error);
-        // 如果逆地理编码失败，回退到关键词搜索
-        // that.getPoiData(name); 
       }
     });
   },
 
-  // 搜索附近
-  searchNearby: function() {
-    if (this.data.searchKeyword.trim()) {
-      this.setData({
-        showSuggestions: false
-      });
-      // this.getPoiData(this.data.searchKeyword);
-    }
-  },
-
+  // 获取当前位置
   getPoiData: function(){
     var that = this;
-
+    this.clearInfo(); // 清空之前的信息显示
     myAmap.getRegeo({
       success: function (data){
         console.log('搜索结果',data)
@@ -215,8 +205,6 @@ Page({
           longitude: data[0].longitude,
           city: data[0].name,
         });
-        // 在地图中添加标记点
-        // that.showMarker(data);
       },
       fail: function(info){
         console.error('获取位置失败：', info);
@@ -231,24 +219,40 @@ Page({
   // 显示标记点
   showMarker: function(data){
     // 设置标记图标路径
-    markersData = data.map(marker => ({
+    var markerlist = data.map(marker => ({
       ...marker,
       iconPath: app.img.defaultIcon, // 使用全局默认图标
       width: 30,
       height: 30
   }))
+  console.log('标记点数据:', markerlist);
   
     this.setData({
-      markers: markersData,
-      latitude: markersData[0].latitude,
-      longitude: markersData[0].longitude,
-      city: markersData[0].name,
+      markers: markerlist,
+      latitude: markerlist[0].latitude,
+      longitude: markerlist[0].longitude,
+      city: markerlist[0].name,
   });
   },
 
   // 标记点击事件
   markertap: function(e) {
     var id = e.detail.markerId;
-    this.showMarker(markersData, id);
-  }
+    console.log('标记点信息：', e.detail)
+    console.log('标记点被点击，ID:', id);
+    this.showMarker([markersData[id]]);
+    this.setData({
+      textData: {
+        name: markersData[id].name,
+        desc: markersData[id].address || '详细地址信息'
+      }
+    })
+  },
+
+  // 清空信息显示栏
+  clearInfo: function() {
+    this.setData({
+      textData: {}
+    });
+  },
 })
