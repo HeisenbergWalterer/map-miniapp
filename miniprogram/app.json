@@ -6,7 +6,8 @@
     "pages/feedback/feedback",
     "pages/point-select/point-select",
     "pages/edit-profile/edit-profile",
-    "pages/favorite/favorite"
+    "pages/favorite/favorite",
+    "pages/station-detail/station-detail"
   ],
   "window": {
     "backgroundColor": "#FFFFFF",
