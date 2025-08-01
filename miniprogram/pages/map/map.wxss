@@ -4,7 +4,7 @@
   z-index: 100;
   background: transparent;
   width: 100%;
-  padding: 12px 0 0 0;
+  padding: 10px 0 0 0;
 }
 
 /* 搜索输入框包装器 */
@@ -171,8 +171,8 @@
 }
 .map_container{
   position: absolute;
-  top: 110px;
-  bottom: 80px;
+  top: 65px;
+  bottom: 100px;
   left: 0;
   right: 0;
 }
@@ -208,14 +208,14 @@
   left: 0;
   right: 0;
   bottom: 0px;
-  height: 80px;
+  height: 90px;
   background: #fff;
-  padding: 0 15px;
+  padding: 5px 20px;
 }
 
 /* 信息字段 */
 text{
-  margin: 5px 0;
+  margin: 2px 0px 0 0 ;
   display: block;
   font-size: 12px;
 }
@@ -223,8 +223,10 @@ text{
 /* 文字内容区域 */
 .text-content {
   flex: 1;
-  padding: 10px 0;
+  padding: 2px 0px 5px 0px ;
   cursor: pointer;
+  border-radius: 15px;
+  box-shadow: #45414123 0px 0px 10px;
 }
 
 .text-content:active {
@@ -235,8 +237,8 @@ text{
 /* 导航按钮 */
 .nav {
   position: absolute;
-  right: 15px;
-  bottom: 15px;
+  right: 30px;
+  bottom: 30px;
   width: 40px;
   height: 40px;
   display: flex;
@@ -255,9 +257,15 @@ text{
 }
 
 .h1{
-  margin: 15px 0;
+  margin: 10px 0px 15px 15px;
   font-size: 15px;
 }
+
+.h2{
+  margin: 0px 0px 15px 20px;
+  font-size: 13px;
+}
+
 /* 筛选按钮区域 */
 .type-selector {
   position: relative;

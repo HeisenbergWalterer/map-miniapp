@@ -93,8 +93,12 @@ Page({
   // 页面显示时
   onShow: function(){
     console.log('地图页面显示')
-    this.clearInfo(); // 清空之前的信息显示
     this.clearInput(); // 清空输入框
+    this.setData({
+      currentType: this.data.currentType || "toilet",    // 默认显示公共厕所
+      showTypeSelector: false,  // 隐藏分类选择器
+    })
+    this.showServiceStations(); // 显示服务站点
   },
 
   // 页面隐藏时
@@ -311,6 +315,9 @@ Page({
         }
       });
     }
+    console.log('选中的标记点信息:', markerData);
+    console.log('选中的标记点数据:', this.data.textData);
+    console.log("当前类型:", this.data.currentType);
     
     this.clearInput(); // 清空输入框
   },
@@ -340,6 +347,7 @@ Page({
   // 清空信息显示栏
   clearInfo: function() {
     this.setData({
+      currentType: '',
       textData: {}
     });
   },
@@ -379,6 +387,8 @@ Page({
       }
     }
   },
+
+  // 显示服务站点
   showServiceStations: function() {
     if (!this.data.currentType) {
       this.setData({ markers: [] });
@@ -412,10 +422,13 @@ Page({
         height: 32
       };
     });
+    console.log('服务站点标记数据:', markers);
     this.setData({
       markers: markers
     });
   },
+
+  // 点击分类选择
   onTypeSelect: function(e) {
     const type = e.currentTarget.dataset.type;
     this.setData({ currentType: type });

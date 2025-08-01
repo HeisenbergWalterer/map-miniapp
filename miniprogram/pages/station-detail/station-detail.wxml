@@ -1,13 +1,5 @@
-<!--station-detail.wxml-->
+<!-- 导航栏见json -->
 <view class="container">
-  <!-- 顶部导航栏 -->
-  <view class="nav-bar">
-    <view class="nav-back" bindtap="goBack">
-      <image src="../../images/icons/close.png" class="back-icon" mode="aspectFit"></image>
-    </view>
-    <text class="nav-title">站点详情</text>
-  </view>
-
   <!-- 照片展示区域 -->
   <view class="photo-section" wx:if="{{showDetail}}">
     <image src="{{stationInfo.photoUrl || '../../images/default-station-photo.jpg'}}" class="station-photo" mode="aspectFill" bindtap="previewPhoto"></image>
