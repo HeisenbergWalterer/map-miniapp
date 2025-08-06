@@ -4,8 +4,8 @@ var gaode_key = require('../../components/config')
 var amapFile = require('../../components/amap-wx.130')
 // 获取app实例
 const app = getApp();
-// 获取云数据库实例
-const db = wx.cloud.database(); 
+// 获取数据库服务类
+const db = app.DBS; 
 // 创建一个高德地图实例
 var myAmap = new amapFile.AMapWX({
   key: gaode_key.Config.key
@@ -271,7 +271,7 @@ Page({
     let markerData;
     if (this.data.currentType) {
       // 如果是服务站点标记，从数据库中查询
-      markerData = await this.findStationByID(this.data.currentType, id);
+      markerData = await db.findStationByID(this.data.currentType, id);
     } else {
       // 如果是搜索结果的标记，从markersData中查找
       markerData = markersData[id];
@@ -339,12 +339,10 @@ Page({
     if (this.data.currentType && this.data.textData.name) {
       // 找到当前选中的服务站点数据
       // 使用await来等待数据库查询结果
-      const currentStation = await this.findStationByName (
+      const currentStation = await db.findStationByName (
         this.data.currentType, 
         this.data.textData.name
       );
-      // test
-      this.findServStations(this.data.currentType);
 
       console.log('当前选中的服务站点:', currentStation);
       if (currentStation) {
@@ -369,7 +367,7 @@ Page({
       this.setData({ markers: [] });
       return;
     }
-    const filtered = await this.findServStations(this.data.currentType);
+    const filtered = await db.findServStations(this.data.currentType);
     console.log('过滤后的服务站点数据:', filtered);
     const markers = filtered.map(station => {
       // 为合作商户选择个性化图标
