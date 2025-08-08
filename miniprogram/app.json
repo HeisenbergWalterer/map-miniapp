@@ -7,7 +7,10 @@
     "pages/point-select/point-select",
     "pages/edit-profile/edit-profile",
     "pages/favorite/favorite",
-    "pages/station-detail/station-detail"
+    "pages/station-detail/station-detail",
+    "pages/contact/contact",
+    "pages/contact-detail/contact-detail",
+    "pages/emergency-contact/emergency-contact"
   ],
   "window": {
     "backgroundColor": "#FFFFFF",

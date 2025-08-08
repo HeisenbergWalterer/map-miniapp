@@ -1,0 +1,56 @@
+<!--contact.wxml-->
+<view class="container">
+  <!-- 加载状态 -->
+  <view class="loading-container" wx:if="{{loading}}">
+    <view class="loading-text">加载中...</view>
+  </view>
+
+  <!-- 服务中心列表 -->
+  <view class="content" wx:else>
+    <view class="section-title">居委会和服务中心</view>
+    
+    <view class="centers-list">
+      <view 
+        class="center-card" 
+        wx:for="{{serviceCenters}}" 
+        wx:key="id"
+        bindtap="onServiceCenterTap"
+        data-center="{{item}}"
+      >
+        <view class="card-content">
+          <view class="center-photo">
+            <image src="{{item.photoUrl || '../../images/default-station-photo.jpg'}}" class="photo-img" mode="aspectFill"></image>
+          </view>
+          <view class="center-info">
+            <view class="center-name">{{item.name}}</view>
+            <view class="center-address">
+              <text class="address-icon">📍</text>
+              <text class="address-text">{{item.address}}</text>
+            </view>
+            <view class="center-phone" wx:if="{{item.phone}}">
+              <text class="phone-icon">📞</text>
+              <text class="phone-text">{{item.phone}}</text>
+            </view>
+          </view>
+          <view class="card-arrow">
+            <text class="arrow-icon">›</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 紧急联系卡片 -->
+    <view class="emergency-section">
+      <view class="section-title">紧急联系</view>
+      <view class="emergency-card" bindtap="onEmergencyContactTap">
+        <view class="emergency-content">
+          <view class="emergency-icon">🚨</view>
+          <view class="emergency-text">紧急联系电话</view>
+          <view class="card-arrow">
+            <text class="arrow-icon">›</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

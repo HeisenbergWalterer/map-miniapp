@@ -394,5 +394,8 @@ Page({
     const type = e.currentTarget.dataset.type;
     this.setData({ currentType: type });
     this.showServiceStations();
-  }
+  },
+
+  // 跳转到安新联系页面
+
 })

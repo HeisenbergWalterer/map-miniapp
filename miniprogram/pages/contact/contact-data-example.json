@@ -1,0 +1,154 @@
+{
+  "service_centers": [
+    {
+      "_id": "center_1",
+      "id": 1,
+      "name": "安亭镇社区服务中心",
+      "address": "上海市嘉定区安亭镇新源路100号",
+      "phone": "021-59579999",
+      "serviceTime": "周一至周五 8:30-17:00",
+      "serviceContent": "社区服务、便民服务、政策咨询",
+      "latitude": 121.217424,
+      "longitude": 31.314409,
+      "type": "service_center"
+    },
+    {
+      "_id": "center_2", 
+      "id": 2,
+      "name": "方泰社区居委会",
+      "address": "上海市嘉定区安亭镇方中路200号",
+      "phone": "021-59578888",
+      "serviceTime": "周一至周五 8:30-17:00",
+      "serviceContent": "社区管理、居民服务、矛盾调解",
+      "latitude": 121.216674,
+      "longitude": 31.317756,
+      "type": "service_center"
+    },
+    {
+      "_id": "center_3",
+      "id": 3,
+      "name": "泰富社区居委会",
+      "address": "上海市嘉定区安亭镇泰富路300号",
+      "phone": "021-59577777",
+      "serviceTime": "周一至周五 8:30-17:00",
+      "serviceContent": "社区管理、居民服务、文化活动",
+      "latitude": 121.21552,
+      "longitude": 31.319254,
+      "type": "service_center"
+    },
+    {
+      "_id": "center_4",
+      "id": 4,
+      "name": "讴象社区居委会",
+      "address": "上海市嘉定区安亭镇园区路400号",
+      "phone": "021-59576666",
+      "serviceTime": "周一至周五 8:30-17:00",
+      "serviceContent": "社区管理、居民服务、健康咨询",
+      "latitude": 121.218929,
+      "longitude": 31.319004,
+      "type": "service_center"
+    },
+    {
+      "_id": "center_5",
+      "id": 5,
+      "name": "泰顺社区居委会",
+      "address": "上海市嘉定区安亭镇泰顺路500号",
+      "phone": "021-59575555",
+      "serviceTime": "周一至周五 8:30-17:00",
+      "serviceContent": "社区管理、居民服务、法律援助",
+      "latitude": 121.219847,
+      "longitude": 31.319059,
+      "type": "service_center"
+    },
+    {
+      "_id": "center_6",
+      "id": 6,
+      "name": "泰东社区居委会",
+      "address": "上海市嘉定区安亭镇东环路600号",
+      "phone": "021-59574444",
+      "serviceTime": "周一至周五 8:30-17:00",
+      "serviceContent": "社区管理、居民服务、就业指导",
+      "latitude": 121.21836,
+      "longitude": 31.317131,
+      "type": "service_center"
+    },
+    {
+      "_id": "center_7",
+      "id": 7,
+      "name": "安亭镇便民服务中心",
+      "address": "上海市嘉定区安亭镇新源路150号",
+      "phone": "021-59573333",
+      "serviceTime": "周一至周五 8:30-17:00",
+      "serviceContent": "政务服务、便民服务、政策咨询",
+      "latitude": 121.22363,
+      "longitude": 31.321054,
+      "type": "service_center"
+    }
+  ],
+  "emergency_contacts": [
+    {
+      "_id": "emergency_1",
+      "id": 1,
+      "name": "安亭镇派出所",
+      "phone": "021-59571110",
+      "description": "负责安亭镇治安管理、案件处理",
+      "type": "emergency_contact"
+    },
+    {
+      "_id": "emergency_2",
+      "id": 2,
+      "name": "安亭镇消防队",
+      "phone": "021-59571119",
+      "description": "负责火灾扑救、应急救援",
+      "type": "emergency_contact"
+    },
+    {
+      "_id": "emergency_3",
+      "id": 3,
+      "name": "安亭镇卫生院",
+      "phone": "021-5957120",
+      "description": "提供基本医疗服务、急救服务",
+      "type": "emergency_contact"
+    },
+    {
+      "_id": "emergency_4",
+      "id": 4,
+      "name": "安亭镇城管执法队",
+      "phone": "021-5957123",
+      "description": "负责市容管理、环境整治",
+      "type": "emergency_contact"
+    },
+    {
+      "_id": "emergency_5",
+      "id": 5,
+      "name": "安亭镇供电所",
+      "phone": "021-5957124",
+      "description": "负责电力供应、故障维修",
+      "type": "emergency_contact"
+    },
+    {
+      "_id": "emergency_6",
+      "id": 6,
+      "name": "安亭镇自来水公司",
+      "phone": "021-5957125",
+      "description": "负责供水服务、管道维修",
+      "type": "emergency_contact"
+    },
+    {
+      "_id": "emergency_7",
+      "id": 7,
+      "name": "安亭镇燃气公司",
+      "phone": "021-5957126",
+      "description": "负责燃气供应、安全检查",
+      "type": "emergency_contact"
+    },
+    {
+      "_id": "emergency_8",
+      "id": 8,
+      "name": "安亭镇社区服务热线",
+      "phone": "021-5957127",
+      "description": "提供社区服务咨询、投诉处理",
+      "type": "emergency_contact"
+    }
+  ]
+}

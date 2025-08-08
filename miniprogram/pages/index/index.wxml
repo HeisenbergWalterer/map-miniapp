@@ -37,6 +37,10 @@
         <image class="function-icon-img" src="/images/icons/地图.png" mode="aspectFit"></image>
         <text class="function-name">暖心地图</text>
       </navigator>
+              <view class="function-card contact-card" hover-class="function-card-hover" bindtap="goToContact">
+          <image class="function-icon-img" src="/images/icons/phone.png" mode="aspectFit"></image>
+          <text class="function-name">安新联系</text>
+        </view>
     </view>
 
     <!-- 底部装饰区域 -->

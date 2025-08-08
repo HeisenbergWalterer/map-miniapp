@@ -11,8 +11,8 @@
       bind:confirm="searchBySuggestion"
     />
     <!-- 搜索按钮放在筛选按钮左边 -->
-    <button class="search-btn" bindtap="searchBySuggestion">搜索</button>
-    <button class="filter-btn" bindtap="toggleTypeSelector">筛选</button>
+              <button class="search-btn" bindtap="searchBySuggestion">搜索</button>
+          <button class="filter-btn" bindtap="toggleTypeSelector">筛选</button>
   </view>
   
   <!-- 搜索建议下拉列表 -->

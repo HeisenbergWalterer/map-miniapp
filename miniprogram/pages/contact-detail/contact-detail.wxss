@@ -1,0 +1,147 @@
+/* contact-detail.wxss */
+.container {
+  background-color: #f5f5f5;
+  min-height: 100vh;
+}
+
+/* 照片展示区域 */
+.photo-section {
+  background-color: #fff;
+  padding: 20rpx;
+  margin-bottom: 20rpx;
+}
+
+.station-photo {
+  width: 100%;
+  height: 400rpx;
+  border-radius: 16rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.1);
+}
+
+/* 详细信息区域 */
+.detail-section {
+  padding: 30rpx;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 30rpx;
+  padding-left: 10rpx;
+}
+
+.info-list {
+  background-color: #fff;
+  border-radius: 16rpx;
+  overflow: hidden;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.1);
+}
+
+.info-item {
+  display: flex;
+  align-items: flex-start;
+  padding: 30rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.info-item:last-child {
+  border-bottom: none;
+}
+
+.info-label {
+  width: 180rpx;
+  font-size: 28rpx;
+  color: #666;
+  flex-shrink: 0;
+}
+
+.info-value {
+  flex: 1;
+  font-size: 28rpx;
+  color: #333;
+  line-height: 1.5;
+}
+
+.phone-number {
+  color: #007aff;
+  text-decoration: underline;
+}
+
+/* 操作按钮区域 */
+.action-section {
+  margin: 15px;
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.action-btn {
+  width: 100%;
+  height: 50px;
+  border-radius: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.call-btn {
+  background: linear-gradient(135deg, #34c759 0%, #30d158 100%);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(52, 199, 89, 0.3);
+}
+
+.nav-button {
+  width: 100%;
+  height: 50px;
+  background: linear-gradient(135deg, #FF6B35 0%, #ff8e53 100%);
+  color: white;
+  border: none;
+  border-radius: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(255, 107, 53, 0.3);
+  transition: all 0.2s ease;
+}
+
+.action-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+}
+
+.nav-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+}
+
+.action-text {
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.nav-text {
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+/* 点击效果 */
+.action-btn:active {
+  opacity: 0.8;
+  transform: scale(0.98);
+}
+
+.nav-button:active {
+  transform: scale(0.98);
+  box-shadow: 0 1px 4px rgba(255, 107, 53, 0.3);
+}

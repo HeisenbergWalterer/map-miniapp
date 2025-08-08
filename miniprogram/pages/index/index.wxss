@@ -235,9 +235,9 @@ page {
 /* 服务功能区域 - 整体圆角矩形容器 */
 .function-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 4列布局，与图片一致 */
-  grid-template-rows: repeat(2, 1fr); /* 2行布局，为8个按钮准备 */
-  gap: 0rpx; /* 移除间距，让按钮紧密排列 */
+  grid-template-columns: repeat(2, 1fr); /* 2列布局，为暖心地图和安新联系 */
+  grid-template-rows: repeat(1, 1fr); /* 1行布局 */
+  gap: 20rpx; /* 添加间距 */
   margin-bottom: 40rpx;
   padding: 35rpx 25rpx; /* 增加内边距，为放大的图标提供空间 */
   background: #ffffff; /* 整体容器的白色背景 */
@@ -350,6 +350,11 @@ page {
 
 .decoration-text::after {
   right: -80rpx;
+}
+
+/* 安新联系按钮样式 - 与暖心地图保持一致 */
+.contact-card {
+  /* 移除特殊样式，与暖心地图按钮保持一致 */
 }
 
 /* 响应式优化 */

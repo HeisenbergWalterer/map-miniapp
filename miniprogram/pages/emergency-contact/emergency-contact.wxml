@@ -1,0 +1,43 @@
+<!--emergency-contact.wxml-->
+<view class="container">
+  <!-- 加载状态 -->
+  <view class="loading-container" wx:if="{{loading}}">
+    <view class="loading-text">加载中...</view>
+  </view>
+
+  <!-- 紧急联系列表 -->
+  <view class="content" wx:else>
+    <view class="contacts-container">
+      <view 
+        class="contact-item" 
+        wx:for="{{emergencyContacts}}" 
+        wx:key="id"
+        bindtap="callPhone"
+        data-phone="{{item.phone}}"
+        data-name="{{item.name}}"
+      >
+        <view class="contact-info">
+          <view class="contact-name">{{item.name}}</view>
+          <view class="contact-desc">{{item.description}}</view>
+          <view class="contact-phone">
+            <text class="phone-icon">📞</text>
+            <text class="phone-text">{{item.phone}}</text>
+          </view>
+        </view>
+        <view class="call-btn">
+          <image src="../../images/call.png" class="call-icon" mode="aspectFit"></image>
+        </view>
+      </view>
+    </view>
+
+    <!-- 提示信息 -->
+    <view class="tip-section">
+      <view class="tip-title">温馨提示</view>
+      <view class="tip-content">
+        <text class="tip-text">• 紧急情况下请优先拨打110、120等紧急电话</text>
+        <text class="tip-text">• 非紧急情况请在工作时间内联系相关部门</text>
+        <text class="tip-text">• 点击卡片可直接拨打电话</text>
+      </view>
+    </view>
+  </view>
+</view>

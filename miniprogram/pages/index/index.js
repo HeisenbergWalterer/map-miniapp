@@ -48,5 +48,18 @@ Page({
     wx.navigateTo({
       url: '/pages/map/map'
     });
+  },
+
+  // 跳转到安新联系页面
+  goToContact() {
+    wx.navigateTo({
+      url: '/pages/contact/contact',
+      success: function(res) {
+        console.log('跳转到安新联系页面成功');
+      },
+      fail: function(err) {
+        console.error('跳转失败:', err);
+      }
+    });
   }
 });
