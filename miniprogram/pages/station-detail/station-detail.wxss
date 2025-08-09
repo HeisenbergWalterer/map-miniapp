@@ -112,7 +112,7 @@
 .nav-button {
   width: 100%;
   height: 50px;
-  background: linear-gradient(135deg, #FF6B35 0%, #ff8e53 100%);
+  background: linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%);
   color: white;
   border: none;
   border-radius: 25px;
@@ -121,13 +121,13 @@
   justify-content: center;
   font-size: 16px;
   font-weight: 500;
-  box-shadow: 0 2px 8px rgba(255, 107, 53, 0.3);
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
   transition: all 0.2s ease;
 }
 
 .nav-button:active {
   transform: scale(0.98);
-  box-shadow: 0 1px 4px rgba(255, 107, 53, 0.3);
+  box-shadow: 0 1px 4px rgba(59, 130, 246, 0.3);
 }
 
 .nav-icon {

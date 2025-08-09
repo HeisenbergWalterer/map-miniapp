@@ -1,0 +1,95 @@
+.page {
+  background-color: #f8f9fa;
+  min-height: 100vh;
+}
+
+.tabs {
+  display: flex;
+  gap: 16rpx;
+  padding: 24rpx;
+}
+
+.tab {
+  flex: 1;
+  text-align: center;
+  background: #ffffff;
+  color: #666;
+  border-radius: 24rpx;
+  padding: 18rpx 0;
+  font-size: 28rpx;
+  border: 2rpx solid #eee;
+}
+
+.tab.active {
+  background: linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%);
+  color: #fff;
+  border-color: #3B82F6;
+  box-shadow: 0 6rpx 20rpx rgba(59, 130, 246, 0.25);
+}
+
+.activity-list {
+  padding: 24rpx;
+}
+
+.card {
+  position: relative;            /* 让右下角按钮可以绝对定位 */
+  display: block;
+  background: #ffffff;
+  border-radius: 20rpx;
+  padding: 24rpx;                /* 恢复正常内边距 */
+  margin-bottom: 20rpx;
+  box-shadow: 0 8rpx 26rpx rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(59, 130, 246, 0.12);
+}
+
+/* 保证按钮列在右侧对齐，卡片间按钮对齐 */
+.activity-list { display: grid; gap: 20rpx; }
+
+.card-main {
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+  flex: 1; /* 占据剩余空间，按钮固定在右侧对齐 */
+  padding-right: 140rpx; /* 再收紧按钮占位空间 */
+}
+
+.card-title {
+  font-size: 30rpx;
+  color: #333;
+  font-weight: 600;
+}
+
+.card-sub {
+  font-size: 26rpx;
+  color: #555;
+}
+
+.slots {
+  color: #3B82F6;
+}
+
+.reserve-btn {
+  position: absolute;
+  right: 16rpx;
+  bottom: 16rpx;
+  z-index: 1;
+  background: linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%);
+  color: #fff;
+  display: inline-block;
+  width: 100rpx;            
+  height: 44rpx;
+  line-height: 44rpx;
+  padding: 0;
+  border-radius: 22rpx;
+  font-size: 24rpx;           /* 增大按钮文字 */
+  font-weight: 600;
+}
+
+.loading, .empty {
+  text-align: center;
+  color: #999;
+  padding: 40rpx 0;
+  font-size: 26rpx;
+}
+
+

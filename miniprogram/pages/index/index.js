@@ -43,10 +43,10 @@ Page({
     });
   },
 
-  // 跳转到暖心地图页面
+  // 跳转到暖心地图页面（分包）
   goToMap() {
     wx.navigateTo({
-      url: '/pages/map/map'
+      url: '/subpkg/map/pages/map/map'
     });
   },
 
@@ -60,6 +60,13 @@ Page({
       fail: function(err) {
         console.error('跳转失败:', err);
       }
+    });
+  },
+
+  // 跳转到活动预约页面（分包）
+  goToActivityReservation() {
+    wx.navigateTo({
+      url: '/subpkg/reservation/pages/activity-reservation/activity-reservation'
     });
   }
 });

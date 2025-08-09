@@ -1,0 +1,88 @@
+<!--map.wxml-->
+<view class="search-container">
+  <view class="search-input-wrapper">
+    <input 
+      class="search-input" 
+      placeholder="搜索地点" 
+      value="{{searchKeyword}}" 
+      bind:input="inputSearch"
+      bind:focus="onSearchFocus"
+      bind:blur="onSearchBlur"
+      bind:confirm="searchBySuggestion"
+    />
+    <!-- 搜索按钮放在筛选按钮左边 -->
+              <button class="search-btn" bindtap="searchBySuggestion">搜索</button>
+          <button class="filter-btn" bindtap="toggleTypeSelector">筛选</button>
+  </view>
+  
+  <!-- 搜索建议下拉列表 -->
+  <view class="search-suggestions" wx:if="{{showSuggestions && searchSuggestions.length > 0}}">
+    <scroll-view scroll-y class="suggestions-scroll">
+      <view 
+        class="suggestion-item" 
+        wx:for="{{searchSuggestions}}" 
+        wx:key="id"
+        bindtap="selectSuggestion"
+        data-suggestion="{{item}}"
+      >
+        <text class="suggestion-name">{{item.name}}</text>
+        <text class="suggestion-address">{{item.district}}{{item.address}}</text>
+      </view>
+    </scroll-view>
+  </view>
+</view>
+
+<!-- 类型选择按钮区域 -->
+<view class="type-selector" wx:if="{{showTypeSelector}}">
+  <view class="type-row">
+    <button data-type="toilet" bindtap="onTypeSelect" class="type-btn {{currentType === 'toilet' ? 'active' : ''}}">公共厕所</button>
+    <button data-type="warm" bindtap="onTypeSelect" class="type-btn {{currentType === 'warm' ? 'active' : ''}}">暖心服务站</button>
+  </view>
+  <view class="type-row">
+    <button data-type="sinopec" bindtap="onTypeSelect" class="type-btn {{currentType === 'sinopec' ? 'active' : ''}}">爱心驿站</button>
+    <button data-type="partner" bindtap="onTypeSelect" class="type-btn {{currentType === 'partner' ? 'active' : ''}}">合作商户</button>
+  </view>
+  <view class="type-row type-row-single">
+    <button data-type="relay" bindtap="onTypeSelect" class="type-btn type-btn-single {{currentType === 'relay' ? 'active' : ''}}">接力站</button>
+  </view>
+</view>
+<view class="map_container">
+  <map class="map"
+      id="map" 
+      longitude="{{longitude}}" 
+      latitude="{{latitude}}" 
+      scale="14" 
+      show-location="true" 
+      markers="{{markers}}" 
+      bindmarkertap="markertap" 
+      polyline="{{polyline}}" 
+      include-points="{{includePoints}}">
+  </map>
+  <!-- 定位按钮 -->
+  <view class="location-btn" bindtap="getPoiData">
+    <image src="../../images/icons/mylocation.png" class="location-icon" mode="aspectFit"></image>
+  </view>
+</view>
+
+<!-- 只保留底部信息栏 -->
+<view class="map_text" wx:if="{{textData.name}}">
+  <!-- 显示选中的位置点信息 -->
+  <view class="text-content" bindtap="goToDetail" wx:if="{{currentType}}">
+    <text class="h1">{{textData.name}}</text>
+    <text class="h2">{{textData.desc}}</text>
+    <view class="text_box" wx:if="{{daohang}}">
+      <view class="text">{{distance}}</view>
+    </view>
+  </view>
+  <!-- 搜索结果的显示（不跳转） -->
+  <view class="text-content" wx:else>
+    <text class="h1">{{textData.name}}</text>
+    <text class="h2">{{textData.desc}}</text>
+    <view class="text_box" wx:if="{{daohang}}">
+      <view class="text">{{distance}}</view>
+    </view>
+  </view>
+  <view class="nav" bindtap="startNavigation" wx:if="{{textData.name}}">
+    <image src="../../images/icons/navigate.png" class="nav_icon" mode="aspectFit"></image>
+  </view>
+</view>

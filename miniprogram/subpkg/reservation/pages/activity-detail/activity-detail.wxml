@@ -1,0 +1,48 @@
+<view class="page">
+  <view wx:if="{{activity}}" class="detail-card">
+    <view class="hero">
+      <view class="hero-mask"></view>
+      <view class="hero-title">{{activity.title}}</view>
+      <view class="hero-sub">让温暖触手可及</view>
+    </view>
+
+    <view class="section">
+      <view class="row"><text class="label">日期</text><text class="value">{{activity.time}}</text></view>
+      <view class="row"><text class="label">地点</text><text class="value">{{activity.place}}</text></view>
+      <view class="row"><text class="label">名额</text><text class="value highlight">{{activity.slots}}</text></view>
+      <view class="row"><text class="label">电话</text><text class="value">{{activity.contact}}</text></view>
+    </view>
+
+    <view class="section" wx:if="{{activity.dates && activity.dates.length>1}}">
+      <view class="sub-title">选择日期</view>
+      <view class="slots">
+        <block wx:for="{{activity.dates}}" wx:key="*this">
+          <view class="slot {{selectedDate===item?'active':''}}" data-date="{{item}}" bindtap="selectDate">{{item}}</view>
+        </block>
+      </view>
+    </view>
+    <view class="section" wx:if="{{activity.dates && activity.dates.length===1}}">
+      <view class="row"><text class="label">日期</text><text class="value">{{activity.dates[0]}}</text></view>
+    </view>
+
+    <view class="section" wx:if="{{activity.timeSlots && activity.timeSlots.length>1}}">
+      <view class="sub-title">选择时间段</view>
+      <view class="slots">
+        <block wx:for="{{activity.timeSlots}}" wx:key="*this">
+          <view class="slot {{selectedTimeSlot===item?'active':''}}" data-slot="{{item}}" bindtap="selectTimeSlot">{{item}}</view>
+        </block>
+      </view>
+    </view>
+    <view class="section" wx:if="{{activity.timeSlots && activity.timeSlots.length===1}}">
+      <view class="row"><text class="label">时间段</text><text class="value">{{activity.timeSlots[0]}}</text></view>
+    </view>
+
+    <view class="section">
+      <view class="desc">本活动为示例，实际内容以主办方为准。报名后请提前到场。</view>
+    </view>
+
+    <button class="primary-btn" bindtap="reserve">立即报名</button>
+  </view>
+</view>
+
+

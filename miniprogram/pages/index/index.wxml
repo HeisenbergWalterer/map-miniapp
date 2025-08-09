@@ -33,7 +33,7 @@
 
     <!-- 服务功能区域 - 圆角矩形按钮 -->
     <view class="function-grid">
-      <navigator url="/pages/map/map" class="function-card" hover-class="function-card-hover">
+      <navigator url="/subpkg/map/pages/map/map" class="function-card" hover-class="function-card-hover">
         <image class="function-icon-img" src="/images/icons/地图.png" mode="aspectFit"></image>
         <text class="function-name">暖心地图</text>
       </navigator>
@@ -41,8 +41,12 @@
           <image class="function-icon-img" src="/images/icons/phone.png" mode="aspectFit"></image>
           <text class="function-name">安新联系</text>
         </view>
-    </view>
 
+      <navigator url="/subpkg/reservation/pages/activity-reservation/activity-reservation" class="function-card" hover-class="function-card-hover">
+        <image class="function-icon-img" src="/images/icons/activity.png" mode="aspectFit"></image>
+        <text class="function-name">活动预约</text>
+      </navigator>
+    </view>
     <!-- 底部装饰区域 -->
     <view class="bottom-decoration">
       <text class="decoration-text">让温暖触手可及</text>

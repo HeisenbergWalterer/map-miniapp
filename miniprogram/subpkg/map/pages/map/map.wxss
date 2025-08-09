@@ -1,0 +1,491 @@
+/* 搜索容器 */
+.search-container {
+  position: relative;
+  z-index: 100;
+  background: transparent;
+  width: 100%;
+  padding: 10px 0 0 0;
+}
+
+/* 搜索输入框包装器 */
+.search-input-wrapper {
+  display: flex;
+  padding: 10px 10px 5px 10px;
+  align-items: center;
+  height: 55px;
+  box-sizing: border-box;
+  background: linear-gradient(180deg, #ffffff 0%, #fff8f5 100%);
+  border-radius: 0 0 20px 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  margin: 0 10px;
+}
+
+/* 搜索输入框 */
+.search-input {
+  flex: 2;
+  height: 38px;
+  padding: 0 15px;
+  border: 2px solid #e8e8e8;
+  border-radius: 25px;
+  background: #ffffff;
+  font-size: 14px;
+  margin-right: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.search-input:focus {
+  border-color: #FF6B35;
+  box-shadow: 0 2px 12px rgba(255, 107, 53, 0.2);
+  outline: none;
+}
+
+/* 搜索按钮 */
+.search-btn {
+  flex: 1;
+  height: 38px;
+  line-height: 38px;
+  background: linear-gradient(135deg, #FF6B35 0%, #ff8e53 100%);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+  padding: 0;
+  margin-right: 8px;
+  box-shadow: 0 3px 10px rgba(255, 107, 53, 0.3);
+  transition: all 0.3s ease;
+}
+
+.search-btn:active {
+  transform: translateY(1px) scale(0.98);
+  box-shadow: 0 2px 6px rgba(255, 107, 53, 0.2);
+}
+
+/* 筛选按钮 */
+.filter-btn {
+  flex: 0.4;
+  height: 38px;
+  line-height: 38px;
+  background: linear-gradient(135deg, #FF6B35 0%, #ff8e53 100%);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 500;
+  text-align: center;
+  margin-right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 10px rgba(255, 107, 53, 0.3);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  z-index: 100;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  min-width: 60px;
+}
+
+.filter-btn:active {
+  transform: translateY(2px) scale(0.96);
+  box-shadow: 0 2px 8px rgba(255, 107, 53, 0.3);
+}
+
+.filter-btn::before {
+  content: "🔍";
+  margin-right: 4px;
+  font-size: 14px;
+}
+
+
+
+/* 搜索建议容器 */
+.search-suggestions {
+  position: absolute;
+  top: 55px;
+  left: 10px;
+  right: 10px;
+  background: white;
+  border: none;
+  border-radius: 0 0 20px 20px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+  z-index: 3000; /* 更高层级 */
+  overflow: hidden;
+}
+
+/* 建议列表滚动容器 */
+.suggestions-scroll {
+  max-height: 300px;
+}
+
+/* 建议项 */
+.suggestion-item {
+  padding: 12px 20px;
+  border-bottom: 1px solid #f5f5f5;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.2s ease;
+}
+
+.suggestion-item:hover {
+  background: linear-gradient(90deg, #fff8f5 0%, #ffffff 100%);
+}
+
+.suggestion-item:active {
+  background: linear-gradient(90deg, #FF6B35 0%, #ff8e53 100%);
+  color: white;
+}
+
+.suggestion-item:last-child {
+  border-bottom: none;
+}
+
+/* 建议名称 */
+.suggestion-name {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 4px;
+  font-weight: 500;
+  display: block;
+}
+
+/* 建议地址 */
+.suggestion-address {
+  font-size: 12px;
+  color: #666;
+  line-height: 1.4;
+  display: block;
+}
+
+.section{
+  height: 80px;
+  width: 100%;
+}
+.section input{
+  width: 90%;
+  margin: 5px auto;
+  border: 1px solid #c3c3c3;
+  height: 30px;
+  border-radius: 3px;
+  padding: 0 5px;
+}
+.map_container{
+  position: absolute;
+  top: 65px;
+  bottom: 100px;
+  left: 0;
+  right: 0;
+}
+.map{
+  width: 100%;
+  height: 100%;
+}
+/* 定位按钮 */
+.location-btn {
+  position: absolute;
+  bottom: 30px;
+  right: 15px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  /* border: 1px solid #e0e0e0; */
+  background-color: #ffffff;
+  border-radius: 25%;
+}
+
+/* 定位图标 */
+.location-icon {
+  width: 30px;  /* 图标尺寸 */
+  height: 30px; /* 图标尺寸 */
+}
+
+/* 信息框 */
+.map_text{
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0px;
+  height: 90px;
+  background: #fff;
+  padding: 5px 20px;
+}
+
+/* 信息字段 */
+text{
+  margin: 2px 0px 0 0 ;
+  display: block;
+  font-size: 12px;
+}
+
+/* 文字内容区域 */
+.text-content {
+  flex: 1;
+  padding: 2px 0px 5px 0px ;
+  cursor: pointer;
+  border-radius: 15px;
+  box-shadow: #45414123 0px 0px 10px;
+}
+
+.text-content:active {
+  background-color: rgba(255, 107, 53, 0.1);
+  border-radius: 8px;
+}
+
+/* 导航按钮 */
+.nav {
+  position: absolute;
+  right: 30px;
+  bottom: 30px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  border-radius: 25%;
+  /* border: 1px solid #453e3e; */
+  box-shadow: #666 0px 0px 3px;
+  z-index: 999;
+}
+/* 导航图标图标 */
+.nav_icon {
+  width: 30px;  
+  height: 30px;
+}
+
+.h1{
+  margin: 10px 0px 15px 15px;
+  font-size: 15px;
+}
+
+.h2{
+  margin: 0px 0px 15px 20px;
+  font-size: 13px;
+}
+
+/* 筛选按钮区域 */
+.type-selector {
+  position: relative;
+  z-index: 10; /* 比search-suggestions低 */
+  margin-top: 0; /* 去掉上方缝隙 */
+  background: linear-gradient(180deg, #ffffff 0%, #fff8f5 100%);
+  padding: 15px 20px;
+  margin: 0 0 15px 0;
+  border-radius: 0 0 20px 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.type-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  gap: 8px;
+}
+
+.type-row:last-child {
+  margin-bottom: 0;
+}
+
+.type-row-single {
+  justify-content: flex-start;
+  gap: 8px;
+}
+
+.type-btn {
+  flex: 1;
+  background: #ffffff;
+  border: 2px solid #e8e8e8;
+  color: #666;
+  border-radius: 20px;
+  padding: 10px 6px;
+  font-size: 11px;
+  font-weight: 500;
+  margin-right: 0;
+  text-align: center;
+  line-height: 1.2;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+.type-btn:active {
+  transform: scale(0.95);
+}
+
+.type-btn:last-child {
+  margin-right: 0;
+}
+
+.type-btn:not(:last-child) {
+  margin-right: 0;
+}
+
+.type-btn-single {
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 165px;
+}
+
+.type-btn.active {
+  background: linear-gradient(135deg, #FF6B35 0%, #ff8e53 100%);
+  color: #fff;
+  border: 2px solid #FF6B35;
+  box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+  transform: translateY(-1px);
+}
+
+/* 响应式设计 - 小屏幕适配 */
+@media screen and (max-width: 375px) {
+  .type-btn {
+    font-size: 10px;
+    padding: 8px 4px;
+    height: 36px;
+  }
+}
+
+/* 弹窗遮罩层 */
+.popup-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 2000;
+}
+
+/* 弹窗容器 */
+.popup-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2001;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding: 20px;
+}
+
+/* 弹窗内容 */
+.popup-content {
+  background: white;
+  border-radius: 16px 16px 0 0;
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+  position: relative;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* 关闭按钮 */
+.popup-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.close-icon {
+  width: 20px;
+  height: 20px;
+  opacity: 0.6;
+}
+
+/* 弹窗信息区域 */
+.popup-info {
+  margin-bottom: 20px;
+  padding-right: 30px;
+}
+
+.popup-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+
+.popup-address {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+
+.popup-time {
+  font-size: 12px;
+  color: #999;
+  line-height: 1.3;
+}
+
+/* 导航按钮 */
+.popup-navigation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #FF6B35 0%, #ff8e53 100%);
+  color: white;
+  border-radius: 25px;
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(255, 107, 53, 0.3);
+  transition: all 0.2s ease;
+}
+
+.popup-navigation:active {
+  transform: scale(0.98);
+  box-shadow: 0 1px 4px rgba(255, 107, 53, 0.3);
+}
+
+.nav-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+}
+
+.nav-text {
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+}
