@@ -26,6 +26,11 @@ Page({
     this.setData({ selectedDate: date });
   },
 
+  selectTimeSlot(e) {
+    const { slot } = e.currentTarget.dataset;
+    this.setData({ selectedTimeSlot: slot });
+  },
+
   reserve() {
     const { activity, selectedDate, selectedTimeSlot } = this.data;
     if (!activity) return;
