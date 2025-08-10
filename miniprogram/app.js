@@ -92,6 +92,183 @@ App({
         }
       });
     });
+  },
+
+  // -----活动报名相关数据库操作-----
+  
+  // 获取活动列表
+  getActivities: function() {
+    const db = this.getDB();
+    return new Promise((resolve, reject) => {
+      db.collection('activities').get({
+        success: function(res) {
+          console.log('获取活动列表:', res.data);
+          resolve(res.data);
+        },
+        fail: function(err) {
+          console.error('获取活动列表失败:', err);
+          reject(err);
+        }
+      });
+    });
+  },
+
+  // 根据ID获取单个活动信息
+  getActivityById: function(activityId) {
+    const db = this.getDB();
+    return new Promise((resolve, reject) => {
+      db.collection('activities').where({
+        id: activityId
+      }).get({
+        success: function(res) {
+          console.log('获取活动详情:', res.data);
+          if (res.data.length > 0) {
+            resolve(res.data[0]);
+          } else {
+            resolve(null);
+          }
+        },
+        fail: function(err) {
+          console.error('获取活动详情失败:', err);
+          reject(err);
+        }
+      });
+    });
+  },
+
+  // 提交报名记录
+  submitRegistration: function(registrationData) {
+    const db = this.getDB();
+    return new Promise((resolve, reject) => {
+      // 报名数据结构
+      const registration = {
+        activityId: registrationData.activityId,
+        activityTitle: registrationData.activityTitle,
+        userId: registrationData.userId || '', // 用户openid
+        userInfo: registrationData.userInfo || {}, // 用户信息
+        selectedDate: registrationData.selectedDate,
+        selectedTimeSlot: registrationData.selectedTimeSlot,
+        registrationTime: new Date(), // 报名时间
+        status: 'active' // 报名状态: active, cancelled
+      };
+
+      db.collection('registrations').add({
+        data: registration,
+        success: function(res) {
+          console.log('报名成功:', res);
+          resolve(res);
+        },
+        fail: function(err) {
+          console.error('报名失败:', err);
+          reject(err);
+        }
+      });
+    });
+  },
+
+  // 检查用户是否已报名某活动
+  checkUserRegistration: function(activityId, userId) {
+    const db = this.getDB();
+    return new Promise((resolve, reject) => {
+      db.collection('registrations').where({
+        activityId: activityId,
+        userId: userId,
+        status: 'active'
+      }).get({
+        success: function(res) {
+          console.log('检查报名状态:', res.data);
+          resolve(res.data.length > 0 ? res.data : null);
+        },
+        fail: function(err) {
+          console.error('检查报名状态失败:', err);
+          reject(err);
+        }
+      });
+    });
+  },
+
+  // 获取活动的报名人数统计
+  getActivityRegistrationCount: function(activityId) {
+    const db = this.getDB();
+    return new Promise((resolve, reject) => {
+      db.collection('registrations').where({
+        activityId: activityId,
+        status: 'active'
+      }).count({
+        success: function(res) {
+          console.log('活动报名人数:', res.total);
+          resolve(res.total);
+        },
+        fail: function(err) {
+          console.error('获取报名人数失败:', err);
+          reject(err);
+        }
+      });
+    });
+  },
+
+  // 更新活动余位信息
+  updateActivitySlots: function(activityId, newSlotsCount) {
+    const db = this.getDB();
+    return new Promise((resolve, reject) => {
+      db.collection('activities').where({
+        id: activityId
+      }).update({
+        data: {
+          remainingSlots: newSlotsCount,
+          updatedAt: new Date()
+        },
+        success: function(res) {
+          console.log('更新活动余位成功:', res);
+          resolve(res);
+        },
+        fail: function(err) {
+          console.error('更新活动余位失败:', err);
+          reject(err);
+        }
+      });
+    });
+  },
+
+  // 取消报名
+  cancelRegistration: function(registrationId) {
+    const db = this.getDB();
+    return new Promise((resolve, reject) => {
+      db.collection('registrations').doc(registrationId).update({
+        data: {
+          status: 'cancelled',
+          cancelledAt: new Date()
+        },
+        success: function(res) {
+          console.log('取消报名成功:', res);
+          resolve(res);
+        },
+        fail: function(err) {
+          console.error('取消报名失败:', err);
+          reject(err);
+        }
+      });
+    });
+  },
+
+  // 获取用户的报名记录
+  getUserRegistrations: function(userId) {
+    const db = this.getDB();
+    return new Promise((resolve, reject) => {
+      db.collection('registrations').where({
+        userId: userId,
+        status: 'active'
+      }).orderBy('registrationTime', 'desc').get({
+        success: function(res) {
+          console.log('用户报名记录:', res.data);
+          resolve(res.data);
+        },
+        fail: function(err) {
+          console.error('获取用户报名记录失败:', err);
+          reject(err);
+        }
+      });
+    });
   }
   },
 

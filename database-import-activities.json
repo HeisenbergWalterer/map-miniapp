@@ -1,0 +1,275 @@
+{
+  "collection": "activities",
+  "description": "微光驿站活动报名系统 - 活动数据导入文件",
+  "import_date": "2025-01-15",
+  "data": [
+    {
+      "_id": "activity_002",
+      "id": 2,
+      "title": "棋弈擂台赛（象棋、五子棋）",
+      "time": "2025-08-04 至 2025-08-10（周一至周日）",
+      "place": "二楼\"泰妙啦\" 棋弈空间",
+      "slots": "余位 30",
+      "totalSlots": 30,
+      "remainingSlots": 30,
+      "contact": "021-59962836",
+      "dates": [
+        "2025-08-04",
+        "2025-08-05",
+        "2025-08-06",
+        "2025-08-07",
+        "2025-08-08",
+        "2025-08-09",
+        "2025-08-10"
+      ],
+      "timeSlots": [
+        "09:00-11:00",
+        "13:00-16:00",
+        "17:00-19:30"
+      ],
+      "status": "active",
+      "createdAt": "2025-01-15T00:00:00.000Z",
+      "updatedAt": "2025-01-15T00:00:00.000Z"
+    },
+    {
+      "_id": "activity_003",
+      "id": 3,
+      "title": "夏日\"音\"姿——八音琴DIY",
+      "time": "2025-08-05（周二）",
+      "place": "二楼春舍图书室（社群报名）",
+      "slots": "余位 20",
+      "totalSlots": 20,
+      "remainingSlots": 20,
+      "contact": "021-59962836",
+      "dates": [
+        "2025-08-05"
+      ],
+      "timeSlots": [
+        "09:00-10:00"
+      ],
+      "status": "active",
+      "createdAt": "2025-01-15T00:00:00.000Z",
+      "updatedAt": "2025-01-15T00:00:00.000Z"
+    },
+    {
+      "_id": "activity_004",
+      "id": 4,
+      "title": "邻里读书会",
+      "time": "2025-08-06（周三）",
+      "place": "二楼\"泰邻啦\"课堂（社群报名）",
+      "slots": "余位 20",
+      "totalSlots": 20,
+      "remainingSlots": 20,
+      "contact": "021-59962836",
+      "dates": [
+        "2025-08-06"
+      ],
+      "timeSlots": [
+        "09:00-11:00"
+      ],
+      "status": "active",
+      "createdAt": "2025-01-15T00:00:00.000Z",
+      "updatedAt": "2025-01-15T00:00:00.000Z"
+    },
+    {
+      "_id": "activity_005",
+      "id": 5,
+      "title": "国学新悟读书会",
+      "time": "2025-08-06（周三）",
+      "place": "二楼\"泰邻啦\"课堂（社群报名）",
+      "slots": "余位 20",
+      "totalSlots": 20,
+      "remainingSlots": 20,
+      "contact": "021-59962836",
+      "dates": [
+        "2025-08-06"
+      ],
+      "timeSlots": [
+        "13:00-16:30"
+      ],
+      "status": "active",
+      "createdAt": "2025-01-15T00:00:00.000Z",
+      "updatedAt": "2025-01-15T00:00:00.000Z"
+    },
+    {
+      "_id": "activity_006",
+      "id": 6,
+      "title": "英语口语课堂（A班）",
+      "time": "2025-08-06（周三）",
+      "place": "二楼\"泰邻啦\"课堂（社群报名，费用自理）",
+      "slots": "余位 20",
+      "totalSlots": 20,
+      "remainingSlots": 20,
+      "contact": "021-59962836",
+      "dates": [
+        "2025-08-06"
+      ],
+      "timeSlots": [
+        "17:40-18:40"
+      ],
+      "status": "active",
+      "createdAt": "2025-01-15T00:00:00.000Z",
+      "updatedAt": "2025-01-15T00:00:00.000Z"
+    },
+    {
+      "_id": "activity_007",
+      "id": 7,
+      "title": "英语口语课堂（B班）",
+      "time": "2025-08-06（周三）",
+      "place": "二楼\"泰邻啦\"课堂（社群报名，费用自理）",
+      "slots": "余位 20",
+      "totalSlots": 20,
+      "remainingSlots": 20,
+      "contact": "021-59962836",
+      "dates": [
+        "2025-08-06"
+      ],
+      "timeSlots": [
+        "18:50-19:50"
+      ],
+      "status": "active",
+      "createdAt": "2025-01-15T00:00:00.000Z",
+      "updatedAt": "2025-01-15T00:00:00.000Z"
+    },
+    {
+      "_id": "activity_008",
+      "id": 8,
+      "title": "传统艾草薄荷膏制作",
+      "time": "2025-08-07（周四）",
+      "place": "二楼春舍图书室（社群报名）",
+      "slots": "余位 20",
+      "totalSlots": 20,
+      "remainingSlots": 20,
+      "contact": "021-59962836",
+      "dates": [
+        "2025-08-07"
+      ],
+      "timeSlots": [
+        "13:30-14:30"
+      ],
+      "status": "active",
+      "createdAt": "2025-01-15T00:00:00.000Z",
+      "updatedAt": "2025-01-15T00:00:00.000Z"
+    },
+    {
+      "_id": "activity_009",
+      "id": 9,
+      "title": "\"泰邻啦\"夏日舒展时光——垫上瑜伽",
+      "time": "2025-08-07（周四）",
+      "place": "二楼\"泰邻啦\"课堂",
+      "slots": "余位 20",
+      "totalSlots": 20,
+      "remainingSlots": 20,
+      "contact": "021-59962836",
+      "dates": [
+        "2025-08-07"
+      ],
+      "timeSlots": [
+        "18:30-19:30"
+      ],
+      "status": "active",
+      "createdAt": "2025-01-15T00:00:00.000Z",
+      "updatedAt": "2025-01-15T00:00:00.000Z"
+    },
+    {
+      "_id": "activity_010",
+      "id": 10,
+      "title": "特色电影观赏：《星愿》",
+      "time": "2025-08-08（周五）",
+      "place": "二楼\"泰好啦\"电影厅",
+      "slots": "余位 20",
+      "totalSlots": 20,
+      "remainingSlots": 20,
+      "contact": "021-59962836",
+      "dates": [
+        "2025-08-08"
+      ],
+      "timeSlots": [
+        "13:30-15:30"
+      ],
+      "status": "active",
+      "createdAt": "2025-01-15T00:00:00.000Z",
+      "updatedAt": "2025-01-15T00:00:00.000Z"
+    },
+    {
+      "_id": "activity_011",
+      "id": 11,
+      "title": "少儿搏击",
+      "time": "2025-08-09（周六）",
+      "place": "二楼\"泰邻啦\"课堂（社群报名，可免费体验）",
+      "slots": "余位 20",
+      "totalSlots": 20,
+      "remainingSlots": 20,
+      "contact": "021-59962836",
+      "dates": [
+        "2025-08-09"
+      ],
+      "timeSlots": [
+        "14:30-16:30"
+      ],
+      "status": "active",
+      "createdAt": "2025-01-15T00:00:00.000Z",
+      "updatedAt": "2025-01-15T00:00:00.000Z"
+    },
+    {
+      "_id": "activity_012",
+      "id": 12,
+      "title": "中国象棋&国际象棋",
+      "time": "2025-08-10（周日）",
+      "place": "二楼\"泰邻啦\"课堂（社群报名，可免费体验）",
+      "slots": "余位 20",
+      "totalSlots": 20,
+      "remainingSlots": 20,
+      "contact": "021-59962836",
+      "dates": [
+        "2025-08-10"
+      ],
+      "timeSlots": [
+        "09:00-10:30"
+      ],
+      "status": "active",
+      "createdAt": "2025-01-15T00:00:00.000Z",
+      "updatedAt": "2025-01-15T00:00:00.000Z"
+    },
+    {
+      "_id": "activity_013",
+      "id": 13,
+      "title": "创意美术（提高课）",
+      "time": "2025-08-10（周日）",
+      "place": "二楼春舍图书室（社群报名，可免费体验）",
+      "slots": "余位 20",
+      "totalSlots": 20,
+      "remainingSlots": 20,
+      "contact": "021-59962836",
+      "dates": [
+        "2025-08-10"
+      ],
+      "timeSlots": [
+        "09:00-10:30"
+      ],
+      "status": "active",
+      "createdAt": "2025-01-15T00:00:00.000Z",
+      "updatedAt": "2025-01-15T00:00:00.000Z"
+    },
+    {
+      "_id": "activity_014",
+      "id": 14,
+      "title": "软笔，硬笔书法课堂",
+      "time": "2025-08-10（周日）",
+      "place": "二楼\"泰邻啦\"课堂（社群报名，可免费体验）",
+      "slots": "余位 20",
+      "totalSlots": 20,
+      "remainingSlots": 20,
+      "contact": "021-59962836",
+      "dates": [
+        "2025-08-10"
+      ],
+      "timeSlots": [
+        "10:40-12:10"
+      ],
+      "status": "active",
+      "createdAt": "2025-01-15T00:00:00.000Z",
+      "updatedAt": "2025-01-15T00:00:00.000Z"
+    }
+  ]
+} 

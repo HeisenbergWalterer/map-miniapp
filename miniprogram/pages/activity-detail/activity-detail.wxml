@@ -37,11 +37,29 @@
       <view class="row"><text class="label">时间段</text><text class="value">{{activity.timeSlots[0]}}</text></view>
     </view>
 
+    <!-- 登录状态提示 -->
+    <view class="section" wx:if="{{!isLoggedIn}}">
+      <view class="login-tip">
+        <text class="tip-text">请先登录后再报名活动</text>
+        <text class="tip-link" bindtap="goToLogin">去登录</text>
+      </view>
+    </view>
+
     <view class="section">
       <view class="desc">本活动为示例，实际内容以主办方为准。报名后请提前到场。</view>
     </view>
 
-    <button class="primary-btn" bindtap="reserve">立即报名</button>
+    <!-- 报名按钮 - 根据状态显示不同样式 -->
+    <button 
+      class="primary-btn {{!isLoggedIn || activity.remainingSlots <= 0 || submitting ? 'disabled' : ''}}" 
+      bindtap="reserve"
+      disabled="{{!isLoggedIn || activity.remainingSlots <= 0 || submitting}}"
+    >
+      <text wx:if="{{submitting}}">报名中...</text>
+      <text wx:elif="{{!isLoggedIn}}">请先登录</text>
+      <text wx:elif="{{activity.remainingSlots <= 0}}">名额已满</text>
+      <text wx:else>立即报名</text>
+    </button>
   </view>
 </view>
 

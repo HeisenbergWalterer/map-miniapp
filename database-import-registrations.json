@@ -1,0 +1,42 @@
+{
+  "collection": "registrations",
+  "description": "微光驿站活动报名系统 - 用户报名记录集合",
+  "import_date": "2025-01-15",
+  "structure_explanation": {
+    "purpose": "存储所有用户的活动报名记录",
+    "indexes_recommended": [
+      "{ activityId: 1, userId: 1 }",
+      "{ userId: 1, status: 1 }",
+      "{ activityId: 1, status: 1 }",
+      "{ registrationTime: -1 }"
+    ]
+  },
+  "sample_data": [
+    {
+      "_id": "registration_sample_001",
+      "activityId": 3,
+      "activityTitle": "夏日\"音\"姿——八音琴DIY",
+      "userId": "user_openid_sample123",
+      "userInfo": {
+        "nickName": "示例用户",
+        "avatarUrl": "https://example.com/avatar.jpg",
+        "phoneNumber": "138****8888"
+      },
+      "selectedDate": "2025-08-05",
+      "selectedTimeSlot": "09:00-10:00",
+      "registrationTime": "2025-01-15T10:30:00.000Z",
+      "status": "active",
+      "cancelledAt": null
+    }
+  ],
+  "status_values": {
+    "active": "有效报名",
+    "cancelled": "已取消报名"
+  },
+  "notes": [
+    "此集合在系统初始化时为空，随着用户报名逐渐增加记录",
+    "userId字段存储用户的微信openid",
+    "registrationTime使用ISO格式的UTC时间",
+    "status字段用于软删除，取消报名时不删除记录而是标记为cancelled"
+  ]
+} 

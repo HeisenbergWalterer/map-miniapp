@@ -13,11 +13,56 @@
 .highlight { color: #3B82F6; font-weight: 600; }
 .desc { font-size: 24rpx; color: #777; line-height: 1.6; }
 
-.primary-btn { margin: 20rpx 24rpx 28rpx; background: linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%); color: #fff; border-radius: 28rpx; font-size: 30rpx; font-weight: 600; padding: 18rpx 0; }
+.primary-btn { 
+  margin: 20rpx 24rpx 28rpx; 
+  background: linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%); 
+  color: #fff; 
+  border-radius: 28rpx; 
+  font-size: 30rpx; 
+  font-weight: 600; 
+  padding: 18rpx 0; 
+  border: none;
+}
+
+/* 按钮禁用状态 */
+.primary-btn.disabled {
+  background: #e5e7eb !important;
+  color: #9ca3af !important;
+  opacity: 0.6;
+}
+
+.primary-btn[disabled] {
+  background: #e5e7eb !important;
+  color: #9ca3af !important;
+  opacity: 0.6;
+}
 
 .sub-title { font-size: 28rpx; color: #333; font-weight: 600; margin-bottom: 16rpx; }
 .slots { display: flex; flex-wrap: wrap; gap: 12rpx; }
 .slot { padding: 12rpx 16rpx; border-radius: 16rpx; background: #f7f7f7; color: #555; font-size: 26rpx; }
 .slot.active { background: linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%); color: #fff; }
+
+/* 登录提示样式 */
+.login-tip {
+  background: #fef3c7;
+  border: 1px solid #f59e0b;
+  border-radius: 12rpx;
+  padding: 16rpx 20rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tip-text {
+  color: #92400e;
+  font-size: 26rpx;
+}
+
+.tip-link {
+  color: #3B82F6;
+  font-size: 26rpx;
+  font-weight: 600;
+  text-decoration: underline;
+}
 
 
