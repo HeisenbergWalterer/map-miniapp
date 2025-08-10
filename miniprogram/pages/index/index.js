@@ -1,10 +1,13 @@
 // index.js
+const app = getApp();
+
 Page({
   data: {
     userInfo: {},
     serviceDays: 1,
     noticeText: '【活动预告】微光驿站便民服务活动即将开始，敬请期待！',
-    noticeDate: '07-23'
+    noticeDate: '07-23',
+    titlesrc: `${app.img.cloud}/images/title.jpg`,
   },
 
   onLoad() {
@@ -46,7 +49,7 @@ Page({
   // 跳转到暖心地图页面（分包）
   goToMap() {
     wx.navigateTo({
-      url: '/subpkg/map/pages/map/map'
+      url: '/pages/map/map'
     });
   },
 
@@ -66,7 +69,7 @@ Page({
   // 跳转到活动预约页面（分包）
   goToActivityReservation() {
     wx.navigateTo({
-      url: '/subpkg/reservation/pages/activity-reservation/activity-reservation'
+      url: '/pages/activity-reservation/activity-reservation'
     });
   }
 });

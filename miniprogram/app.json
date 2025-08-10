@@ -3,7 +3,7 @@
     "pages/index/index",
     
     "pages/profile/profile",
-    
+    "pages/map/map",
     "pages/feedback/feedback",
     "pages/point-select/point-select",
     "pages/edit-profile/edit-profile",
@@ -11,23 +11,10 @@
     "pages/station-detail/station-detail",
     "pages/contact/contact",
     "pages/contact-detail/contact-detail",
-    "pages/emergency-contact/emergency-contact"
-  ],
-  "subpackages": [
-    {
-      "root": "subpkg/reservation",
-      "pages": [
-        "pages/activity-reservation/activity-reservation",
-        "pages/activity-detail/activity-detail",
-        "pages/venue-detail/venue-detail"
-      ]
-    },
-    {
-      "root": "subpkg/map",
-      "pages": [
-        "pages/map/map"
-      ]
-    }
+    "pages/emergency-contact/emergency-contact",
+    "pages/activity-reservation/activity-reservation",
+    "pages/activity-detail/activity-detail",
+    "pages/venue-detail/venue-detail"
   ],
   "window": {
     "backgroundColor": "#FFFFFF",

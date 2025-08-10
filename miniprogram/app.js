@@ -96,6 +96,7 @@ App({
   },
 
   img: {
-    defaultIcon: "/images/icons/point.png"
+    defaultIcon: "/images/icons/point.png",
+    cloud: "cloud://cloud1-3gbydxui8864f9aa.636c-cloud1-3gbydxui8864f9aa-1369623166",
   }
 });

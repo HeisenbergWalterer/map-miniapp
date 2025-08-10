@@ -74,7 +74,7 @@ Page({
   // 跳转到地图页面
   goToMap() {
     wx.navigateTo({
-      url: '/subpkg/map/pages/map/map'
+      url: '../map/map'
     })
   },
 

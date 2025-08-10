@@ -3,7 +3,7 @@
   <!-- 头部区域 - 全屏橘黄色渐变 -->
   <view class="page__header">
     <view class="header-content">
-      <image class="title-card" src="/images/title.jpg" mode="aspectFill"></image>
+      <image class="title-card" src="{{titlesrc}}" mode="aspectFill"></image>
     </view>
     <!-- 渐变遮罩 -->
     <view class="header-gradient"></view>
@@ -33,7 +33,7 @@
 
     <!-- 服务功能区域 - 圆角矩形按钮 -->
     <view class="function-grid">
-      <navigator url="/subpkg/map/pages/map/map" class="function-card" hover-class="function-card-hover">
+      <navigator url="/pages/map/map" class="function-card" hover-class="function-card-hover">
         <image class="function-icon-img" src="/images/icons/地图.png" mode="aspectFit"></image>
         <text class="function-name">暖心地图</text>
       </navigator>
@@ -42,7 +42,7 @@
           <text class="function-name">安新联系</text>
         </view>
 
-      <navigator url="/subpkg/reservation/pages/activity-reservation/activity-reservation" class="function-card" hover-class="function-card-hover">
+      <navigator url="/pages/activity-reservation/activity-reservation" class="function-card" hover-class="function-card-hover">
         <image class="function-icon-img" src="/images/icons/activity.png" mode="aspectFit"></image>
         <text class="function-name">活动预约</text>
       </navigator>

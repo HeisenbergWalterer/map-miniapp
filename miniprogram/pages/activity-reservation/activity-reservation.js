@@ -1,4 +1,6 @@
 // pages/activity-reservation/activity-reservation.js
+const app = getApp();
+
 Page({
   data: {
     activeTab: 'venue', // 默认显示场馆预约
@@ -12,7 +14,7 @@ Page({
         slots: '余位 20',
         contact: '021-59962836',
         // 可选：若有图片则在详情页顶部展示；无该字段则不展示
-        photoUrl: '/subpkg/reservation/images/stations/pingpong.jpg'
+        photoUrl: `${app.img.cloud}/images/stations/pingpong.jpg`
       }
     ],
     // 活动报名：示例
@@ -64,7 +66,7 @@ Page({
     if (!item) return;
     const encoded = encodeURIComponent(JSON.stringify(item));
     wx.navigateTo({
-      url: `/subpkg/reservation/pages/activity-detail/activity-detail?data=${encoded}`
+      url: `../activity-detail/activity-detail?data=${encoded}`
     });
   },
 
@@ -75,7 +77,7 @@ Page({
     if (!item) return;
     const encoded = encodeURIComponent(JSON.stringify(item));
     wx.navigateTo({
-      url: `/subpkg/reservation/pages/venue-detail/venue-detail?data=${encoded}`
+      url: `../venue-detail/venue-detail?data=${encoded}`
     });
   }
 });
