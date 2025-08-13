@@ -3,23 +3,20 @@
 <scroll-view class="scrollarea" scroll-y type="list">
   <view class="container">
     
-    <!-- 头像编辑区域 -->
+    <!-- 头像展示（不支持更换头像） -->
     <view class="avatar-section">
-             <view class="avatar-edit-wrapper">
-         <button class="avatar-edit-btn" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
-           <view class="avatar-container">
-             <image class="avatar-edit-img" src="{{userInfo.avatarUrl || '/images/default-avatar.png'}}" mode="aspectFill"></image>
-           </view>
-           <view class="avatar-edit-mask">
-             <text class="avatar-edit-text">更换头像</text>
-           </view>
-         </button>
-       </view>
+      <view class="avatar-edit-wrapper">
+        <view class="avatar-container">
+          <image class="avatar-edit-img" src="{{userInfo.avatarUrl || '/images/default-avatar.png'}}" mode="aspectFill"></image>
+        </view>
+      </view>
     </view>
     
     <!-- 个人信息编辑列表 -->
     <view class="info-section">
-      
+        
+        
+
                     <!-- 昵称 -->
         <view class="info-item" bindtap="editNickname" hover-class="info-item-hover" hover-stay-time="100">
          <view class="info-label">
@@ -43,18 +40,27 @@
            <text class="arrow-right">></text>
          </view>
        </view>
+        
+        <!-- 年龄 -->
+        <view class="info-item" bindtap="editAge" hover-class="info-item-hover" hover-stay-time="100">
+          <view class="info-label">
+            <text class="label-text">年龄</text>
+          </view>
+          <view class="info-content">
+            <text class="content-text {{!userInfo.age ? 'content-placeholder' : ''}}">{{userInfo.age || '请输入年龄'}}</text>
+            <text class="arrow-right">></text>
+          </view>
+        </view>
        
-       <!-- 手机号 -->
-        <view class="info-item" bindtap="editPhone" hover-class="info-item-hover" hover-stay-time="100">
-         <view class="info-label">
-           <text class="label-text">手机号</text>
-           <text class="label-required">*</text>
-         </view>
-         <view class="info-content">
-           <text class="content-text {{!userInfo.phoneNumber ? 'content-placeholder' : ''}}">{{userInfo.phoneNumber || '请绑定手机号'}}</text>
-           <text class="arrow-right">></text>
-         </view>
-       </view>
+        <!-- 手机号（直接填写） -->
+        <view class="info-item">
+          <view class="info-label">
+            <text class="label-text">手机号</text>
+          </view>
+          <view class="info-content">
+            <input class="phone-input" type="number" placeholder="请输入手机号" value="{{userInfo.phoneNumber}}" bindinput="onPhoneInput" maxlength="11" />
+          </view>
+        </view>
        
        <!-- 个人简介 -->
         <view class="info-item" bindtap="editDescription" hover-class="info-item-hover" hover-stay-time="100">
@@ -116,6 +122,23 @@
     <view class="modal-footer">
       <button class="modal-cancel-btn" bindtap="hideModal">取消</button>
       <button class="modal-confirm-btn" bindtap="confirmGender">确定</button>
+    </view>
+  </view>
+</view>
+
+<!-- 年龄编辑弹窗 -->
+<view class="edit-modal" wx:if="{{showAgeModal}}" bindtap="hideModal">
+  <view class="modal-content" catchtap="stopPropagation">
+    <view class="modal-header">
+      <text class="modal-title">编辑年龄</text>
+      <view class="close-btn" bindtap="hideModal">×</view>
+    </view>
+    <view class="modal-body">
+      <input type="number" class="nickname-edit-input" placeholder="请输入年龄（1-120）" value="{{tempAge}}" bind:input="onAgeInput" maxlength="3" />
+    </view>
+    <view class="modal-footer">
+      <button class="modal-cancel-btn" bindtap="hideModal">取消</button>
+      <button class="modal-confirm-btn" bindtap="confirmAge">确定</button>
     </view>
   </view>
 </view>

@@ -1,18 +1,23 @@
 // edit-profile.js
+const app = getApp();
+
 Page({
   data: {
     userInfo: {
       avatarUrl: '',
       nickName: '',
       gender: '',
+      age: '',
       phoneNumber: '',
       description: ''
     },
     showNicknameModal: false,
     showGenderModal: false,
+    showAgeModal: false,
     showDescModal: false,
     tempNickname: '',
     tempGender: '',
+    tempAge: '',
     tempDescription: '',
     hasChanges: false
   },
@@ -28,6 +33,8 @@ Page({
 
   onShow() {
     console.log('编辑个人资料页面显示')
+    // 每次进入都以云端为准刷新显示
+    this.refreshFromDB()
   },
 
   onHide() {
@@ -48,6 +55,7 @@ Page({
             avatarUrl: userInfo.avatarUrl || '',
             nickName: userInfo.nickName || '',
             gender: userInfo.gender || '',
+            age: userInfo.age || '',
             phoneNumber: userInfo.phoneNumber || '',
             description: userInfo.description || ''
           }
@@ -56,6 +64,35 @@ Page({
     } catch (error) {
       console.error('加载用户信息失败：', error)
     }
+  },
+
+  // 编辑年龄
+  editAge() {
+    this.setData({
+      showAgeModal: true,
+      tempAge: this.data.userInfo.age ? String(this.data.userInfo.age) : ''
+    })
+  },
+
+  // 年龄输入
+  onAgeInput(e) {
+    this.setData({
+      tempAge: e.detail.value
+    })
+  },
+
+  // 确认年龄
+  confirmAge() {
+    const ageNum = Number(this.data.tempAge)
+    if (!this.data.tempAge || isNaN(ageNum) || ageNum <= 0 || ageNum > 120) {
+      wx.showToast({ title: '请输入有效年龄', icon: 'none' })
+      return
+    }
+    this.setData({
+      'userInfo.age': ageNum,
+      showAgeModal: false,
+      hasChanges: true
+    })
   },
 
   // 选择头像
@@ -125,21 +162,10 @@ Page({
     })
   },
 
-  // 编辑手机号
-  editPhone() {
-    wx.showModal({
-      title: '绑定手机号',
-      content: '需要重新授权获取手机号',
-      success: (res) => {
-        if (res.confirm) {
-          // 这里可以调用手机号授权
-          wx.showToast({
-            title: '功能开发中...',
-            icon: 'none'
-          })
-        }
-      }
-    })
+  // 手机号输入
+  onPhoneInput(e) {
+    const val = (e.detail.value || '').replace(/\D/g, '').slice(0, 11)
+    this.setData({ 'userInfo.phoneNumber': val, hasChanges: true })
   },
 
   // 编辑个人简介
@@ -171,6 +197,7 @@ Page({
     this.setData({
       showNicknameModal: false,
       showGenderModal: false,
+      showAgeModal: false,
       showDescModal: false
     })
   },
@@ -183,65 +210,126 @@ Page({
   // 保存资料
   saveProfile() {
     const { userInfo, hasChanges } = this.data
-    
-    // 验证必填字段
-    if (!userInfo.nickName) {
-      wx.showToast({
-        title: '请输入昵称',
-        icon: 'none'
-      })
+
+    // 基本校验：昵称为必填，其余可选
+    if (!userInfo.nickName || !userInfo.nickName.trim()) {
+      wx.showToast({ title: '请输入昵称', icon: 'none' })
       return
     }
 
-    if (!userInfo.gender) {
-      wx.showToast({
-        title: '请选择性别',
-        icon: 'none'
-      })
-      return
-    }
-
-    if (!userInfo.phoneNumber) {
-      wx.showToast({
-        title: '请绑定手机号',
-        icon: 'none'
-      })
-      return
-    }
-    
     if (!hasChanges) {
-      wx.showToast({
-        title: '没有修改内容',
-        icon: 'none'
-      })
+      wx.showToast({ title: '没有修改内容', icon: 'none' })
       return
     }
 
     try {
-      // 保存到本地存储
-      wx.setStorageSync('userInfo', userInfo)
-      
-      wx.showToast({
-        title: '保存成功',
-        icon: 'success',
-        duration: 1500
-      })
+      const stored = wx.getStorageSync('userInfo') || {}
+      const openid = stored.openid
+      if (!openid) {
+        wx.showToast({ title: '请先登录', icon: 'none' })
+        return
+      }
 
-      this.setData({
-        hasChanges: false
-      })
+      // 同步到云数据库 users
+      const db = app.DBS ? app.DBS.getDB() : wx.cloud.database()
+      const now = new Date()
+      const updateData = {
+        avatarUrl: userInfo.avatarUrl || '',
+        nickName: userInfo.nickName.trim(),
+        gender: userInfo.gender || '',
+        age: userInfo.age || '',
+        phoneNumber: userInfo.phoneNumber || '',
+        description: userInfo.description || '',
+        updatedAt: now
+      }
 
-      // 延迟返回上一页，让用户看到成功提示
-      setTimeout(() => {
-        wx.navigateBack()
-      }, 1500)
+      console.log('[资料保存] openid=', openid, ' updateData=', updateData)
+
+      db.collection('users').where({ _openid: openid }).get().then(res => {
+        if (res.data && res.data.length > 0) {
+          const docId = res.data[0]._id
+          return db.collection('users').doc(docId).update({ data: updateData })
+        } else {
+          // 若不存在（极少数异常场景），创建一条（不写入自定义 openid 字段）
+          return db.collection('users').add({ data: { createdAt: now, ...updateData } })
+        }
+      }).then(saveRes => {
+        console.log('[资料保存] 云端更新成功：', saveRes)
+
+        // 更新本地存储（合并 openid）
+        const localUser = { ...(wx.getStorageSync('userInfo')||{}), openid, ...updateData }
+        wx.setStorageSync('userInfo', localUser)
+
+        wx.showToast({ title: '保存成功', icon: 'success', duration: 1200 })
+        this.setData({ hasChanges: false })
+        setTimeout(() => { wx.navigateBack() }, 1200)
+      }).catch(err => {
+        console.error('[资料保存] 云端更新失败：', err)
+        wx.showToast({ title: '保存失败', icon: 'none' })
+      })
       
     } catch (error) {
       console.error('保存用户信息失败：', error)
-      wx.showToast({
-        title: '保存失败',
-        icon: 'none'
-      })
+      wx.showToast({ title: '保存失败', icon: 'none' })
     }
+  }
+  ,
+
+  // 从云端读取最新资料覆盖显示
+  refreshFromDB() {
+    try {
+      const local = wx.getStorageSync('userInfo') || {}
+      const openid = local.openid
+      if (!openid) return
+      const db = app.DBS ? app.DBS.getDB() : wx.cloud.database()
+      db.collection('users').where({ _openid: openid }).get().then(res => {
+        if (res.data && res.data.length > 0) {
+          const doc = res.data[0]
+          const merged = { ...local, ...doc, openid }
+          wx.setStorageSync('userInfo', merged)
+          this.setData({
+            userInfo: {
+              avatarUrl: merged.avatarUrl || '',
+              nickName: merged.nickName || '微信用户',
+              gender: merged.gender || '',
+              age: merged.age || '',
+              phoneNumber: merged.phoneNumber || '',
+              description: merged.description || ''
+            },
+            hasChanges: false
+          })
+        }
+      })
+    } catch (e) {
+      console.warn('[资料] 刷新编辑资料失败：', e)
+    }
+  },
+
+  // 使用微信昵称（授权弹窗）
+  useWeChatNickname() {
+    wx.getUserProfile({
+      desc: '获取微信昵称用于完善资料',
+      success: (res) => {
+        const nick = (res && res.userInfo && res.userInfo.nickName) || ''
+        if (!nick) return
+        this.setData({ 'userInfo.nickName': nick, hasChanges: true })
+      }
+    })
+  },
+
+  // 使用微信头像（授权弹窗）
+  useWeChatAvatar() {
+    wx.getUserProfile({
+      desc: '获取微信头像用于完善资料',
+      success: (res) => {
+        let avatar = (res && res.userInfo && res.userInfo.avatarUrl) || ''
+        if (!avatar) return
+        // 兼容微信头像 URL 协议问题（强制 https）
+        if (avatar.indexOf('http://') === 0) {
+          avatar = avatar.replace('http://', 'https://')
+        }
+        this.setData({ 'userInfo.avatarUrl': avatar, hasChanges: true })
+      }
+    })
   }
 })
