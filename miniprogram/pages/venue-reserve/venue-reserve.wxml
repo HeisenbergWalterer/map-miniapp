@@ -1,0 +1,88 @@
+<view class="page">
+  <view wx:if="{{venue}}" class="reserve-card">
+    <!-- 头部信息 -->
+    <view class="hero">
+      <view class="hero-mask"></view>
+      <view class="hero-title">{{venue.name}}</view>
+      <view class="hero-sub">{{venue.location}}</view>
+    </view>
+
+    <!-- 状态图例 -->
+    <view class="legend-section">
+      <view class="legend-title">预约状态说明</view>
+      <view class="legend-items">
+        <view class="legend-item">
+          <view class="legend-dot selected"></view>
+          <text class="legend-text">已选中</text>
+        </view>
+        <view class="legend-item">
+          <view class="legend-dot available"></view>
+          <text class="legend-text">可选择</text>
+        </view>
+        <view class="legend-item">
+          <view class="legend-dot unavailable"></view>
+          <text class="legend-text">不可选</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 日期选择 -->
+    <view class="date-section">
+      <view class="date-tabs">
+        <block wx:for="{{dates}}" wx:key="date">
+          <view 
+            class="date-tab {{selectedDate === item.date ? 'active' : ''}}"
+            data-date="{{item.date}}"
+            bindtap="selectDate"
+          >
+            <view class="date-display">{{item.display}}</view>
+            <view class="date-value">{{item.date}}</view>
+          </view>
+        </block>
+      </view>
+    </view>
+
+    <!-- 时段选择矩阵 -->
+    <view class="time-section">
+      <block wx:for="{{timeSlots}}" wx:key="period">
+        <view class="time-period">
+          <view class="period-label">{{item.period}}</view>
+          <view class="time-slots">
+            <block wx:for="{{item.slots}}" wx:key="*this" wx:for-item="slot">
+              <button 
+                class="time-slot {{availabilityMatrix[selectedDate][slot] === 1 ? 'available' : 'unavailable'}} {{selectedTimeSlots.indexOf(slot) > -1 ? 'selected' : ''}}"
+                data-slot="{{slot}}"
+                bindtap="selectTimeSlot"
+                disabled="{{availabilityMatrix[selectedDate][slot] !== 1}}"
+              >
+                {{slot}}
+              </button>
+            </block>
+          </view>
+        </view>
+      </block>
+    </view>
+
+    <!-- 登录状态提示 -->
+    <view class="section" wx:if="{{!isLoggedIn}}">
+      <view class="login-tip">
+        <text class="tip-text">请先登录后再预约场馆</text>
+        <text class="tip-link" bindtap="goToLogin">去登录</text>
+      </view>
+    </view>
+
+    <!-- 预约按钮 -->
+    <view class="reserve-btn-container">
+      <button 
+        class="reserve-btn {{!isLoggedIn || totalSelectedSlots === 0 || submitting ? 'disabled' : ''}}" 
+        bindtap="reserve"
+        disabled="{{!isLoggedIn || totalSelectedSlots === 0 || submitting}}"
+      >
+        <text wx:if="{{submitting}}">预约中...</text>
+        <text wx:elif="{{!isLoggedIn}}">请先登录</text>
+        <text wx:elif="{{totalSelectedSlots === 0}}">请选择时段</text>
+        <text wx:else>立即预约 ({{totalSelectedSlots}}个时段)</text>
+      </button>
+    </view>
+  </view>
+</view>

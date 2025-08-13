@@ -1,0 +1,66 @@
+.page { background: #f8f9fa; min-height: 100vh; }
+.detail-card { margin: 20rpx; overflow: hidden; border-radius: 20rpx; background: #fff; box-shadow: 0 10rpx 30rpx rgba(0,0,0,0.06); }
+
+.hero { position: relative; height: 220rpx; background: linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%); display: flex; align-items: center; justify-content: center; }
+.hero-mask { position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba(255,255,255,0.2), transparent 60%); }
+.hero-title { position: relative; z-index: 1; color: #fff; font-size: 36rpx; font-weight: 700; text-align: center; padding: 0 24rpx; }
+.hero-sub { position: absolute; bottom: 20rpx; color: rgba(255,255,255,0.9); font-size: 22rpx; }
+
+.section { padding: 24rpx; border-top: 1px solid #f1f1f1; }
+.row { display: flex; justify-content: space-between; align-items: center; padding: 14rpx 0; font-size: 28rpx; color: #444; }
+.label { color: #999; margin-right: 20rpx; }
+.value { color: #333; }
+.highlight { color: #3B82F6; font-weight: 600; }
+.desc { font-size: 24rpx; color: #777; line-height: 1.6; }
+
+.primary-btn { 
+  margin: 20rpx 24rpx 28rpx; 
+  background: linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%); 
+  color: #fff; 
+  border-radius: 28rpx; 
+  font-size: 30rpx; 
+  font-weight: 600; 
+  padding: 18rpx 0; 
+  border: none;
+}
+
+/* 按钮禁用状态 */
+.primary-btn.disabled {
+  background: #e5e7eb !important;
+  color: #9ca3af !important;
+  opacity: 0.6;
+}
+
+.primary-btn[disabled] {
+  background: #e5e7eb !important;
+  color: #9ca3af !important;
+  opacity: 0.6;
+}
+
+.sub-title { font-size: 28rpx; color: #333; font-weight: 600; margin-bottom: 16rpx; }
+.slots { display: flex; flex-wrap: wrap; gap: 12rpx; }
+.slot { padding: 12rpx 16rpx; border-radius: 16rpx; background: #f7f7f7; color: #555; font-size: 26rpx; }
+.slot.active { background: linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%); color: #fff; }
+
+/* 登录提示样式 */
+.login-tip {
+  background: #fef3c7;
+  border: 1px solid #f59e0b;
+  border-radius: 12rpx;
+  padding: 16rpx 20rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tip-text {
+  color: #92400e;
+  font-size: 26rpx;
+}
+
+.tip-link {
+  color: #3B82F6;
+  font-size: 26rpx;
+  font-weight: 600;
+  text-decoration: underline;
+}

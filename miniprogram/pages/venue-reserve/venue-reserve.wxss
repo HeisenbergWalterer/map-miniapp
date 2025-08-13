@@ -1,0 +1,270 @@
+.page { 
+  background: #f8f9fa; 
+  min-height: 100vh; 
+  padding-bottom: 120rpx; /* 为底部按钮留出空间 */
+}
+
+.reserve-card { 
+  margin: 20rpx; 
+  overflow: hidden; 
+  border-radius: 20rpx; 
+  background: #fff; 
+  box-shadow: 0 10rpx 30rpx rgba(0,0,0,0.06); 
+}
+
+/* 头部样式 */
+.hero { 
+  position: relative; 
+  height: 180rpx; 
+  background: linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%); 
+  display: flex; 
+  flex-direction: column;
+  align-items: center; 
+  justify-content: center; 
+}
+.hero-mask { 
+  position: absolute; 
+  inset: 0; 
+  background: radial-gradient(ellipse at center, rgba(255,255,255,0.2), transparent 60%); 
+}
+.hero-title { 
+  position: relative; 
+  z-index: 1; 
+  color: #fff; 
+  font-size: 32rpx; 
+  font-weight: 700; 
+  text-align: center; 
+  margin-bottom: 8rpx;
+}
+.hero-sub { 
+  position: relative; 
+  z-index: 1; 
+  color: rgba(255,255,255,0.9); 
+  font-size: 22rpx; 
+}
+
+/* 状态图例 */
+.legend-section {
+  padding: 24rpx;
+  border-bottom: 1px solid #f1f1f1;
+}
+
+.legend-title {
+  font-size: 26rpx;
+  color: #333;
+  font-weight: 600;
+  margin-bottom: 16rpx;
+}
+
+.legend-items {
+  display: flex;
+  gap: 32rpx;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.legend-dot {
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: 50%;
+}
+
+.legend-dot.selected {
+  background: #1D4ED8;
+}
+
+.legend-dot.available {
+  background: #60A5FA;
+}
+
+.legend-dot.unavailable {
+  background: #E5E7EB;
+}
+
+.legend-text {
+  font-size: 24rpx;
+  color: #666;
+}
+
+/* 日期选择 */
+.date-section {
+  padding: 24rpx;
+  border-bottom: 1px solid #f1f1f1;
+}
+
+.date-tabs {
+  display: flex;
+  gap: 8rpx;
+  overflow-x: auto;
+  padding-bottom: 8rpx;
+}
+
+.date-tab {
+  flex-shrink: 0;
+  min-width: 80rpx;
+  padding: 12rpx 16rpx;
+  border-radius: 16rpx;
+  background: #f7f8fa;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.date-tab.active {
+  background: linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%);
+  color: #fff;
+}
+
+.date-display {
+  font-size: 22rpx;
+  color: #666;
+  margin-bottom: 4rpx;
+}
+
+.date-tab.active .date-display {
+  color: rgba(255,255,255,0.9);
+}
+
+.date-value {
+  font-size: 24rpx;
+  font-weight: 600;
+  color: #333;
+}
+
+.date-tab.active .date-value {
+  color: #fff;
+}
+
+/* 时段选择矩阵 */
+.time-section {
+  padding: 24rpx;
+}
+
+.time-period {
+  margin-bottom: 32rpx;
+}
+
+.time-period:last-child {
+  margin-bottom: 0;
+}
+
+.period-label {
+  font-size: 26rpx;
+  color: #333;
+  font-weight: 600;
+  margin-bottom: 16rpx;
+  padding-left: 8rpx;
+  border-left: 4rpx solid #3B82F6;
+}
+
+.time-slots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+}
+
+.time-slot {
+  min-width: 100rpx;
+  padding: 16rpx 20rpx;
+  border-radius: 12rpx;
+  font-size: 24rpx;
+  border: none;
+  transition: all 0.3s ease;
+  background: #f7f8fa;
+  color: #666;
+}
+
+.time-slot.available {
+  background: #eff6ff;
+  color: #3B82F6;
+  border: 1px solid #bfdbfe;
+}
+
+.time-slot.available:hover {
+  background: #dbeafe;
+}
+
+.time-slot.selected {
+  background: linear-gradient(135deg, #1D4ED8 0%, #3B82F6 100%);
+  color: #fff;
+  font-weight: 600;
+}
+
+.time-slot.unavailable {
+  background: #f9fafb;
+  color: #9ca3af;
+  border: 1px solid #e5e7eb;
+}
+
+.time-slot[disabled] {
+  opacity: 0.5;
+}
+
+/* 通用section样式 */
+.section { 
+  padding: 24rpx; 
+  border-top: 1px solid #f1f1f1; 
+}
+
+/* 登录提示样式 */
+.login-tip {
+  background: #fef3c7;
+  border: 1px solid #f59e0b;
+  border-radius: 12rpx;
+  padding: 16rpx 20rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tip-text {
+  color: #92400e;
+  font-size: 26rpx;
+}
+
+.tip-link {
+  color: #3B82F6;
+  font-size: 26rpx;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+/* 预约按钮 */
+.reserve-btn-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  padding: 20rpx 24rpx 32rpx;
+  border-top: 1px solid #f1f1f1;
+  box-shadow: 0 -4rpx 20rpx rgba(0,0,0,0.08);
+}
+
+.reserve-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%);
+  color: #fff;
+  border-radius: 28rpx;
+  font-size: 30rpx;
+  font-weight: 600;
+  padding: 18rpx 0;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.reserve-btn.disabled {
+  background: #e5e7eb !important;
+  color: #9ca3af !important;
+  opacity: 0.6;
+}
+
+.reserve-btn[disabled] {
+  background: #e5e7eb !important;
+  color: #9ca3af !important;
+  opacity: 0.6;
+}

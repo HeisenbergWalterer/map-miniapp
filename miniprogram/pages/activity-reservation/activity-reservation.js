@@ -74,7 +74,7 @@ Page({
     
     const encoded = encodeURIComponent(JSON.stringify(item));
     wx.navigateTo({
-      url: `../activity-detail/activity-detail?data=${encoded}`
+      url: `../activity-enroll/activity-enroll?data=${encoded}`
     });
   },
 
@@ -85,7 +85,7 @@ Page({
     if (!item) return;
     const encoded = encodeURIComponent(JSON.stringify(item));
     wx.navigateTo({
-      url: `../venue-detail/venue-detail?data=${encoded}`
+      url: `../venue-reserve/venue-reserve?data=${encoded}`
     });
   },
 

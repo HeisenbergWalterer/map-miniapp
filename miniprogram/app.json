@@ -14,7 +14,9 @@
     "pages/emergency-contact/emergency-contact",
     "pages/activity-reservation/activity-reservation",
     "pages/activity-detail/activity-detail",
-    "pages/venue-detail/venue-detail"
+    "pages/venue-detail/venue-detail",
+    "pages/venue-reserve/venue-reserve",
+    "pages/activity-enroll/activity-enroll"
   ],
   "window": {
     "backgroundColor": "#FFFFFF",
