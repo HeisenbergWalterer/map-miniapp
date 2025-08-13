@@ -1,8 +1,8 @@
 <view class="page">
   <!-- 顶部切换按钮 -->
   <view class="tabs">
-    <view class="tab {{activeTab==='venue' ? 'active' : ''}}" data-tab="venue" bindtap="switchTab">场馆预约</view>
-    <view class="tab {{activeTab==='activity' ? 'active' : ''}}" data-tab="activity" bindtap="switchTab">活动报名</view>
+    <view class="tab {{activeTab==='venue' ? 'active' : ''}}" data-tag="venue" bindtap="switchTab">场馆预约</view>
+    <view class="tab {{activeTab==='activity' ? 'active' : ''}}" data-tag="activity" bindtap="switchTab">活动报名</view>
   </view>
 
   <!-- 列表区域 -->
@@ -27,18 +27,17 @@
 
     <!-- 活动报名列表 -->
     <block wx:elif="{{activeTab==='activity' && !loadingActivities}}">
-      <block wx:for="{{activities}}" wx:key="id">
+      <block wx:for="{{activity}}" wx:key="id">
         <view class="card" bindtap="goDetail" data-id="{{item.id}}">
           <view class="card-main">
             <view class="card-title">{{item.title}}</view>
             <view class="card-sub">地点：{{item.place}}</view>
-            <view class="card-sub">时间：{{item.time}}</view>
-            <view class="card-sub slots">{{item.slots}}</view>
+            <view class="card-sub">时间：{{item.dates}}</view>
           </view>
           <button class="reserve-btn" catchtap="goDetail" data-id="{{item.id}}">去报名</button>
         </view>
       </block>
-      <view wx:if="{{!activities || activities.length===0}}" class="empty">暂无可报名活动</view>
+      <view wx:if="{{!activity || activity.length===0}}" class="empty">暂无可报名活动</view>
     </block>
   </view>
 </view>

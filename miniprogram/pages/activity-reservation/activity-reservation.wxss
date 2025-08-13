@@ -33,7 +33,8 @@
 
 .card {
   position: relative;            /* 让右下角按钮可以绝对定位 */
-  display: block;
+  display: flex;
+  flex-direction: column;
   background: #ffffff;
   border-radius: 20rpx;
   padding: 24rpx;                /* 恢复正常内边距 */
@@ -69,16 +70,13 @@
 }
 
 .reserve-btn {
-  position: absolute;
-  right: 16rpx;
-  bottom: 16rpx;
-  z-index: 1;
+  align-self: flex-end;
   background: linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%);
   color: #fff;
-  display: inline-block;
   width: 100rpx;            
   height: 44rpx;
   line-height: 44rpx;
+  margin-top: 10rpx;
   padding: 0;
   border-radius: 22rpx;
   font-size: 24rpx;           /* 增大按钮文字 */

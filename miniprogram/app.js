@@ -17,6 +17,12 @@ App({
       });
     }
   },
+  
+
+  img: {
+    defaultIcon: "/images/icons/point.png",
+    cloud: "cloud://cloud1-3gbydxui8864f9aa.636c-cloud1-3gbydxui8864f9aa-1369623166",
+  },
 
   // ---------------使用数据库---------------
   // 数据库服务类
@@ -94,13 +100,45 @@ App({
     });
   },
 
+  // -----数据库操作-----
+
+  // 获取集合
+  getCollection: function(cll) {
+    const db = this.getDB();
+    return db.collection(cll).get().then(res => res.data);
+  },
+
+  // 名称查找
+  getElementByName: function(cll, name) {
+    const db = this.getDB();
+    return db.collection(cll).where({
+      name: name
+    }).get();
+  },
+
+  // id查找
+  getElementByID: function(cll, id) {
+    const db = this.getDB();
+    return db.collection(cll).where({
+      id: id
+    }).get();
+  },
+
+  // 添加元素
+  addElement: function(cll, data) {
+    const db = this.getDB();
+    return db.collection(cll).add({
+      data: data
+    });
+  },
+
   // -----活动报名相关数据库操作-----
   
   // 获取活动列表
   getActivities: function() {
     const db = this.getDB();
     return new Promise((resolve, reject) => {
-      db.collection('activities').get({
+      db.collection('activity').get({
         success: function(res) {
           console.log('获取活动列表:', res.data);
           resolve(res.data);
@@ -117,7 +155,7 @@ App({
   getActivityById: function(activityId) {
     const db = this.getDB();
     return new Promise((resolve, reject) => {
-      db.collection('activities').where({
+      db.collection('activity').where({
         id: activityId
       }).get({
         success: function(res) {
@@ -211,7 +249,7 @@ App({
   updateActivitySlots: function(activityId, newSlotsCount) {
     const db = this.getDB();
     return new Promise((resolve, reject) => {
-      db.collection('activities').where({
+      db.collection('activity').where({
         id: activityId
       }).update({
         data: {
@@ -270,10 +308,5 @@ App({
       });
     });
   }
-  },
-
-  img: {
-    defaultIcon: "/images/icons/point.png",
-    cloud: "cloud://cloud1-3gbydxui8864f9aa.636c-cloud1-3gbydxui8864f9aa-1369623166",
   }
 });

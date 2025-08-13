@@ -60,6 +60,15 @@ Page({
   // 页面初次渲染完成
   onReady: function(){
     console.log('地图页面初次渲染完成')
+    wx.cloud.callFunction({
+      name: "getContext",
+      success: function(res){
+        console.log("获取上下文成功:", res);
+      },
+      fail: function(res){
+        console.log("获取上下文失败:", res);
+      }
+    });
   },
 
   // 页面显示时
