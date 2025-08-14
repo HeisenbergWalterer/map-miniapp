@@ -34,15 +34,34 @@ const sidebarVisible = ref(true)
 const keyword = ref('')
 
 const moduleList = Object.values(modules)
-const currentModuleKey = computed(() => router.currentRoute.value.params.module as string || defaultModule)
+const currentModuleKey = computed(() => {
+  const route = router.currentRoute.value
+  if (route.name === 'sites') return 'sites'
+  return route.params.module as string || defaultModule
+})
 
 ensureLogin().catch(() => router.replace({ name: 'login' }))
 
 function toggleSidebar() { sidebarVisible.value = !sidebarVisible.value }
-function onSearch() { (pageRef.value as any)?.reload({ pageNo: 1, keyword: keyword.value }) }
+function onSearch() { 
+  const currentRoute = router.currentRoute.value
+  if (currentRoute.name === 'sites') {
+    // 对于sites页面，通过路由参数传递搜索关键词
+    router.push({ name: 'sites', query: { keyword: keyword.value } })
+  } else {
+    // 对于其他页面，调用reload方法
+    (pageRef.value as any)?.reload({ pageNo: 1, keyword: keyword.value })
+  }
+}
 function onCreate() { (pageRef.value as any)?.openCreate() }
 async function onLogout() { await signOut(); router.replace({ name: 'login' }) }
-function switchModule(key: string) { router.push({ name: 'module', params: { module: key } }) }
+function switchModule(key: string) { 
+  if (key === 'sites') {
+    router.push({ name: 'sites' })
+  } else {
+    router.push({ name: 'module', params: { module: key } })
+  }
+}
 
 const pageRef = ref()
 </script>
