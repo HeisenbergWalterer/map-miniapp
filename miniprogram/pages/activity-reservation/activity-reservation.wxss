@@ -83,11 +83,46 @@
   font-weight: 600;
 }
 
+/* 活动卡片移除右侧按钮后，文字区域占满 */
+.card:not(.has-action) .card-main {
+  padding-right: 0;
+}
+
 .loading, .empty {
   text-align: center;
   color: #999;
   padding: 40rpx 0;
   font-size: 26rpx;
+}
+
+/* 底部导航栏 */
+.bottom-nav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 100rpx;
+  display: flex;
+  background: #ffffff;
+  border-top: 1px solid #eee;
+  z-index: 10;
+}
+
+.bottom-item {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bottom-text {
+  font-size: 26rpx;
+  color: #666;
+}
+
+.bottom-item.active .bottom-text {
+  color: #3B82F6;
+  font-weight: 600;
 }
 
 
