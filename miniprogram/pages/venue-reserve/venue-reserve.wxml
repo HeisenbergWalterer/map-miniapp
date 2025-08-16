@@ -3,8 +3,8 @@
     <!-- 头部信息 -->
     <view class="hero">
       <view class="hero-mask"></view>
-      <view class="hero-title">{{venue.name}}</view>
-      <view class="hero-sub">{{venue.location}}</view>
+      <view class="hero-title">{{venue}}</view>
+      <view class="hero-sub">{{curdate}}</view>
     </view>
 
     <!-- 状态图例 -->
@@ -29,14 +29,14 @@
     <!-- 日期选择 -->
     <view class="date-section">
       <view class="date-tabs">
-        <block wx:for="{{dates}}" wx:key="date">
+        <block wx:for="{{next7dates}}" wx:key="index">
           <view 
-            class="date-tab {{selectedDate === item.date ? 'active' : ''}}"
-            data-date="{{item.date}}"
+            class="date-tab {{optdate === index ? 'active' : ''}}"
+            data-index="{{index}}"
             bindtap="selectDate"
           >
-            <view class="date-display">{{item.display}}</view>
-            <view class="date-value">{{item.date}}</view>
+            <view class="date-display">{{item}}</view>
+            <view class="date-value">{{next7days[index]}}</view>
           </view>
         </block>
       </view>
@@ -44,23 +44,20 @@
 
     <!-- 时段选择矩阵 -->
     <view class="time-section">
-      <block wx:for="{{timeSlots}}" wx:key="period">
         <view class="time-period">
-          <view class="period-label">{{item.period}}</view>
           <view class="time-slots">
-            <block wx:for="{{item.slots}}" wx:key="*this" wx:for-item="slot">
+            <block wx:for="{{time_slot}}" wx:key="index" wx:for-item="slot">
               <button 
-                class="time-slot {{availabilityMatrix[selectedDate][slot] === 1 ? 'available' : 'unavailable'}} {{selectedTimeSlots.indexOf(slot) > -1 ? 'selected' : ''}}"
-                data-slot="{{slot}}"
-                bindtap="selectTimeSlot"
-                disabled="{{availabilityMatrix[selectedDate][slot] !== 1}}"
+                class="time-slot {{booktable[index][optdate] == 1 ? 'available' : 'unavailable'}} {{is_opt[index] ? 'selected' : '1'}}"
+                data-index="{{index}}"
+                bindtap="selectslot"
+                disabled="{{booktable[index][optdate] != 1}}"
               >
                 {{slot}}
               </button>
             </block>
           </view>
         </view>
-      </block>
     </view>
 
     <!-- 登录状态提示 -->
@@ -74,14 +71,14 @@
     <!-- 预约按钮 -->
     <view class="reserve-btn-container">
       <button 
-        class="reserve-btn {{!isLoggedIn || totalSelectedSlots === 0 || submitting ? 'disabled' : ''}}" 
+        class="reserve-btn" 
         bindtap="reserve"
-        disabled="{{!isLoggedIn || totalSelectedSlots === 0 || submitting}}"
+        disabled="{{opt_count === 0}}"
       >
         <text wx:if="{{submitting}}">预约中...</text>
         <text wx:elif="{{!isLoggedIn}}">请先登录</text>
-        <text wx:elif="{{totalSelectedSlots === 0}}">请选择时段</text>
-        <text wx:else>立即预约 ({{totalSelectedSlots}}个时段)</text>
+        <text wx:elif="{{opt_count === 0}}">请选择时段</text>
+        <text wx:else>立即预约 ({{opt_count}}个时段)</text>
       </button>
     </view>
   </view>

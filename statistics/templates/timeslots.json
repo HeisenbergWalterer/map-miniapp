@@ -1,0 +1,93 @@
+[
+    {
+        "_id": "timeslot_01",
+        "id": 1,
+        "start_time": "09:00",
+        "end_time": "09:30"
+    },
+    {
+        "_id": "timeslot_02",
+        "id": 2,
+        "start_time": "09:30",
+        "end_time": "10:00"
+    },
+    
+    {
+        "_id": "timeslot_03",
+        "id": 3,
+        "start_time": "10:00",
+        "end_time": "10:30"
+    },
+    {
+        "_id": "timeslot_04",
+        "id": 4,
+        "start_time": "10:30",
+        "end_time": "11:00"
+    },
+    {
+        "_id": "timeslot_05",
+        "id": 5,
+        "start_time": "13:00",
+        "end_time": "13:30"
+    },
+    {
+        "_id": "timeslot_06",
+        "id": 6,
+        "start_time": "13:30",
+        "end_time": "14:00"
+    },
+    {
+        "_id": "timeslot_07",
+        "id": 7,
+        "start_time": "14:00",
+        "end_time": "14:30"
+    },
+    {
+        "_id": "timeslot_08",
+        "id": 8,
+        "start_time": "14:30",
+        "end_time": "15:00"
+    },
+    {
+        "_id": "timeslot_09",
+        "id":9,
+        "start_time": "15:00",
+        "end_time": "15:30"
+    },
+    {
+        "_id": "timeslot_10",
+        "id": 10,
+        "start_time": "15:30",
+        "end_time": "16:00"
+    },
+    {
+        "_id": "timeslot_11",
+        "id": 11,
+        "start_time": "17:00",
+        "end_time": "17:30"
+    },
+    {
+        "_id": "timeslot_12",
+        "id": 12,
+        "start_time": "17:30",
+        "end_time": "18:00"
+    },
+    {
+        "_id": "timeslot_13",
+        "id": 13,
+        "start_time": "18:00",
+        "end_time": "18:30"
+    },
+    {
+        "_id": "timeslot_14",
+        "id": 14,
+        "start_time": "18:30",
+        "end_time": "19:00"
+    },
+    {
+        "_id": "timeslot_15",
+        "id": 15,
+        "start_time": "19:00",
+        "end_time": "19:30"
+    }
+]

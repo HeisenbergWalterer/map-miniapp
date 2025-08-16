@@ -37,6 +37,7 @@ Page({
       this.loadMyRecords();
     }
   },
+  
   // 从数据库加载数据
   loadDataFromDB: async function() {
     const tag = this.data.activeTab;

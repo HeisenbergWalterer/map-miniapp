@@ -184,10 +184,6 @@
   border: 1px solid #bfdbfe;
 }
 
-.time-slot.available:hover {
-  background: #dbeafe;
-}
-
 .time-slot.selected {
   background: linear-gradient(135deg, #1D4ED8 0%, #3B82F6 100%);
   color: #fff;
@@ -219,6 +215,11 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: fixed;
+  top: 450rpx;
+  left: 0;
+  right: 0;
+  z-index: 1000;
 }
 
 .tip-text {

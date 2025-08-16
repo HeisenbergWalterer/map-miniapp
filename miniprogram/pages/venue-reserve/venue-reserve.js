@@ -1,149 +1,63 @@
+const app = getApp();
+const db = app.DBS;
+const days = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+
 Page({
   data: {
-    venue: null,
-    dates: [],
-    selectedDate: '',
+    venue: '欢乐乒乓',      //场馆名称
+    venue_id: '',          //场馆id
+    center_id: '',         //中心id
+    today: '',      //今天星期几
+    curdate: '',    //今天日期
+    optdate: 0,     //选中日期索引
+    optslots: [],   //选择时段索引  [(slot_index, date_index).....]
+    next7days: [],  //一周星期
+    next7dates: [], //一周日期
+    booktable: [],  //场馆预约表    0/1 表示是否被预约
+    selfbook: [],   //用户预约表
+    time_slot: [],  //时间段       从数据库读取预设的时间段
+    is_opt: [],     //选择列表     加深显示用户已选择的时间段
+    slot_count: 10, //时间段数量   default=10
+    opt_count: 0,   //用户选择时段数量
+
+
+
     selectedTimeSlots: [], // 当前日期选中的时段
     selectedTimeSlotsMap: {}, // 每个日期选中的时段映射
     totalSelectedSlots: 0, // 所有日期选中时段的总数
-    timeSlots: [
-      { period: '9:00-11:00', slots: ['9:00', '9:30', '10:00', '10:30'] },
-      { period: '13:00-16:00', slots: ['13:00', '13:30', '14:00', '14:30', '15:00', '15:30'] },
-      { period: '17:00-19:30', slots: ['17:00', '17:30', '18:00', '18:30', '19:00'] }
-    ],
-    // 硬编码的可用性矩阵（全1表示都可选）
-    availabilityMatrix: {},
+
     isLoggedIn: false,
     submitting: false
   },
 
   onLoad: function(options) {
-    this.initDates();
-    this.initAvailabilityMatrix();
+    // 修改
+    this.getslots();
+    this.setcurrentdate();
+    this.getVenueData();
+    this.setoptlist();
     this.checkLoginStatus();
-    
-    // 模拟场馆数据
-    this.setData({
-      venue: {
-        name: options.venueName || '温暖驿站',
-        location: options.location || '示例地点'
-      }
-    });
-  },
-
-  // 初始化日期数据（今天往后7天）
-  initDates() {
-    const dates = [];
-    const today = new Date();
-    
-    for (let i = 0; i < 7; i++) {
-      const date = new Date(today);
-      date.setDate(today.getDate() + i);
-      const dateStr = this.formatDate(date);
-      dates.push({
-        date: dateStr,
-        display: i === 0 ? '今天' : this.getWeekDay(date.getDay()),
-        fullDate: date
-      });
-    }
-    
-    this.setData({
-      dates: dates,
-      selectedDate: dates[0].date
-    });
-  },
-
-  // 初始化可用性矩阵（硬编码为全1）
-  initAvailabilityMatrix() {
-    const matrix = {};
-    this.data.dates.forEach(dateItem => {
-      matrix[dateItem.date] = {};
-      this.data.timeSlots.forEach(period => {
-        period.slots.forEach(slot => {
-          matrix[dateItem.date][slot] = 1; // 1表示可选
-        });
-      });
-    });
-    this.setData({
-      availabilityMatrix: matrix
-    });
-  },
-
-  // 格式化日期
-  formatDate(date) {
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${month}/${day}`;
-  },
-
-  // 获取星期
-  getWeekDay(day) {
-    const weekDays = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
-    return weekDays[day];
-  },
-
-  // 选择日期
-  selectDate(e) {
-    const date = e.currentTarget.dataset.date;
-    const { selectedTimeSlotsMap } = this.data;
-    
-    // 获取该日期已选中的时段，如果没有则为空数组
-    const selectedTimeSlots = selectedTimeSlotsMap[date] || [];
-    
-    this.setData({
-      selectedDate: date,
-      selectedTimeSlots: selectedTimeSlots
-    });
-  },
-
-  // 选择时段
-  selectTimeSlot(e) {
-    const slot = e.currentTarget.dataset.slot;
-    const { selectedDate, availabilityMatrix, selectedTimeSlots, selectedTimeSlotsMap } = this.data;
-    
-    // 检查该时段是否可选
-    if (availabilityMatrix[selectedDate][slot] !== 1) {
-      return;
-    }
-    
-    const index = selectedTimeSlots.indexOf(slot);
-    let newSelectedSlots = [...selectedTimeSlots];
-    let newSelectedTimeSlotsMap = { ...selectedTimeSlotsMap };
-    
-    if (index > -1) {
-      // 取消选择
-      newSelectedSlots.splice(index, 1);
-    } else {
-      // 选择
-      newSelectedSlots.push(slot);
-    }
-    
-    // 更新该日期的选中时段映射
-    newSelectedTimeSlotsMap[selectedDate] = newSelectedSlots;
-    
-    // 计算所有日期的选中时段总数
-    const totalSelectedSlots = Object.values(newSelectedTimeSlotsMap).reduce((total, slots) => {
-      return total + (slots ? slots.length : 0);
-    }, 0);
-    
-    this.setData({
-      selectedTimeSlots: newSelectedSlots,
-      selectedTimeSlotsMap: newSelectedTimeSlotsMap,
-      totalSelectedSlots: totalSelectedSlots
-    });
   },
 
   // 检查登录状态
   checkLoginStatus() {
     // 这里应该检查实际的登录状态
     // 暂时模拟为已登录
-    this.setData({
-      isLoggedIn: true
-    });
+    const userInfo = wx.getStorageSync('userInfo');
+    console.log("userInfo", userInfo);
+    if (userInfo.nickName) {
+      this.setData({
+        isLoggedIn: true
+      });
+    } else {
+      this.setData({
+        isLoggedIn: false
+      });
+    }
   },
-
+  
   // 立即预约
-  reserve() {
+  reserve: async function() {
     if (!this.data.isLoggedIn) {
       wx.showToast({
         title: '请先登录',
@@ -151,55 +65,233 @@ Page({
       });
       return;
     }
+
+
+    this.setData({
+      submitting: true
+    });
+    // 提交前再次同步
+    this.getVenueData();
+    // 同步后立即检查
+    const booktable = this.data.booktable;
+    let newbooktable = booktable;
+    for(let i = 0; i < total; i++) {
+      const [slot_index, date_index] = optslots[i];
+      if(booktable[slot_index][date_index] == 0) {
+        wx.showToast({
+          title: '场地已被预约',
+          icon: 'none'
+        });
+
+        return;
+      }
+    const userInfo = wx.getStorageSync('userInfo');
+    console.log("userInfo", userInfo);
     
     const { selectedTimeSlotsMap } = this.data;
+    const venue_id = this.data.venue_id;
+    const total = this.data.opt_count;
+    const optslots = this.data.optslots;
+    const optdate = this.data.optdate;
+    const time_slot = this.data.time_slot;
+
+    // 1、改venue的booktable
     
-    // 计算所有日期的选中时段总数
-    const totalSelectedSlots = Object.values(selectedTimeSlotsMap).reduce((total, slots) => {
-      return total + (slots ? slots.length : 0);
-    }, 0);
-    
-    if (totalSelectedSlots === 0) {
-      wx.showToast({
-        title: '请选择预约时段',
-        icon: 'none'
-      });
-      return;
+      newbooktable[slot_index][date_index] = 0;
     }
+    console.log("newbooktable", newbooktable);
+    db.updateElementByID('venue', venue_id, {booktable: newbooktable});
+
+    // 2、add venue_reservation
+    const reg_data = {
+      open_id: userInfo.openid,
+      name: userInfo.nickName,
+      phone: userInfo.phoneNumber,
+      party_size: 1,
+      center_id: this.data.center_id,
+      venue_id: this.data.venue_id,
+      time_reserved: this.data.optslots,
+      status: 'reserved'
+    }
+    console.log("reg info", reg_data);
+    db.addElement('venue_reservation', reg_data);
     
-    this.setData({ submitting: true });
-    
-    // 构建预约详情
-    const reservationDetails = [];
-    Object.keys(selectedTimeSlotsMap).forEach(date => {
-      const slots = selectedTimeSlotsMap[date];
-      if (slots && slots.length > 0) {
-        reservationDetails.push(`${date}: ${slots.join(', ')}`);
-      }
+    this.setData({
+      submitting: false
     });
-    
-    // 模拟预约请求
+
+    wx.showToast({
+      title: '预约成功',
+      icon: 'success'
+    });
     setTimeout(() => {
-      wx.showModal({
-        title: '预约成功',
-        content: `您已成功预约以下时段：\n${reservationDetails.join('\n')}`,
-        showCancel: false,
-        confirmText: '确定',
-        success: () => {
-          this.setData({ submitting: false });
-          // 可以跳转到预约确认页面或返回
-          setTimeout(() => {
-            wx.navigateBack();
-          }, 500);
-        }
-      });
+      wx.navigateBack();
     }, 1000);
   },
 
   // 去登录
-  goToLogin() {
-    wx.navigateTo({
+  goToLogin: function() {
+    console.log("go to login");
+    wx.switchTab({
       url: '/pages/profile/profile'
     });
-  }
+  },
+
+  // ------------------------------已修改--------------------------------
+  // 选择日期
+  selectDate(e) {
+    const index = e.currentTarget.dataset.index;
+    this.setData({ optdate: index });
+    this.setoptlist();
+  },
+
+  // 选择时段
+  selectslot: function(e) {
+    const index = e.currentTarget.dataset.index;
+    const slot = this.data.time_slot[index];
+    const optdate = this.data.optdate;
+    console.log("选择时段：", slot);
+    const diff = this.getIndexInArray(this.data.optslots, [index, optdate]);
+    let optslots = this.data.optslots;
+    let is_opt = this.data.is_opt;
+    if (diff > -1) {
+      optslots.splice(diff, 1);
+      is_opt[index] = 0;
+    } else {
+      optslots.push([index, optdate]);
+      is_opt[index] = 1;
+    }
+    this.setData({
+      optslots: optslots,
+      is_opt: is_opt,
+      opt_count: optslots.length
+    });
+    console.log("is_opt", this.data.is_opt[index] == 1);
+    console.log("is_opt", this.data.is_opt);
+    console.log("当前选择时段", index, "   当前选择日期：", optdate);
+    console.log("当前存在时段：", this.data.optslots);
+  },
+
+  // 获取时间段数组
+  getslots: async function() {
+    const slots = await db.getCollection('time_slot');
+    const formatslot = slots.map(period => (
+      `${period.start_time}-${period.end_time}`));
+    const slot_count = formatslot.length;
+    this.setData({ 
+      time_slot: formatslot,
+      slot_count: slot_count
+    });
+  },
+
+  // 设置当前日期
+  setcurrentdate: async function() {
+    const date = new Date();
+    const ty = date.getFullYear();
+    const tm = date.getMonth() + 1;
+    const td = date.getDate();
+    const day = date.getDay();
+    // 获取今天日期
+    const curdate = `${tm}/${td}`;
+    const today = days[day];
+    // 获取一周日期
+    const next7days = this.getnext7days(day);
+    const next7dates = this.getnext7dates(ty, tm, td);
+    console.log("当前星期", next7days);
+    console.log("当前周", next7dates);
+    console.log("当前日期", curdate);
+    this.setData({ 
+      today: today,
+      curdate: curdate,
+      next7days: next7days,
+      next7dates: next7dates });
+
+  }, 
+
+  // 计算一周星期
+  getnext7days : function(td) {
+    let next7days = [];
+    let d= td;
+    for(let i = 0; i < 7; i++) {
+      next7days.push(days[d]);
+      d++;
+      if(d > 6) {
+        d = 0;
+      }
+    }
+    return next7days;
+  },
+
+  // 计算一周日期
+  getnext7dates : function(cy, cm, cd) {
+    let next7days = [];
+    let dm;
+    let y=cy;
+    let m=cm;
+    let d=cd;
+    switch(m) {
+      case 1:
+      case 3:
+      case 5:
+      case 7:
+      case 8:
+      case 10:
+      case 12:
+        dm = 31;
+        break;
+      case 4:
+      case 6:
+      case 9:
+      case 11:
+        dm = 30;
+        break;
+      case 2:
+        dm = ((ty % 4 == 0 && ty % 100 != 0 || ty % 400 == 0) ? 29 : 28);
+        break;
+      default:
+        break;
+    }
+    for(let i = 0; i < 7; i++) {
+      if(d > dm) {
+        d -= dm;
+        m++;
+      }
+      if(m > 12) {
+        m = 1;
+        y = ty + 1;
+      }
+      next7days.push(`${m}-${d}`);
+      d++;
+    }
+    return next7days;
+  },
+
+  // 查找二维数组子元素
+  getIndexInArray: function(arr, item) {
+    let index = arr.findIndex(subArr => subArr[0] == item[0] && subArr[1] == item[1]);
+    return index;
+  },
+
+  // 设置选择列表
+  setoptlist: function() {
+    const is_opt = new Array(this.data.slot_count).fill(0);
+    this.setData({
+      is_opt: is_opt,
+      optslots: [],
+      opt_count: 0
+    })
+  },
+
+  // 获取场馆信息
+  getVenueData: async function() {
+    const venue = await db.getElementByName('venue', '欢乐乒乓');
+    console.log("场馆信息：", venue);
+    this.setData({ 
+      venue_id: venue.data[0]._id,
+      center_id: venue.data[0].center_id,
+      booktable: venue.data[0].booktable
+    });
+    console.log("预约表：", this.data.booktable);
+  },
+
 });
