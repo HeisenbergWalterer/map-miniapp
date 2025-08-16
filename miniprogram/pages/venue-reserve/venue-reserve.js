@@ -20,12 +20,6 @@ Page({
     slot_count: 10, //时间段数量   default=10
     opt_count: 0,   //用户选择时段数量
 
-
-
-    selectedTimeSlots: [], // 当前日期选中的时段
-    selectedTimeSlotsMap: {}, // 每个日期选中的时段映射
-    totalSelectedSlots: 0, // 所有日期选中时段的总数
-
     isLoggedIn: false,
     submitting: false
   },
@@ -74,6 +68,11 @@ Page({
     this.getVenueData();
     // 同步后立即检查
     const booktable = this.data.booktable;
+    const total = this.data.opt_count;
+    const optslots = this.data.optslots;
+    const venue_id = this.data.venue_id;
+    const userInfo = wx.getStorageSync('userInfo');
+
     let newbooktable = booktable;
     for(let i = 0; i < total; i++) {
       const [slot_index, date_index] = optslots[i];
@@ -85,13 +84,9 @@ Page({
 
         return;
       }
-    const userInfo = wx.getStorageSync('userInfo');
     console.log("userInfo", userInfo);
     
     const { selectedTimeSlotsMap } = this.data;
-    const venue_id = this.data.venue_id;
-    const total = this.data.opt_count;
-    const optslots = this.data.optslots;
     const optdate = this.data.optdate;
     const time_slot = this.data.time_slot;
 
