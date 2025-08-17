@@ -3,8 +3,19 @@
     <!-- 头部信息 -->
     <view class="hero">
       <view class="hero-mask"></view>
-      <view class="hero-title">{{venue}}</view>
-      <view class="hero-sub">{{curdate}}</view>
+      <view class="hero-title">{{venueInfo.name || venue}}</view>
+    </view>
+
+    <!-- 场馆基本信息 -->
+    <view wx:if="{{venueInfo}}" class="venue-info-section">
+      <view class="info-row">
+        <text class="info-label">地址</text>
+        <text class="info-value">{{venueInfo.address}}</text>
+      </view>
+      <view class="info-row" wx:if="{{venueInfo.phone}}">
+        <text class="info-label">电话</text>
+        <text class="info-value">{{venueInfo.phone}}</text>
+      </view>
     </view>
 
     <!-- 状态图例 -->
@@ -45,6 +56,7 @@
     <!-- 时段选择矩阵 -->
     <view class="time-section">
         <view class="time-period">
+          <view class="period-label">选择时间段</view>
           <view class="time-slots">
             <block wx:for="{{time_slot}}" wx:key="index" wx:for-item="slot">
               <button 

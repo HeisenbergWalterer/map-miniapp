@@ -2,14 +2,19 @@
   background: #f8f9fa; 
   min-height: 100vh; 
   padding-bottom: 120rpx; /* 为底部按钮留出空间 */
+  box-sizing: border-box; /* 确保padding计算在内 */
+  overflow-x: hidden; /* 防止水平滚动 */
+  width: 100vw; /* 确保页面宽度不超过视口 */
 }
 
 .reserve-card { 
-  margin: 20rpx; 
+  margin: 20rpx 16rpx; /* 减少左右边距，避免溢出 */
   overflow: hidden; 
   border-radius: 20rpx; 
   background: #fff; 
-  box-shadow: 0 10rpx 30rpx rgba(0,0,0,0.06); 
+  box-shadow: 0 10rpx 30rpx rgba(0,0,0,0.06);
+  max-width: calc(100vw - 32rpx); /* 确保不超出屏幕宽度 */
+  box-sizing: border-box;
 }
 
 /* 头部样式 */
@@ -90,6 +95,39 @@
   color: #666;
 }
 
+/* 场馆信息区域 */
+.venue-info-section {
+  padding: 24rpx;
+  border-bottom: 1px solid #f1f1f1;
+  background: #fff;
+}
+
+.info-row {
+  display: flex;
+  align-items: center;
+  padding: 12rpx 0;
+  min-height: 48rpx;
+}
+
+.info-row:not(:last-child) {
+  border-bottom: 1px solid #f8f9fa;
+}
+
+.info-label {
+  font-size: 26rpx;
+  color: #666;
+  font-weight: 500;
+  width: 140rpx;
+  flex-shrink: 0;
+}
+
+.info-value {
+  font-size: 26rpx;
+  color: #333;
+  flex: 1;
+  line-height: 1.4;
+}
+
 /* 日期选择 */
 .date-section {
   padding: 24rpx;
@@ -141,7 +179,8 @@
 
 /* 时段选择矩阵 */
 .time-section {
-  padding: 24rpx;
+  padding: 24rpx 16rpx; /* 减少左右padding给时间段更多空间 */
+  background: #fff;
 }
 
 .time-period {
@@ -162,38 +201,62 @@
 }
 
 .time-slots {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12rpx;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8rpx; /* 进一步减少间距 */
+  padding: 8rpx 0;
+}
+
+/* 响应式设计：在更宽的屏幕上显示3列 */
+@media (min-width: 750rpx) {
+  .time-slots {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12rpx; /* 进一步减少大屏幕的间距 */
+  }
 }
 
 .time-slot {
-  min-width: 100rpx;
-  padding: 16rpx 20rpx;
-  border-radius: 12rpx;
-  font-size: 24rpx;
+  padding: 16rpx 8rpx; /* 进一步减少左右padding */
+  border-radius: 14rpx; /* 稍微减少圆角 */
+  font-size: 24rpx; /* 稍微减少字体大小 */
   border: none;
   transition: all 0.3s ease;
   background: #f7f8fa;
   color: #666;
+  text-align: center;
+  font-weight: 500;
+  min-height: 72rpx; /* 稍微减少最小高度 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  word-break: keep-all; /* 防止时间文字换行 */
+  white-space: nowrap; /* 确保时间段不换行 */
 }
 
 .time-slot.available {
   background: #eff6ff;
   color: #3B82F6;
-  border: 1px solid #bfdbfe;
+  border: 2rpx solid #bfdbfe;
+  transform: scale(1);
+}
+
+.time-slot.available:active {
+  transform: scale(0.98);
 }
 
 .time-slot.selected {
   background: linear-gradient(135deg, #1D4ED8 0%, #3B82F6 100%);
   color: #fff;
   font-weight: 600;
+  border: 2rpx solid #1D4ED8;
+  box-shadow: 0 6rpx 20rpx rgba(29, 78, 216, 0.3);
+  transform: scale(1.02);
 }
 
 .time-slot.unavailable {
   background: #f9fafb;
   color: #9ca3af;
-  border: 1px solid #e5e7eb;
+  border: 2rpx solid #e5e7eb;
 }
 
 .time-slot[disabled] {
@@ -241,9 +304,10 @@
   left: 0;
   right: 0;
   background: #fff;
-  padding: 20rpx 24rpx 32rpx;
+  padding: 20rpx 16rpx 32rpx; /* 减少左右padding，与卡片对齐 */
   border-top: 1px solid #f1f1f1;
   box-shadow: 0 -4rpx 20rpx rgba(0,0,0,0.08);
+  box-sizing: border-box; /* 确保padding计算在内 */
 }
 
 .reserve-btn {

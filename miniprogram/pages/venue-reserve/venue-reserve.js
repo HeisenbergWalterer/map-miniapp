@@ -7,6 +7,7 @@ Page({
     venue: '欢乐乒乓',      //场馆名称
     venue_id: '',          //场馆id
     center_id: '',         //中心id
+    venueInfo: null,       //完整场馆信息
     today: '',      //今天星期几
     curdate: '',    //今天日期
     optdate: 0,     //选中日期索引
@@ -25,10 +26,33 @@ Page({
   },
 
   onLoad: function(options) {
-    // 修改
+    // 处理页面参数
+    if (options.data) {
+      try {
+        const venueData = JSON.parse(decodeURIComponent(options.data));
+        console.log('接收到的场馆数据:', venueData);
+        this.setData({
+          venue: venueData.name || '欢乐乒乓',
+          venue_id: venueData._id,
+          center_id: venueData.center_id,
+          venueInfo: {
+            name: venueData.name,
+            address: venueData.address,
+            phone: venueData.phone,
+            notes: venueData.notes
+          },
+          booktable: venueData.booktable
+        });
+      } catch (e) {
+        console.error('解析场馆数据失败:', e);
+        this.getVenueData(); // 降级到原有方法
+      }
+    } else {
+      this.getVenueData(); // 没有参数时使用原有方法
+    }
+    
     this.getslots();
     this.setcurrentdate();
-    this.getVenueData();
     this.setoptlist();
     this.checkLoginStatus();
   },
@@ -99,7 +123,6 @@ Page({
 
     // 2、add venue_reservation
     const reg_data = {
-      open_id: userInfo.openid,
       name: userInfo.nickName,
       phone: userInfo.phoneNumber,
       party_size: 1,
@@ -281,12 +304,20 @@ Page({
   getVenueData: async function() {
     const venue = await db.getElementByName('venue', '欢乐乒乓');
     console.log("场馆信息：", venue);
+    const venueData = venue.data[0];
     this.setData({ 
-      venue_id: venue.data[0]._id,
-      center_id: venue.data[0].center_id,
-      booktable: venue.data[0].booktable
+      venue_id: venueData._id,
+      center_id: venueData.center_id,
+      booktable: venueData.booktable,
+      venueInfo: {
+        name: venueData.name,
+        address: venueData.address,
+        phone: venueData.phone,
+        notes: venueData.notes
+      }
     });
     console.log("预约表：", this.data.booktable);
+    console.log("场馆详细信息：", this.data.venueInfo);
   },
 
 });

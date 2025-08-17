@@ -338,12 +338,12 @@ App({
       });
     },
 
-    // 获取当前用户的活动报名记录（倒序返回）
+    // 获取当前用户的活动报名记录（倒序返回，只显示有效记录）
     getMyActivityRegistrations: function(openid) {
       const db = this.getDB();
       return new Promise((resolve, reject) => {
         db.collection('activity_registration')
-          .where({ _openid: openid })
+          .where({ _openid: openid, status: 'registered' })
           .orderBy('createdAt', 'desc')
           .get({
             success: function(res){ resolve(res.data || []); },
@@ -385,6 +385,89 @@ App({
           },
           fail: function(err) {
             console.error('取消报名失败:', err);
+            reject(err);
+          }
+        });
+      });
+    },
+
+    // -----场馆预约相关数据库操作-----
+    // 获取当前用户的场馆预约记录（倒序返回）
+    // 兼容历史数据：优先使用 _openid，如果没有则使用 open_id
+    getMyVenueReservations: function(openid) {
+      const db = this.getDB();
+      const _ = db.command;
+      return new Promise((resolve, reject) => {
+        db.collection('venue_reservation')
+          .where(_.or([
+            { _openid: openid, status: 'reserved' },
+            { open_id: openid, status: 'reserved' }
+          ]))
+          .orderBy('_createTime', 'desc')
+          .get({
+            success: function(res){ 
+              console.log('获取场馆预约记录:', res.data);
+              resolve(res.data || []); 
+            },
+            fail: function(err){ 
+              console.error('获取我的场馆预约失败:', err); 
+              // 如果复杂查询失败，尝试简单查询
+              db.collection('venue_reservation')
+                .where({ status: 'reserved' })
+                .get({
+                  success: function(res2) {
+                    // 在前端过滤匹配的记录
+                    const filtered = (res2.data || []).filter(record => 
+                      record._openid === openid || record.open_id === openid
+                    );
+                    resolve(filtered);
+                  },
+                  fail: reject
+                });
+            }
+          });
+      });
+    },
+
+    // 批量获取场馆信息（按 _id 列表）
+    getVenuesByIds: function(venueIds) {
+      const db = this.getDB();
+      const _ = db.command;
+      return new Promise((resolve, reject) => {
+        if (!Array.isArray(venueIds) || venueIds.length === 0) {
+          resolve([]);
+          return;
+        }
+        db.collection('venue').where({ _id: _.in(venueIds) }).get({
+          success: function(res){ resolve(res.data || []); },
+          fail: function(err){ console.error('批量获取场馆失败:', err); reject(err); }
+        });
+      });
+    },
+
+    // 获取时间段配置
+    getTimeSlots: function() {
+      const db = this.getDB();
+      return new Promise((resolve, reject) => {
+        db.collection('time_slot').orderBy('id', 'asc').get({
+          success: function(res){ resolve(res.data || []); },
+          fail: function(err){ console.error('获取时间段失败:', err); reject(err); }
+        });
+      });
+    },
+
+    // 取消场馆预约（更新状态为cancelled）
+    cancelVenueReservation: function(reservationId) {
+      const db = this.getDB();
+      return new Promise((resolve, reject) => {
+        db.collection('venue_reservation').doc(reservationId).update({
+          data: { status: 'cancelled', cancelledAt: new Date() },
+          success: function(res) {
+            console.log('取消场馆预约成功:', res);
+            resolve(res);
+          },
+          fail: function(err) {
+            console.error('取消场馆预约失败:', err);
             reject(err);
           }
         });
