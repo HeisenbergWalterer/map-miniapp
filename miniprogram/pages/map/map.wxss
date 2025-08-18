@@ -14,7 +14,7 @@
   align-items: center;
   height: 55px;
   box-sizing: border-box;
-  background: linear-gradient(180deg, #ffffff 0%, #fff8f5 100%);
+  background: linear-gradient(180deg, #ffffff 0%, #f0f7ff 100%);
   border-radius: 0 0 20px 20px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
   margin: 0 10px;
@@ -35,8 +35,8 @@
 }
 
 .search-input:focus {
-  border-color: #FF6B35;
-  box-shadow: 0 2px 12px rgba(255, 107, 53, 0.2);
+  border-color: #3B82F6;
+  box-shadow: 0 2px 12px rgba(59, 130, 246, 0.2);
   outline: none;
 }
 
@@ -45,7 +45,7 @@
   flex: 1;
   height: 38px;
   line-height: 38px;
-  background: linear-gradient(135deg, #FF6B35 0%, #ff8e53 100%);
+  background: linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%);
   color: white;
   border: none;
   border-radius: 20px;
@@ -60,7 +60,7 @@
 
 .search-btn:active {
   transform: translateY(1px) scale(0.98);
-  box-shadow: 0 2px 6px rgba(255, 107, 53, 0.2);
+  box-shadow: 0 2px 6px rgba(59, 130, 246, 0.2);
 }
 
 /* 筛选按钮 */
@@ -68,7 +68,7 @@
   flex: 0.4;
   height: 38px;
   line-height: 38px;
-  background: linear-gradient(135deg, #FF6B35 0%, #ff8e53 100%);
+  background: linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%);
   color: white;
   border: none;
   border-radius: 20px;
@@ -130,11 +130,11 @@
 }
 
 .suggestion-item:hover {
-  background: linear-gradient(90deg, #fff8f5 0%, #ffffff 100%);
+  background: linear-gradient(90deg, #f0f7ff 0%, #ffffff 100%);
 }
 
 .suggestion-item:active {
-  background: linear-gradient(90deg, #FF6B35 0%, #ff8e53 100%);
+  background: linear-gradient(90deg, #3B82F6 0%, #60A5FA 100%);
   color: white;
 }
 
@@ -273,7 +273,7 @@ text{
   position: relative;
   z-index: 10; /* 比search-suggestions低 */
   margin-top: 0; /* 去掉上方缝隙 */
-  background: linear-gradient(180deg, #ffffff 0%, #fff8f5 100%);
+  background: linear-gradient(180deg, #ffffff 0%, #f0f7ff 100%);
   padding: 15px 20px;
   margin: 0 0 15px 0;
   border-radius: 0 0 20px 20px;
@@ -351,10 +351,10 @@ text{
 }
 
 .type-btn.active {
-  background: linear-gradient(135deg, #FF6B35 0%, #ff8e53 100%);
+  background: linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%);
   color: #fff;
-  border: 2px solid #FF6B35;
-  box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+  border: 2px solid #3B82F6;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
   transform: translateY(-1px);
 }
 

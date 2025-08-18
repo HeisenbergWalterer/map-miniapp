@@ -35,21 +35,21 @@
   ],
   "tabBar": {
     "color": "#999999",
-    "selectedColor": "#FF6B35",
+    "selectedColor": "#3B82F6",
     "backgroundColor": "#FFFFFF",
     "borderStyle": "black",
     "list": [
       {
         "pagePath": "pages/index/index",
         "text": "首页",
-        "iconPath": "images/icons/首页.png",
-        "selectedIconPath": "images/icons/首页.png"
+        "iconPath": "images/icons/首页-new.png",
+        "selectedIconPath": "images/icons/首页-new.png"
       },
       {
         "pagePath": "pages/profile/profile",
         "text": "个人中心",
-        "iconPath": "images/icons/usercenter.png",
-        "selectedIconPath": "images/icons/usercenter-active.png"
+        "iconPath": "images/icons/个人中心-new.png",
+        "selectedIconPath": "images/icons/个人中心-new.png"
       }
     ]
   },

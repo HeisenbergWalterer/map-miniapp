@@ -124,7 +124,11 @@ Page({
 
     this.setData({ submitting: true });
     try {
-      const openid = userInfo.openid;
+      // 兼容不同的openId字段名
+      const openid = wx.getStorageSync('openId') || wx.getStorageSync('openid') || userInfo.openid || userInfo.openId || userInfo._openid;
+      
+      console.log('活动详情页获取用户信息 - openid:', openid);
+      
       if (!openid) throw new Error('未获取到用户标识');
 
       // 从 users 表读取最新昵称与手机

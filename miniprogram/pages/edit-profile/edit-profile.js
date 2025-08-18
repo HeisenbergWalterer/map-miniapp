@@ -224,7 +224,11 @@ Page({
 
     try {
       const stored = wx.getStorageSync('userInfo') || {}
-      const openid = stored.openid
+      // 兼容不同的openId字段名
+      const openid = wx.getStorageSync('openId') || wx.getStorageSync('openid') || stored.openid || stored.openId || stored._openid;
+      
+      console.log('编辑资料页获取用户信息 - openid:', openid);
+      
       if (!openid) {
         wx.showToast({ title: '请先登录', icon: 'none' })
         return
@@ -279,7 +283,9 @@ Page({
   refreshFromDB() {
     try {
       const local = wx.getStorageSync('userInfo') || {}
-      const openid = local.openid
+      // 兼容不同的openId字段名
+      const openid = wx.getStorageSync('openId') || wx.getStorageSync('openid') || local.openid || local.openId || local._openid;
+      
       if (!openid) return
       const db = app.DBS ? app.DBS.getDB() : wx.cloud.database()
       db.collection('users').where({ _openid: openid }).get().then(res => {

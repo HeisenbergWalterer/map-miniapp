@@ -1,5 +1,5 @@
 <!--edit-profile.wxml-->
-<navigation-bar title="编辑资料" back="{{true}}" color="white" background="linear-gradient(135deg, #FF6B35 0%, #ff8e53 100%)"></navigation-bar>
+<navigation-bar title="编辑资料" back="{{true}}" color="white" background="linear-gradient(135deg, #2563EB 0%, #3B82F6 100%)"></navigation-bar>
 <scroll-view class="scrollarea" scroll-y type="list">
   <view class="container">
     

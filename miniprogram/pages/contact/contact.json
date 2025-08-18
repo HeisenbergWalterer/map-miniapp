@@ -1,7 +1,7 @@
 {
   "navigationBarTitleText": "安新联系",
-  "navigationBarBackgroundColor": "#ffffff",
-  "navigationBarTextStyle": "black",
+  "navigationBarBackgroundColor": "#3B82F6",
+  "navigationBarTextStyle": "white",
   "backgroundColor": "#f5f5f5",
   "enablePullDownRefresh": false
 }

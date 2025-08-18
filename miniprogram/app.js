@@ -456,19 +456,105 @@ App({
       });
     },
 
-    // 取消场馆预约（更新状态为cancelled）
+    // 取消场馆预约（更新状态为cancelled并恢复booktable时间段）
     cancelVenueReservation: function(reservationId) {
       const db = this.getDB();
+      const self = this; // 保存this引用
       return new Promise((resolve, reject) => {
-        db.collection('venue_reservation').doc(reservationId).update({
-          data: { status: 'cancelled', cancelledAt: new Date() },
-          success: function(res) {
-            console.log('取消场馆预约成功:', res);
-            resolve(res);
+        // 首先获取预约记录详情
+        db.collection('venue_reservation').doc(reservationId).get({
+          success: (getRes) => {
+            if (!getRes.data) {
+              reject(new Error('预约记录不存在'));
+              return;
+            }
+            
+            const reservation = getRes.data;
+            const { venue_id, time_reserved } = reservation;
+            
+            console.log('取消预约 - 预约记录:', reservation);
+            
+            // 更新预约状态为cancelled
+            db.collection('venue_reservation').doc(reservationId).update({
+              data: { status: 'cancelled', cancelledAt: new Date() },
+              success: (updateRes) => {
+                console.log('预约状态更新成功:', updateRes);
+                
+                // 如果有预约时间段，需要恢复venue的booktable
+                if (time_reserved && time_reserved.length > 0) {
+                  self.restoreVenueTimeSlots(venue_id, time_reserved).then(() => {
+                    console.log('场馆时间段恢复成功');
+                    resolve(updateRes);
+                  }).catch((restoreErr) => {
+                    console.error('恢复场馆时间段失败:', restoreErr);
+                    // 即使恢复失败，预约取消已成功，仍然resolve
+                    resolve(updateRes);
+                  });
+                } else {
+                  resolve(updateRes);
+                }
+              },
+              fail: (updateErr) => {
+                console.error('取消场馆预约失败:', updateErr);
+                reject(updateErr);
+              }
+            });
           },
-          fail: function(err) {
-            console.error('取消场馆预约失败:', err);
-            reject(err);
+          fail: (getErr) => {
+            console.error('获取预约记录失败:', getErr);
+            reject(getErr);
+          }
+        });
+      });
+    },
+
+    // 恢复场馆时间段可用性
+    restoreVenueTimeSlots: function(venueId, timeReserved) {
+      const db = this.getDB();
+      return new Promise((resolve, reject) => {
+        // 获取场馆当前的booktable
+        db.collection('venue').doc(venueId).get({
+          success: (getRes) => {
+            if (!getRes.data || !getRes.data.booktable) {
+              reject(new Error('场馆数据不存在'));
+              return;
+            }
+            
+            const venue = getRes.data;
+            const booktable = JSON.parse(JSON.stringify(venue.booktable)); // 深拷贝
+            
+            console.log('恢复时间段 - 原始booktable:', booktable);
+            console.log('恢复时间段 - timeReserved:', timeReserved);
+            
+            // 恢复所有预约的时间段为可用（设为1）
+            timeReserved.forEach(([day, hour]) => {
+              if (booktable[day] && booktable[day][hour] !== undefined) {
+                const oldValue = booktable[day][hour];
+                booktable[day][hour] = 1; // 1表示可预约
+                console.log(`恢复时间段 [第${day}天, 第${hour}时段] 从 ${oldValue} 改为 1`);
+              } else {
+                console.warn(`时间段 [${day}, ${hour}] 超出booktable范围`);
+              }
+            });
+            
+            console.log('恢复时间段 - 更新后booktable:', booktable);
+            
+            // 更新场馆的booktable
+            db.collection('venue').doc(venueId).update({
+              data: { booktable: booktable },
+              success: (updateRes) => {
+                console.log('场馆时间段恢复成功:', updateRes);
+                resolve(updateRes);
+              },
+              fail: (updateErr) => {
+                console.error('更新场馆时间段失败:', updateErr);
+                reject(updateErr);
+              }
+            });
+          },
+          fail: (getErr) => {
+            console.error('获取场馆数据失败:', getErr);
+            reject(getErr);
           }
         });
       });

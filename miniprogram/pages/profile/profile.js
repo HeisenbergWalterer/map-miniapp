@@ -147,7 +147,9 @@ Page({
   async refreshUserFromDB() {
     try {
       const local = wx.getStorageSync('userInfo') || {}
-      const openid = local.openid
+      // 兼容不同的openId字段名
+      const openid = wx.getStorageSync('openId') || wx.getStorageSync('openid') || local.openid || local.openId || local._openid;
+      
       if (!openid) return
       const db = app.DBS ? app.DBS.getDB() : wx.cloud.database()
       const res = await db.collection('users').where({ _openid: openid }).get()

@@ -87,7 +87,12 @@ Page({
   loadAllMyRecords: async function() {
     try {
       const userInfo = wx.getStorageSync('userInfo') || {};
-      const openid = userInfo.openid;
+      // 兼容不同的openId字段名
+      const openid = wx.getStorageSync('openId') || wx.getStorageSync('openid') || userInfo.openid || userInfo.openId || userInfo._openid;
+      
+      console.log('记录页面获取用户信息 - openid:', openid);
+      console.log('记录页面获取用户信息 - userInfo:', userInfo);
+      
       if (!openid) {
         wx.showToast({ title: '请先登录', icon: 'none' });
         this.setData({ myRecords: [], myVenueRecords: [], filteredRecords: [] });

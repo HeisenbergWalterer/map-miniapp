@@ -13,19 +13,16 @@ page {
   background-color: #f8f9fa;
 }
 
-/* 头部区域 - 全屏橘黄色渐变，贴合屏幕顶部 */
+/* 头部区域 - 全屏现代蓝色渐变，贴合屏幕顶部 */
 .page__header {
   position: relative;
-  background: linear-gradient(135deg, #FF6B35 0%, #FF7A45 20%, #FF8955 50%, #FF9E66 80%, #FFA575 100%); 
-  /* background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 紫蓝渐变 */
-  /* background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); 粉红渐变 */
-  /* background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); 蓝绿渐变 */
-  /* background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); 绿青渐变 */
+  background: linear-gradient(135deg, #2563EB 0%, #3B82F6 25%, #60A5FA 50%, #3B82F6 75%, #2563EB 100%); 
+  /* 现代纯蓝渐变：从深蓝到浅蓝再回到深蓝，减少紫色调 */
   padding: 0;
   margin: 0;
-  padding-top: var(--status-bar-height, 44rpx); /* 适配状态栏高度 */
+  padding-top: calc(var(--status-bar-height, 44rpx) + 20rpx); /* 适配状态栏高度并增加安全距离 */
   padding-bottom: 120rpx; /* 适度减少底部间距 */
-  min-height: 320rpx; /* 减少最小高度 */
+  min-height: 380rpx; /* 增加最小高度以容纳完整图片 */
   overflow: hidden;
 }
 
@@ -35,14 +32,16 @@ page {
   bottom: 0;
   left: 0;
   right: 0;
-  height: 160rpx; /* 增加渐变高度，提供更长的过渡 */
+  height: 240rpx; /* 大幅增加渐变高度，提供更长的过渡 */
   background: linear-gradient(to bottom, 
-    rgba(255, 107, 53, 0) 0%,
-    rgba(255, 107, 53, 0.1) 15%, 
-    rgba(255, 107, 53, 0.3) 30%,
-    rgba(255, 107, 53, 0.5) 50%,
-    rgba(255, 107, 53, 0.7) 70%,
-    rgba(248, 249, 250, 0.9) 100%
+    rgba(37, 99, 235, 0) 0%,
+    rgba(37, 99, 235, 0.05) 10%,
+    rgba(37, 99, 235, 0.15) 25%, 
+    rgba(37, 99, 235, 0.3) 40%,
+    rgba(37, 99, 235, 0.5) 55%,
+    rgba(37, 99, 235, 0.7) 70%,
+    rgba(37, 99, 235, 0.85) 85%,
+    rgba(248, 249, 250, 0.95) 100%
   );
   z-index: 3;
 }
@@ -53,11 +52,14 @@ page {
   bottom: 0;
   left: 0;
   right: 0;
-  height: 80rpx; /* 增加最底部的过渡区域高度 */
+  height: 120rpx; /* 增加最底部的过渡区域高度 */
   background: linear-gradient(to bottom, 
     transparent 0%,
-    rgba(248, 249, 250, 0.6) 30%,
-    rgba(248, 249, 250, 0.8) 60%,
+    rgba(248, 249, 250, 0.2) 15%,
+    rgba(248, 249, 250, 0.4) 30%,
+    rgba(248, 249, 250, 0.6) 45%,
+    rgba(248, 249, 250, 0.8) 65%,
+    rgba(248, 249, 250, 0.95) 85%,
     #f8f9fa 100%
   );
   z-index: 4;
@@ -68,34 +70,39 @@ page {
   z-index: 2;
   text-align: center;
   color: white;
-  padding: 130rpx 20rpx 0rpx; /* 调整间距 - 图片下移 */
+  padding: 30rpx 10rpx 0rpx; /* 减少顶部内边距，避免图片被遮挡 */
   display: flex;
   flex-direction: column;
-  justify-content: center; /* 改回居中对齐 */
+  justify-content: center;
   align-items: center;
   min-height: 160rpx;
 }
 
-/* 标题卡片样式 - 简洁设计 */
+/* 标题卡片样式 - 渐变淡化边缘设计 */
 .title-card {
   width: 1000rpx; /* 大幅扩大宽度 */
-  height: 340rpx; /* 减少高度，创造更宽的长条形比例 */
+  height: 410rpx; /* 减少高度，创造更宽的长条形比例 */
   max-width: 98%; /* 增加最大宽度限制以适应更宽的图片 */
-  border-radius: 20rpx; /* 现代圆角设计 */
-  border: 1rpx solid rgba(255, 255, 255, 0.1); /* 调整边框透明度，更好融入橘红色背景 */
-  overflow: hidden; /* 确保圆角生效 */
+  border-radius: 0; /* 移除圆角，改用渐变淡化 */
+  border: none; /* 移除边框 */
+  overflow: hidden;
   object-fit: cover; /* 强制图片填充容器 */
   position: relative;
-  /* 使用mask创建边缘淡化效果 */
+  /* 使用多层遮罩创建边缘淡化效果 */
   mask: 
-    radial-gradient(ellipse at center, black 30%, transparent 85%),
+    radial-gradient(ellipse 120% 100% at center, black 40%, transparent 85%),
     linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%),
-    linear-gradient(to bottom, transparent 0%, black 5%, black 95%, transparent 100%);
+    linear-gradient(to bottom, transparent 0%, black 5%, black 90%, transparent 100%);
   mask-composite: intersect;
-  /* 为不支持mask的情况添加box-shadow作为备选 */
+  -webkit-mask: 
+    radial-gradient(ellipse 120% 100% at center, black 40%, transparent 85%),
+    linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%),
+    linear-gradient(to bottom, transparent 0%, black 5%, black 90%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  /* 柔和的外阴影，增强融合效果 */
   box-shadow: 
-    inset 0 0 120rpx 30rpx rgba(255, 107, 53, 0.4),
-    inset 0 0 60rpx 15rpx rgba(255, 107, 53, 0.3);
+    0 8rpx 32rpx rgba(37, 99, 235, 0.18),
+    0 4rpx 16rpx rgba(37, 99, 235, 0.12);
 }
 
 .app-title {
@@ -120,20 +127,20 @@ page {
 /* 主要内容区域 */
 .page__content {
   position: relative;
-  margin-top: -50rpx; /* 稍微增加重叠，与新的渐变效果配合 */
+  margin-top: -80rpx; /* 增加重叠，与更大的渐变效果配合 */
   z-index: 10;
   padding: 0 30rpx 40rpx;
 }
 
 /* 欢迎信息窄边框 */
 .welcome-bar {
-  background: linear-gradient(90deg, #fff7f0 0%, #ffffff 100%);
+  background: linear-gradient(90deg, #f0f7ff 0%, #ffffff 100%);
   border-radius: 50rpx;
   padding: 20rpx 30rpx;
   margin-bottom: 30rpx;
-  margin-top: 20rpx; /* 增加顶部边距，与渐变效果配合 */
-  border-left: 6rpx solid #FF6B35;
-  box-shadow: 0 4rpx 20rpx rgba(255, 107, 53, 0.1);
+  margin-top: 10rpx; /* 增加顶部边距，与渐变效果配合 */
+  border-left: 6rpx solid #3B82F6;
+  box-shadow: 0 4rpx 20rpx rgba(59, 130, 246, 0.1);
   position: relative;
   overflow: hidden;
   backdrop-filter: blur(10rpx); /* 添加毛玻璃效果 */
@@ -141,6 +148,14 @@ page {
   display: flex; /* 添加flexbox布局 */
   align-items: center; /* 垂直居中对齐 */
   gap: 15rpx; /* 图标与文字间距 */
+  transition: all 0.3s ease; /* 添加过渡动画 */
+  cursor: pointer; /* 添加指针样式 */
+}
+
+/* 未登录状态的欢迎栏悬停效果 */
+.welcome-bar:active {
+  transform: scale(0.98);
+  box-shadow: 0 2rpx 10rpx rgba(59, 130, 246, 0.15);
 }
 
 .welcome-bar::before {
@@ -150,16 +165,45 @@ page {
   right: 0;
   width: 100rpx;
   height: 100%;
-  background: linear-gradient(90deg, transparent 0%, rgba(255, 107, 53, 0.05) 100%);
+  background: linear-gradient(90deg, transparent 0%, rgba(59, 130, 246, 0.05) 100%);
 }
 
 .welcome-text {
   font-size: 24rpx; /* 缩小字体，使文字能在一行显示 */
   color: #333;
-  line-height: 1.6;
+  line-height: 0; /* 改为正常行高，避免过大的行高导致偏移 */
   position: relative;
   z-index: 2;
   flex: 1; /* 占据剩余空间 */
+}
+
+/* 欢迎信息内容容器 */
+.welcome-content {
+  flex: 1;
+  display: flex;
+  align-items: center; /* 确保垂直居中 */
+  height: 40rpx; /* 与喇叭图标高度一致 */
+}
+
+/* 登录高亮样式 */
+.login-highlight {
+  color: #3B82F6;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+/* 用户名高亮样式 */
+.username-highlight {
+  color: #3B82F6;
+  font-weight: bold;
+  font-size: 26rpx;
+}
+
+/* 服务天数高亮样式 */
+.days-highlight {
+  color: #FF6B35;
+  font-weight: bold;
+  font-size: 26rpx;
 }
 
 /* 扬声器图标样式 */
@@ -167,7 +211,7 @@ page {
   width: 40rpx;
   height: 40rpx;
   flex-shrink: 0; /* 防止图标被压缩 */
-  filter: drop-shadow(0 1rpx 2rpx rgba(255, 107, 53, 0.3));
+  filter: drop-shadow(0 1rpx 2rpx rgba(59, 130, 246, 0.3)); /* 更新为蓝色阴影 */
 }
 
 /* 暖心公告区域 */
@@ -190,9 +234,9 @@ page {
 .notice-title {
   font-size: 40rpx; /* 增大字体尺寸 */
   font-weight: bold;
-  color: #FF6B35;
+  color: #3B82F6;
   font-family: "PingFang SC", "Helvetica Neue", sans-serif;
-  text-shadow: 0 1rpx 2rpx rgba(255, 107, 53, 0.2);
+  text-shadow: 0 1rpx 2rpx rgba(59, 130, 246, 0.2);
 }
 
 .notice-more {
@@ -235,22 +279,22 @@ page {
 /* 服务功能区域 - 整体圆角矩形容器 */
 .function-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 2列布局，为暖心地图和安新联系 */
+  grid-template-columns: repeat(3, 1fr); /* 3列布局，三个按钮并排 */
   grid-template-rows: repeat(1, 1fr); /* 1行布局 */
-  gap: 20rpx; /* 添加间距 */
+  gap: 15rpx; /* 减少间距以适应3列布局 */
   margin-bottom: 40rpx;
-  padding: 35rpx 25rpx; /* 增加内边距，为放大的图标提供空间 */
+  padding: 40rpx 20rpx; /* 调整内边距以适应更紧凑的布局 */
   background: #ffffff; /* 整体容器的白色背景 */
   border-radius: 24rpx; /* 整体容器的圆角 */
   box-shadow: 0 8rpx 30rpx rgba(0, 0, 0, 0.06); /* 整体容器的阴影 */
-  border: 1px solid rgba(255, 107, 53, 0.1); /* 整体容器的边框 */
-  margin: 0 0 40rpx 0; /* 左右边距设为0，与暖心公告对齐 */
+  border: 1px solid rgba(59, 130, 246, 0.1); /* 更新为蓝色边框 */
+  margin: 0 0 110rpx 0; /* 左右边距设为0，与暖心公告对齐 */
 }
 
 .function-card {
   background: transparent; /* 移除单个按钮的背景 */
   border-radius: 0; /* 移除单个按钮的圆角 */
-  padding: 35rpx 20rpx; /* 增加内边距，为放大的图标提供空间 */
+  padding: 25rpx 15rpx; /* 减少内边距以适应3列布局 */
   text-align: center;
   box-shadow: none; /* 移除单个按钮的阴影 */
   border: none; /* 移除单个按钮的边框 */
