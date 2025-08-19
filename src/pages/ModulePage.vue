@@ -71,6 +71,7 @@ const modalVisible = ref(false)
 const isCreate = ref(false)
 const form = reactive<Record<string, any>>({})
 
+const saving = ref(false)
 const moduleKey = computed(() => route.params.module as string)
 const currentModule = computed(() => modules[moduleKey.value as keyof typeof modules])
 const maxPage = computed(() => Math.max(1, Math.ceil(total.value / pageSize)))
@@ -130,6 +131,7 @@ function isLongText(v: any) { return typeof v === 'string' && v.length > 60 }
 const formKeys = computed(() => Object.keys(form).filter((k) => k !== '_id'))
 
 async function onSave() {
+  saving.value = true
   try {
     if (!form.name) throw new Error('名称不能为空')
     if (isCreate.value) {
@@ -146,6 +148,7 @@ async function onSave() {
   } catch (e: any) {
     error.value = e?.message || '保存失败'
   }
+  saving.value = false
 }
 
 async function onDelete(row: any) {

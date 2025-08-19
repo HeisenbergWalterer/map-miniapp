@@ -28,6 +28,13 @@ export const modules = {
       'relay': { name: '接力站', collection: 'relay' }
     }
   },
+  reservations: {
+    key: 'reservations',
+    title: '预约管理',
+    collection: 'reservations',
+    searchFields: ['name', 'phone', 'address'],
+    fallbackFields: ['id','name','phone'],
+  }
 }
 
 export const defaultModule = 'contact'

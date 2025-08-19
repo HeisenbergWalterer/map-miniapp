@@ -7,20 +7,10 @@ const auth = app.auth({ persistence: 'local' })
 const db = app.database()
 
 export async function signInWithUsernameAndPassword(username: string, password: string) {
-  if (!username || !password) throw new Error('请输入用户名和密码')
-  if (typeof auth.signIn === 'function') {
-    return auth.signIn({ username, password })
-  }
-  if (typeof auth.signInWithUsernameAndPassword === 'function') {
-    return auth.signInWithUsernameAndPassword(username, password)
-  }
-  if (typeof auth.signInWithEmailAndPassword === 'function') {
-    return auth.signInWithEmailAndPassword(username, password)
-  }
-  if (typeof auth.signInWithPassword === 'function') {
-    return auth.signInWithPassword({ username, password })
-  }
-  throw new Error('当前 SDK 不支持用户名密码登录')
+  if (!username || !password) 
+    throw new Error('请输入用户名和密码')
+  console.log('使用 auth.signIn 方法登录')
+  return auth.signIn({ username, password })
 }
 
 export async function signOut() { return auth.signOut() }
@@ -40,6 +30,7 @@ export async function queryCollection(params: { collection: string, pageNo: numb
     const reg = db.RegExp({ regexp: keyword, options: 'i' })
     where['$or'] = [{ name: reg }, { phone: reg }, { address: reg }]
   }
+  console.log("where:", where);
   const skip = (pageNo - 1) * pageSize
   const countRes = await db.collection(collection).where(where).count()
   const total = countRes?.total || 0

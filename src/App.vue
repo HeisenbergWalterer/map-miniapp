@@ -36,8 +36,16 @@ const keyword = ref('')
 const moduleList = Object.values(modules)
 const currentModuleKey = computed(() => {
   const route = router.currentRoute.value
-  if (route.name === 'sites') return 'sites'
-  return route.params.module as string || defaultModule
+  console.log('当前路由:', route)
+  if (route.name === 'module') 
+    return route.params.module as string || defaultModule
+  
+  // 处理预约管理的子路由
+  if (route.name === 'venue-reservations' || route.name === 'event-registrations') {
+    return 'reservations'
+  }
+  
+  return route.name;
 })
 
 ensureLogin().catch(() => router.replace({ name: 'login' }))
@@ -56,8 +64,12 @@ function onSearch() {
 function onCreate() { (pageRef.value as any)?.openCreate() }
 async function onLogout() { await signOut(); router.replace({ name: 'login' }) }
 function switchModule(key: string) { 
+  console.log("switch:", key)
   if (key === 'sites') {
     router.push({ name: 'sites' })
+  } else if (key === 'reservations'){
+    console.log("switch to reservations")
+    router.push({ name: 'reservations', params: { module: key } });
   } else {
     router.push({ name: 'module', params: { module: key } })
   }
