@@ -159,8 +159,8 @@ page {
   color: white;
 }
 
-.type-badge.pdf {
-  background: linear-gradient(135deg, #F59E0B 0%, #FBBF24 100%);
+.type-badge.text {
+  background: linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%);
   color: white;
 }
 

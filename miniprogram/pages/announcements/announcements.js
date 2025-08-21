@@ -98,19 +98,23 @@ Page({
   onAnnouncementTap(e) {
     const announcement = e.currentTarget.dataset.announcement;
     
-    if (!announcement || !announcement.link) {
-      wx.showToast({
-        title: '公告链接无效',
-        icon: 'error'
-      });
-      return;
-    }
-    
     // 根据类型进行不同处理
     if (announcement.type === 'article') {
+      if (!announcement.link) {
+        wx.showToast({
+          title: '公告链接无效',
+          icon: 'error'
+        });
+        return;
+      }
       this.openArticle(announcement.link);
-    } else if (announcement.type === 'pdf') {
-      this.openPdf(announcement.link);
+    } else if (announcement.type === 'text') {
+      this.openTextAnnouncement(announcement);
+    } else {
+      wx.showToast({
+        title: '未知的公告类型',
+        icon: 'error'
+      });
     }
   },
 
@@ -133,121 +137,7 @@ Page({
     }
   },
 
-  // 打开PDF文件
-  async openPdf(filePath) {
-    try {
-      wx.showLoading({
-        title: '正在准备文档...',
-        mask: true
-      });
-
-      const fileId = this.extractFileIdFromPath(filePath);
-      
-      if (!fileId) {
-        wx.hideLoading();
-        wx.showToast({
-          title: 'PDF文件路径无效',
-          icon: 'error'
-        });
-        return;
-      }
-
-      const result = await wx.cloud.getTempFileURL({
-        fileList: [fileId]
-      });
-
-      if (result.fileList && result.fileList[0] && result.fileList[0].tempFileURL) {
-        const tempUrl = result.fileList[0].tempFileURL;
-        wx.hideLoading();
-        
-        // 直接下载PDF文件，因为网络文件无法直接用openDocument打开
-        this.downloadPdf(tempUrl);
-      } else {
-        wx.hideLoading();
-        wx.showToast({
-          title: '获取PDF文件失败',
-          icon: 'error'
-        });
-      }
-    } catch (error) {
-      wx.hideLoading();
-      console.error('处理PDF文件出错:', error);
-      wx.showToast({
-        title: '处理PDF文件出错',
-        icon: 'error'
-      });
-    }
-  },
-
-  // 从云存储路径中提取文件ID
-  extractFileIdFromPath(filePath) {
-    if (filePath && filePath.includes('cloud://')) {
-      const cloudPrefix = 'cloud://';
-      const startIndex = filePath.indexOf(cloudPrefix) + cloudPrefix.length;
-      const endIndex = filePath.indexOf('/', startIndex);
-      
-      if (endIndex !== -1) {
-        const envId = filePath.substring(startIndex, endIndex);
-        const filePathPart = filePath.substring(endIndex + 1);
-        return `${envId}/${filePathPart}`;
-      }
-    }
-    return filePath;
-  },
-
-  // 下载PDF文件
-  downloadPdf(url) {
-    wx.showLoading({
-      title: '正在下载文档...',
-      mask: true
-    });
-
-    wx.downloadFile({
-      url: url,
-      success: (res) => {
-        wx.hideLoading();
-        if (res.statusCode === 200) {
-          // 下载成功，尝试打开文件
-          wx.openDocument({
-            filePath: res.tempFilePath,
-            success: (openRes) => {
-              console.log('打开下载的PDF成功:', openRes);
-              wx.showToast({
-                title: '文档已打开',
-                icon: 'success'
-              });
-            },
-            fail: (openErr) => {
-              console.error('打开下载的PDF失败:', openErr);
-              wx.showModal({
-                title: '提示',
-                content: '文档下载成功，但无法直接打开。请检查文件格式是否正确。',
-                showCancel: false,
-                confirmText: '确定'
-              });
-            }
-          });
-        } else {
-          wx.showModal({
-            title: '下载失败',
-            content: `文档下载失败，状态码: ${res.statusCode}。请检查网络连接或稍后重试。`,
-            showCancel: false,
-            confirmText: '确定'
-          });
-        }
-      },
-      fail: (err) => {
-        wx.hideLoading();
-        console.error('下载PDF失败:', err);
-        wx.showModal({
-          title: '下载失败',
-          content: '文档下载失败，请检查网络连接或稍后重试。',
-          showCancel: false,
-          confirmText: '确定'
-        });
-      }
-    });
-  },
+  
 
   // 复制链接到剪贴板
   copyLinkToClipboard(link) {
@@ -329,5 +219,30 @@ Page({
     wx.navigateBack({
       delta: 1
     });
+  },
+
+  // 打开文本公告详情
+  openTextAnnouncement(announcement) {
+    wx.navigateTo({
+      url: `/pages/announcement-detail/announcement-detail?id=${announcement._id}&title=${encodeURIComponent(announcement.title)}&content=${encodeURIComponent(this.processContent(announcement.content))}&type=${announcement.type}`,
+      success: function(res) {
+        console.log('跳转到公告详情页面成功');
+      },
+      fail: function(err) {
+        console.error('跳转失败:', err);
+      }
+    });
+  },
+
+  // 处理内容中的转义字符
+  processContent(content) {
+    if (!content) return '';
+    
+    // 处理常见的转义字符
+    return content
+      .replace(/\\n/g, '\n')        // 将 \\n 转换为 \n
+      .replace(/\\t/g, '\t')        // 将 \\t 转换为 \t
+      .replace(/\\r/g, '\r')        // 将 \\r 转换为 \r
+      .replace(/\\\\/g, '\\');      // 将 \\ 转换为 \
   }
 });

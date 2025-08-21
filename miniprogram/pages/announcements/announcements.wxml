@@ -33,8 +33,8 @@
         <view class="card-header">
           <view class="title-section">
             <text class="announcement-title">{{item.title}}</text>
-            <view class="type-badge {{item.type === 'article' ? 'article' : 'pdf'}}">
-              <text class="badge-text">{{item.type === 'article' ? '公众号' : '文档'}}</text>
+                                              <view class="type-badge {{item.type === 'article' ? 'article' : 'text'}}">
+              <text class="badge-text">{{item.type === 'article' ? '公众号' : '公告'}}</text>
             </view>
           </view>
         </view>

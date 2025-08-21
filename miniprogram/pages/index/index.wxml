@@ -44,9 +44,9 @@
           <view class="notice-card" bindtap="onNoticeTap" data-notice="{{item}}">
             <view class="notice-card-header">
               <text class="notice-card-title">{{item.title}}</text>
-              <view class="notice-card-type">
-                <text class="type-text">{{item.type === 'article' ? '公众号' : '文档'}}</text>
-              </view>
+                                                <view class="notice-card-type">
+              <text class="type-text">{{item.type === 'article' ? '公众号' : '公告'}}</text>
+            </view>
             </view>
             <view class="notice-card-footer">
               <text class="notice-card-date">{{item.created_at}}</text>

@@ -1,0 +1,126 @@
+/* announcement-detail.wxss */
+page {
+  background: linear-gradient(135deg, #2563EB 0%, #3B82F6 25%, #60A5FA 50%, #3B82F6 75%, #2563EB 100%);
+  padding: 0;
+  margin: 0;
+}
+
+.page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #2563EB 0%, #3B82F6 25%, #60A5FA 50%, #3B82F6 75%, #2563EB 100%);
+  position: relative;
+  padding-top: 0;
+}
+
+/* 自定义导航栏 */
+.custom-nav-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: transparent;
+  z-index: 1000;
+}
+
+.nav-content {
+  height: 44px;
+  display: flex;
+  align-items: center;
+  padding: 0 7.5px;
+}
+
+.nav-back {
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: -35px;
+}
+
+.nav-back:active {
+  opacity: 0.6;
+}
+
+.nav-back-icon {
+  color: white;
+  font-size: 40px;
+  font-weight: normal;
+  line-height: 1;
+}
+
+/* 页面标题区域 */
+.page-header {
+  background: transparent;
+  padding: 100rpx 30rpx 40rpx;
+  color: white;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.page-title {
+  display: block;
+  font-size: 48rpx;
+  font-weight: bold;
+  text-shadow: 0 2rpx 4rpx rgba(0, 0, 0, 0.2);
+}
+
+/* 内容容器 */
+.content-container {
+  width: 100%;
+  background: #ffffff;
+  border-radius: 24rpx 24rpx 0 0;
+  padding: 40rpx 30rpx;
+  min-height: calc(100vh - 240rpx);
+  box-shadow: 0 -8rpx 30rpx rgba(37, 99, 235, 0.15);
+  position: relative;
+  z-index: 5;
+  margin-top: -10rpx;
+}
+
+/* 公告标题区域 */
+.announcement-header {
+  margin-bottom: 30rpx;
+}
+
+.announcement-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+  line-height: 1.4;
+  display: block;
+}
+
+/* 公告内容 */
+.announcement-content {
+  margin-bottom: 40rpx;
+  padding: 30rpx;
+  background: #f8fafc;
+  border-radius: 16rpx;
+  border-left: 4rpx solid #3B82F6;
+}
+
+.content-text {
+  font-size: 30rpx;
+  color: #333;
+  line-height: 1.8;
+  word-break: break-word;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* 公告信息 */
+.announcement-info {
+  padding-top: 20rpx;
+  border-top: 1px solid #f1f5f9;
+}
+
+.info-text {
+  font-size: 24rpx;
+  color: #666;
+  background: #f8fafc;
+  padding: 8rpx 16rpx;
+  border-radius: 12rpx;
+  display: inline-block;
+}

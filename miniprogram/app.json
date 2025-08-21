@@ -2,6 +2,7 @@
   "pages": [
     "pages/index/index",
     "pages/announcements/announcements",
+    "pages/announcement-detail/announcement-detail",
     "pages/profile/profile",
     "pages/map/map",
     "pages/feedback/feedback",
