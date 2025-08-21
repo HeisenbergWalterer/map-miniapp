@@ -1,0 +1,64 @@
+<!--announcements.wxml-->
+<view class="page">
+  <!-- 自定义导航栏 -->
+  <view class="custom-nav-bar" style="padding-top: {{statusBarHeight}}px;">
+    <view class="nav-content">
+      <view class="nav-back" bindtap="goBack">
+        <text class="nav-back-icon">‹</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 页面标题 -->
+  <view class="page-header">
+    <text class="page-title">暖心公告</text>
+    <text class="page-subtitle">查看所有社区公告信息</text>
+  </view>
+
+  <!-- 公告列表容器 -->
+  <view class="announcements-container">
+    <view wx:if="{{announcements.length === 0}}" class="empty-state">
+      <image class="empty-icon" src="/images/icons/point.png" mode="aspectFit"></image>
+      <text class="empty-text">暂无公告</text>
+    </view>
+    
+    <view wx:for="{{announcements}}" 
+          wx:key="_id" 
+          class="announcement-item"
+          bindtap="onAnnouncementTap"
+          data-announcement="{{item}}">
+      
+      <!-- 公告卡片 -->
+      <view class="announcement-card">
+        <view class="card-header">
+          <view class="title-section">
+            <text class="announcement-title">{{item.title}}</text>
+            <view class="type-badge {{item.type === 'article' ? 'article' : 'pdf'}}">
+              <text class="badge-text">{{item.type === 'article' ? '公众号' : '文档'}}</text>
+            </view>
+          </view>
+        </view>
+        
+        <view class="card-footer">
+          <view class="info-row">
+            <text class="publish-time">{{item.created_at}}</text>
+            <text class="view-count">{{item.view_count}} 次浏览</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 加载更多 -->
+  <view wx:if="{{hasMore && announcements.length > 0}}" class="load-more">
+    <view class="load-more-btn" bindtap="loadMore">
+      <text class="load-more-text">加载更多</text>
+    </view>
+  </view>
+
+  <!-- 返回顶部按钮 -->
+  <view wx:if="{{showBackToTop}}" class="back-to-top" bindtap="backToTop">
+    <text class="back-to-top-text">↑</text>
+  </view>
+</view>
+

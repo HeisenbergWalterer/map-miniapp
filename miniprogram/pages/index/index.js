@@ -11,6 +11,7 @@ Page({
     noticeDate: '07-23',
     titlesrc: 'cloud://cloud1-3gbydxui8864f9aa.636c-cloud1-3gbydxui8864f9aa-1369623166/images/title-new.png',
     appCloudImg: 'cloud://cloud1-3gbydxui8864f9aa.636c-cloud1-3gbydxui8864f9aa-1369623166', // 云存储路径
+    announcements: [], // 公告数据数组
   },
 
   onLoad() {
@@ -26,12 +27,18 @@ Page({
     
     // 获取用户信息（异步）
     this.getUserInfo();
+    
+    // 获取公告数据
+    this.getAnnouncements();
   },
 
   onShow() {
     // 每次显示页面时重新获取用户信息，以防用户在其他页面登录
     console.log('首页onShow - 重新获取用户信息');
     this.getUserInfo();
+    
+    // 重新获取公告数据
+    this.getAnnouncements();
   },
 
   // 处理登录点击
@@ -234,6 +241,296 @@ Page({
   goToActivityReservation() {
     wx.navigateTo({
       url: '/pages/activity-reservation/activity-reservation'
+    });
+  },
+
+  // 跳转到暖心公告页面
+  goToAnnouncements() {
+    wx.navigateTo({
+      url: '/pages/announcements/announcements',
+      success: function(res) {
+        console.log('跳转到暖心公告页面成功');
+      },
+      fail: function(err) {
+        console.error('跳转失败:', err);
+      }
+    });
+  },
+
+  // 获取公告数据
+  async getAnnouncements() {
+    try {
+      // 使用云函数获取公告数据
+      const result = await wx.cloud.callFunction({
+        name: 'getAnnouncements',
+        data: {
+          status: 'active',
+          limit: 10
+        }
+      });
+      
+      if (result.result.success) {
+        console.log('获取公告数据成功:', result.result.data);
+        
+        // 格式化日期显示
+        const formattedAnnouncements = result.result.data.map(item => ({
+          ...item,
+          created_at: this.formatDate(item.created_at)
+        }));
+        
+        this.setData({
+          announcements: formattedAnnouncements
+        });
+      } else {
+        console.error('云函数返回错误:', result.result.error);
+        this.setDefaultAnnouncements();
+      }
+    } catch (error) {
+      console.error('获取公告数据失败:', error);
+      this.setDefaultAnnouncements();
+    }
+  },
+
+  // 设置默认公告数据
+  setDefaultAnnouncements() {
+    this.setData({
+      announcements: [{
+        _id: 'default_001',
+        title: '微光驿站便民服务活动预告',
+        type: 'article',
+        created_at: '刚刚',
+        view_count: 0
+      }]
+    });
+  },
+
+  // 格式化日期显示
+  formatDate(dateString) {
+    if (!dateString) return '刚刚';
+    
+    try {
+      const date = new Date(dateString);
+      const now = new Date();
+      const diffTime = Math.abs(now - date);
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      
+      if (diffDays === 0) {
+        return '今天';
+      } else if (diffDays === 1) {
+        return '昨天';
+      } else if (diffDays < 7) {
+        return `${diffDays}天前`;
+      } else {
+        // 超过7天显示具体日期
+        const month = date.getMonth() + 1;
+        const day = date.getDate();
+        return `${month}-${day}`;
+      }
+    } catch (error) {
+      console.error('日期格式化失败:', error);
+      return '刚刚';
+    }
+  },
+
+  // 处理公告点击事件
+  onNoticeTap(e) {
+    const notice = e.currentTarget.dataset.notice;
+    console.log('点击公告:', notice);
+    
+    if (!notice || !notice.link) {
+      wx.showToast({
+        title: '公告链接无效',
+        icon: 'error',
+        duration: 2000
+      });
+      return;
+    }
+    
+    // 根据类型进行不同处理
+    if (notice.type === 'article') {
+      this.openArticle(notice.link);
+    } else if (notice.type === 'pdf') {
+      this.openPdf(notice.link);
+    } else {
+      wx.showToast({
+        title: '未知的公告类型',
+        icon: 'error',
+        duration: 2000
+      });
+    }
+  },
+
+  // 打开公众号文章
+  openArticle(link) {
+    try {
+      // 使用微信官方的API打开公众号文章
+      wx.openOfficialAccountArticle({
+        url: link,
+        success: (res) => {
+          console.log('打开公众号文章成功:', res);
+        },
+        fail: (err) => {
+          console.error('打开公众号文章失败:', err);
+          // 如果打开失败，尝试复制链接到剪贴板
+          this.copyLinkToClipboard(link);
+        }
+      });
+    } catch (error) {
+      console.error('打开公众号文章出错:', error);
+      // 出错时复制链接到剪贴板
+      this.copyLinkToClipboard(link);
+    }
+  },
+
+  // 打开PDF文件
+  async openPdf(filePath) {
+    try {
+      wx.showLoading({
+        title: '正在加载PDF...',
+        mask: true
+      });
+
+      // 从云存储路径中提取文件ID
+      const fileId = this.extractFileIdFromPath(filePath);
+      
+      if (!fileId) {
+        wx.hideLoading();
+        wx.showToast({
+          title: 'PDF文件路径无效',
+          icon: 'error',
+          duration: 2000
+        });
+        return;
+      }
+
+      // 获取文件临时下载链接
+      const result = await wx.cloud.getTempFileURL({
+        fileList: [fileId]
+      });
+
+      if (result.fileList && result.fileList[0] && result.fileList[0].tempFileURL) {
+        const tempUrl = result.fileList[0].tempFileURL;
+        
+        // 隐藏加载提示
+        wx.hideLoading();
+        
+        // 使用微信小程序的API打开PDF文件
+        wx.openDocument({
+          filePath: tempUrl,
+          fileType: 'pdf',
+          success: (res) => {
+            console.log('打开PDF成功:', res);
+          },
+          fail: (err) => {
+            console.error('打开PDF失败:', err);
+            // 如果打开失败，尝试下载文件
+            this.downloadPdf(tempUrl);
+          }
+        });
+      } else {
+        wx.hideLoading();
+        wx.showToast({
+          title: '获取PDF文件失败',
+          icon: 'error',
+          duration: 2000
+        });
+      }
+    } catch (error) {
+      wx.hideLoading();
+      console.error('处理PDF文件出错:', error);
+      wx.showToast({
+        title: '处理PDF文件出错',
+        icon: 'error',
+        duration: 2000
+      });
+    }
+  },
+
+  // 从云存储路径中提取文件ID
+  extractFileIdFromPath(filePath) {
+    // 处理类似 cloud://cloud1-3gbydxui8864f9aa.636c-cloud1-3gbydxui8864f9aa-1369623166/announcements/"暖新地图"微信小程序社会实践项目策划书.pdf 的路径
+    if (filePath && filePath.includes('cloud://')) {
+      // 提取cloud://后面的部分作为文件ID
+      const cloudPrefix = 'cloud://';
+      const startIndex = filePath.indexOf(cloudPrefix) + cloudPrefix.length;
+      const endIndex = filePath.indexOf('/', startIndex);
+      
+      if (endIndex !== -1) {
+        const envId = filePath.substring(startIndex, endIndex);
+        const filePathPart = filePath.substring(endIndex + 1);
+        return `${envId}/${filePathPart}`;
+      }
+    }
+    return filePath; // 如果无法解析，直接返回原路径
+  },
+
+  // 下载PDF文件
+  downloadPdf(url) {
+    wx.showLoading({
+      title: '正在下载PDF...',
+      mask: true
+    });
+
+    wx.downloadFile({
+      url: url,
+      success: (res) => {
+        wx.hideLoading();
+        if (res.statusCode === 200) {
+          // 下载成功，尝试打开文件
+          wx.openDocument({
+            filePath: res.tempFilePath,
+            fileType: 'pdf',
+            success: (openRes) => {
+              console.log('打开下载的PDF成功:', openRes);
+            },
+            fail: (openErr) => {
+              console.error('打开下载的PDF失败:', openErr);
+              wx.showToast({
+                title: '无法打开PDF文件',
+                icon: 'error',
+                duration: 2000
+              });
+            }
+          });
+        } else {
+          wx.showToast({
+            title: '下载PDF失败',
+            icon: 'error',
+            duration: 2000
+          });
+        }
+      },
+      fail: (err) => {
+        wx.hideLoading();
+        console.error('下载PDF失败:', err);
+        wx.showToast({
+          title: '下载PDF失败',
+          icon: 'error',
+          duration: 2000
+        });
+      }
+    });
+  },
+
+  // 复制链接到剪贴板
+  copyLinkToClipboard(link) {
+    wx.setClipboardData({
+      data: link,
+      success: () => {
+        wx.showModal({
+          title: '链接已复制',
+          content: '由于无法直接打开链接，已将链接复制到剪贴板。请手动打开浏览器访问。',
+          showCancel: false,
+          confirmText: '知道了'
+        });
+      },
+      fail: () => {
+        wx.showToast({
+          title: '复制链接失败',
+          icon: 'error',
+          duration: 2000
+        });
+      }
     });
   }
 });

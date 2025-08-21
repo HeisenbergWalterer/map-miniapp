@@ -247,6 +247,126 @@ page {
   background: #f8f9fa;
 }
 
+/* 轮播公告样式 */
+.notice-swiper {
+  height: 160rpx; /* 从200rpx减少到160rpx */
+  margin: 20rpx 0;
+}
+
+.notice-swiper-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.notice-card {
+  width: 100%;
+  height: 140rpx; /* 从180rpx减少到140rpx */
+  background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+  border-radius: 20rpx;
+  padding: 20rpx; /* 从25rpx减少到20rpx */
+  box-shadow: 0 4rpx 20rpx rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.notice-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4rpx;
+  background: linear-gradient(90deg, #3B82F6 0%, #60A5FA 100%);
+}
+
+.notice-card:active {
+  transform: scale(0.98);
+  box-shadow: 0 2rpx 10rpx rgba(59, 130, 246, 0.15);
+}
+
+.notice-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex: 1;
+  gap: 15rpx; /* 添加间距 */
+}
+
+.notice-card-title {
+  flex: 1;
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333;
+  line-height: 1.4;
+  text-align: left; /* 改回靠左对齐 */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 10rpx; /* 保持内边距 */
+}
+
+.notice-card-type {
+  background: linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%);
+  border-radius: 16rpx;
+  padding: 8rpx 16rpx;
+  min-width: 60rpx;
+  text-align: center;
+  flex-shrink: 0; /* 防止类型标签被压缩 */
+}
+
+.type-text {
+  font-size: 22rpx;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.notice-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10rpx; /* 从15rpx减少到10rpx */
+}
+
+.notice-card-date {
+  font-size: 22rpx; /* 从24rpx减少到22rpx */
+  color: #666;
+  background: #f1f5f9;
+  padding: 4rpx 10rpx; /* 从6rpx 12rpx减少到4rpx 10rpx */
+  border-radius: 10rpx; /* 从12rpx减少到10rpx */
+}
+
+.notice-card-views {
+  font-size: 20rpx; /* 从22rpx减少到20rpx */
+  color: #999;
+  background: #f8fafc;
+  padding: 4rpx 10rpx; /* 从6rpx 12rpx减少到4rpx 10rpx */
+  border-radius: 10rpx; /* 从12rpx减少到10rpx */
+}
+
+/* 无公告时的提示样式 */
+.notice-empty {
+  text-align: center;
+  padding: 60rpx 0;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #999;
+  background: #f8fafc;
+  padding: 20rpx 40rpx;
+  border-radius: 20rpx;
+  border: 1px dashed #ddd;
+}
+
+/* 原有的静态公告样式（保留作为备用） */
 .notice-content {
   padding: 20rpx 0;
 }

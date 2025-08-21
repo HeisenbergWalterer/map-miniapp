@@ -24,17 +24,41 @@
       </view>
     </view>
 
-    <!-- 暖心公告区域 -->
+    <!-- 暖心公告区域 - 轮播卡片 -->
     <view class="notice-section">
       <view class="notice-header">
         <text class="notice-title">暖心公告</text>
-        <text class="notice-more">查看全部</text>
+        <text class="notice-more" bindtap="goToAnnouncements">查看全部</text>
       </view>
-      <view class="notice-content">
-        <view class="notice-item">
-          <text class="notice-text">{{noticeText}}</text>
-          <text class="notice-date">{{noticeDate}}</text>
-        </view>
+      
+      <!-- 轮播公告内容 -->
+      <swiper class="notice-swiper" 
+              indicator-dots="{{true}}" 
+              autoplay="{{true}}" 
+              interval="{{4000}}" 
+              duration="{{500}}"
+              circular="{{true}}"
+              indicator-color="rgba(59, 130, 246, 0.3)"
+              indicator-active-color="#3B82F6">
+        <swiper-item wx:for="{{announcements}}" wx:key="_id" class="notice-swiper-item">
+          <view class="notice-card" bindtap="onNoticeTap" data-notice="{{item}}">
+            <view class="notice-card-header">
+              <text class="notice-card-title">{{item.title}}</text>
+              <view class="notice-card-type">
+                <text class="type-text">{{item.type === 'article' ? '公众号' : '文档'}}</text>
+              </view>
+            </view>
+            <view class="notice-card-footer">
+              <text class="notice-card-date">{{item.created_at}}</text>
+              <text class="notice-card-views">{{item.view_count}} 次浏览</text>
+            </view>
+          </view>
+        </swiper-item>
+      </swiper>
+      
+      <!-- 无公告时的提示 -->
+      <view wx:if="{{!announcements || announcements.length === 0}}" class="notice-empty">
+        <text class="empty-text">暂无公告</text>
       </view>
     </view>
 

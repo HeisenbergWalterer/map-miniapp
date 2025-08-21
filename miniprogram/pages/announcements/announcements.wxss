@@ -1,0 +1,250 @@
+/* announcements.wxss */
+page {
+  background: linear-gradient(135deg, #2563EB 0%, #3B82F6 25%, #60A5FA 50%, #3B82F6 75%, #2563EB 100%);
+  padding: 0;
+  margin: 0;
+}
+
+.page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #2563EB 0%, #3B82F6 25%, #60A5FA 50%, #3B82F6 75%, #2563EB 100%);
+  position: relative;
+  padding-top: 0;
+}
+
+/* 自定义导航栏 */
+.custom-nav-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: transparent;
+  z-index: 1000;
+}
+
+.nav-content {
+  height: 44px;
+  display: flex;
+  align-items: center;
+  padding: 0 7.5px;
+}
+
+.nav-back {
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: -35px;
+}
+
+.nav-back:active {
+  opacity: 0.6;
+}
+
+.nav-back-icon {
+  color: white;
+  font-size: 40px;
+  font-weight: normal;
+  line-height: 1;
+}
+
+/* 页面标题区域 */
+.page-header {
+  background: transparent;
+  padding: 100rpx 30rpx 40rpx; /* 增加顶部padding为自定义导航栏留出空间 */
+  color: white;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.page-title {
+  display: block;
+  font-size: 48rpx;
+  font-weight: bold;
+  margin-bottom: 16rpx;
+  text-shadow: 0 2rpx 4rpx rgba(0, 0, 0, 0.2);
+}
+
+.page-subtitle {
+  display: block;
+  font-size: 28rpx;
+  opacity: 0.9;
+  text-shadow: 0 1rpx 2rpx rgba(0, 0, 0, 0.1);
+}
+
+/* 公告列表容器 */
+.announcements-container {
+  width: 100%;
+  background: #ffffff;
+  border-radius: 24rpx 24rpx 0 0;
+  padding: 30rpx 0;
+  min-height: calc(100vh - 180rpx);
+  box-shadow: 0 -8rpx 30rpx rgba(37, 99, 235, 0.15);
+  position: relative;
+  z-index: 5;
+  margin-top: -10rpx;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 100rpx 30rpx;
+}
+
+.empty-icon {
+  width: 120rpx;
+  height: 120rpx;
+  opacity: 0.3;
+  margin-bottom: 30rpx;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #999;
+}
+
+.announcement-item {
+  margin: 0 30rpx 20rpx;
+}
+
+.announcement-card {
+  background: #ffffff;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(59, 130, 246, 0.1);
+  transition: all 0.3s ease;
+}
+
+.announcement-card:active {
+  transform: scale(0.98);
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+  margin-bottom: 20rpx;
+}
+
+.title-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20rpx;
+}
+
+.announcement-title {
+  flex: 1;
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.type-badge {
+  padding: 8rpx 16rpx;
+  border-radius: 16rpx;
+  font-size: 22rpx;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.type-badge.article {
+  background: linear-gradient(135deg, #10B981 0%, #34D399 100%);
+  color: white;
+}
+
+.type-badge.pdf {
+  background: linear-gradient(135deg, #F59E0B 0%, #FBBF24 100%);
+  color: white;
+}
+
+.badge-text {
+  font-size: 22rpx;
+}
+
+.card-footer {
+  border-top: 1px solid #f1f5f9;
+  padding-top: 20rpx;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.publish-time {
+  font-size: 24rpx;
+  color: #666;
+  background: #f8fafc;
+  padding: 6rpx 12rpx;
+  border-radius: 12rpx;
+}
+
+.view-count {
+  font-size: 24rpx;
+  color: #999;
+  background: #f1f5f9;
+  padding: 6rpx 12rpx;
+  border-radius: 12rpx;
+}
+
+/* 加载更多 */
+.load-more {
+  text-align: center;
+  padding: 40rpx 30rpx;
+  background: #ffffff;
+}
+
+.load-more-btn {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 25rpx;
+  padding: 20rpx 40rpx;
+  display: inline-block;
+  transition: all 0.3s ease;
+}
+
+.load-more-btn:active {
+  background: #f9fafb;
+  transform: scale(0.98);
+}
+
+.load-more-text {
+  font-size: 28rpx;
+  color: #666;
+}
+
+/* 返回顶部按钮 */
+.back-to-top {
+  position: fixed;
+  right: 30rpx;
+  bottom: 120rpx;
+  width: 80rpx;
+  height: 80rpx;
+  background: linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8rpx 25rpx rgba(59, 130, 246, 0.3);
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+.back-to-top:active {
+  transform: scale(0.9);
+}
+
+.back-to-top-text {
+  color: white;
+  font-size: 36rpx;
+  font-weight: bold;
+}
+

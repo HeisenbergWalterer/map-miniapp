@@ -1,7 +1,7 @@
 {
   "pages": [
     "pages/index/index",
-    
+    "pages/announcements/announcements",
     "pages/profile/profile",
     "pages/map/map",
     "pages/feedback/feedback",
