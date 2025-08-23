@@ -26,7 +26,16 @@ export async function queryElements(collection: string, where: any) {
 // 更新元素（id）
 // data：更新数据 { A: B, C: D }
 export async function updateElement(collection: string, id: string, data: any) {
-    const res = await db.collection(collection).doc(id).update(data);
+    const updateData = { ...data }
+    delete updateData._id
+    delete updateData._openid
+    
+    const res = await db.collection(collection).doc(id).update(updateData);
+    if (!res.updated || res.updated === 0) {
+        console.log("updateElement res:", res);
+        throw new Error('未更新任何数据')
+    }
+    console.log("updateElement res:", res);
     return res.data;
 }
 

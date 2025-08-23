@@ -91,26 +91,26 @@
 
 <script setup lang="ts">
     /***** 导入模块 *****/
-    import { getCollection, queryElements } from '../services/database';
+    import { getCollection, queryElements, updateElement } from '../services/database';
     import { ref, onMounted } from 'vue';
 
     /***** 活动列表 *****/
-    var activities = ref<any[]>([]);
-    var currentActivity = ref<any>(null);
-    var total = ref(0);
+    const activities = ref<any[]>([]);
+    const currentActivity = ref<any>(null);
+    const total = ref(0);
     
     /***** 用户列表 *****/
-    var ptsList = ref<{name: string, phone: string, createdAt: string, status: string, _id?: string}[]>([]);
-    var pts_total = ref(0);
-    var cancelledList = ref<{name: string, phone: string, createdAt: string, status: string, _id?: string}[]>([]);
+    const ptsList = ref<{name: string, phone: string, createdAt: string, status: string, _id?: string}[]>([]);
+    const pts_total = ref(0);
+    const cancelledList = ref<{name: string, phone: string, createdAt: string, status: string, _id?: string}[]>([]);
     
     /***** 用户列表显示 *****/
-    var showUserList = ref(false);
-    var showCancelled = ref(false);
+    const showUserList = ref(false);
+    const showCancelled = ref(false);
     
     /***** 活动管理弹窗 *****/
-    var showActivityModal = ref(false);
-    var activityFormData = ref<any>({});
+    const showActivityModal = ref(false);
+    const activityFormData = ref<any>({});
     const activityDisplayFields = {
         'center_id': '中心ID',
         'dates': '活动日期',
@@ -192,16 +192,22 @@
         showActivityModal.value = false;
     }
     
-    function saveActivityData() {
+    async function saveActivityData() {
         // 更新currentActivity中的值
         Object.keys(activityDisplayFields).forEach(fieldKey => {
             if (activityFormData.value[fieldKey] !== undefined) {
                 currentActivity.value[fieldKey] = activityFormData.value[fieldKey];
             }
         });
-        console.log("in function 保存活动数据:", activityFormData.value);
-        console.log("in function 保存活动数据:", currentActivity.value);
-        closeActivityModal();
+        console.log("currentActivity保存活动数据:", currentActivity.value);
+        try {
+          await updateElement('activity', currentActivity.value._id, currentActivity.value);
+          console.log("保存活动数据成功");
+        } catch (error) {
+          console.error("保存活动数据失败:", error);
+        } finally {
+          closeActivityModal();
+        }
     }
     
     /***** 返回活动列表 *****/

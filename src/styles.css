@@ -320,3 +320,138 @@ tbody tr:hover { background: #f6faff; }
   }
 }
 
+/* VenueReservations 页面样式 */
+.reservation-container {
+  padding: 20px;
+}
+
+.reservation-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.reservation-header h3 {
+  margin: 0;
+  color: #333;
+}
+
+.reservation-list {
+  margin-top: 20px;
+}
+
+.reservation-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.reservation-table th,
+.reservation-table td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.reservation-table th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  color: #333;
+}
+
+.reservation-table tbody tr:hover {
+  background-color: #f5f5f5;
+}
+
+.reservation-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* VenueReservations 按钮样式 */
+.reservation-header .back-btn {
+  padding: 8px 16px;
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.reservation-header .back-btn:hover {
+  background-color: #5a6268;
+}
+
+.reservation-header .toggle-cancelled-btn {
+  padding: 8px 16px;
+  background-color: #17a2b8;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: auto;
+}
+
+.reservation-header .toggle-cancelled-btn:hover {
+  background-color: #138496;
+}
+
+/* 导出按钮样式 */
+.reservation-header .export-btn {
+  padding: 8px 16px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s ease;
+}
+
+.reservation-header .export-btn:hover {
+  background-color: #218838;
+}
+
+/* 场馆管理按钮样式 */
+.reservation-header .venue-manage-btn {
+  padding: 8px 16px;
+  background-color: #ffc107;
+  color: #212529;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s ease;
+}
+
+.reservation-header .venue-manage-btn:hover {
+  background-color: #e0a800;
+}
+
+/* 日期筛选select样式 */
+.date-filter-select {
+  padding: 6px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 14px;
+  outline: none;
+  background: white;
+  cursor: pointer;
+  min-width: 120px;
+}
+
+.date-filter-select:focus {
+  border-color: #17a2b8;
+  box-shadow: 0 0 0 2px rgba(23, 162, 184, 0.25);
+}
+
+.date-filter-select option {
+  padding: 8px;
+}
+
