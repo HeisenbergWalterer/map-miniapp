@@ -1,0 +1,52 @@
+{
+  "announcements": [
+    {
+      "_id": "announcement_001",
+      "title": "微光驿站便民服务活动预告",
+      "type": "article",
+      "link": "https://mp.weixin.qq.com/s/kA_4qxK6pbhwSo9LapSJkg",
+      "status": "active",
+      "created_at": "2025-01-20T10:00:00.000Z",
+      "updated_at": "2025-01-20T10:00:00.000Z",
+      "created_by": "admin_001",
+      "view_count": 0,
+      "content": ""
+    },
+    {
+      "_id": "announcement_002",
+      "title": "社区活动通知",
+      "type": "text",
+      "link": "",
+      "status": "active",
+      "created_at": "2025-01-20T10:00:00.000Z",
+      "updated_at": "2025-01-20T10:00:00.000Z",
+      "created_by": "admin_001",
+      "view_count": 1000,
+      "content": "尊敬的社区居民：\\n\\n为了丰富大家的业余生活，我们将于本周末举办社区文化节活动。\\n\\n活动安排如下：\\n• 时间：2025年1月25日上午9:00-12:00\\n• 地点：社区文化广场\\n• 内容：文艺表演、游戏互动、美食分享\\n\\n欢迎大家踊跃参与！\\n\\n社区管理委员会\\n2025年1月20日"
+    },
+    {
+      "_id": "announcement_003",
+      "title": "社区服务志愿者招募",
+      "type": "text",
+      "link": "",
+      "status": "active",
+      "created_at": "2025-01-19T15:30:00.000Z",
+      "updated_at": "2025-01-19T15:30:00.000Z",
+      "created_by": "admin_001",
+      "view_count": 500,
+      "content": "亲爱的邻居们：\\n\\n我们正在招募社区服务志愿者，一起为社区建设贡献力量。\\n\\n志愿服务内容：\\n1. 社区环境维护\\n2. 邻里互助服务\\n3. 文化活动组织\\n4. 安全巡逻协助\\n\\n报名要求：\\n• 年满18周岁\\n• 热心公益事业\\n• 有责任心和团队精神\\n\\n报名方式：请联系社区办公室\\n电话：123-456-7890\\n\\n让我们一起建设温馨和谐的社区！"
+    },
+    {
+      "_id": "announcement_004",
+      "title": "社区活动精彩回顾",
+      "type": "article",
+      "link": "https://mp.weixin.qq.com/s/example_article_2",
+      "status": "active",
+      "created_at": "2025-01-17T14:20:00.000Z",
+      "updated_at": "2025-01-17T14:20:00.000Z",
+      "created_by": "admin_001",
+      "view_count": 800,
+      "content": ""
+    }
+  ]
+}

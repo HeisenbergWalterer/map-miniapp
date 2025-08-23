@@ -82,7 +82,15 @@
       <view class="text">{{distance}}</view>
     </view>
   </view>
-  <view class="nav" bindtap="startNavigation" wx:if="{{textData.name}}">
-    <image src="../../images/icons/navigate.png" class="nav_icon" mode="aspectFit"></image>
-  </view>
+      <!-- 操作按钮区域 -->
+    <view class="action-buttons" wx:if="{{textData.name}}">
+      <!-- 收藏按钮 -->
+      <view class="action-btn favorite-btn {{isFavorited ? 'active' : ''}}" bindtap="toggleFavorite" wx:if="{{currentType}}">
+        <image src="../../images/favorite.png" class="action-icon" mode="aspectFit"></image>
+      </view>
+      <!-- 导航按钮 -->
+      <view class="nav" bindtap="startNavigation">
+        <image src="../../images/icons/navigate.png" class="nav_icon" mode="aspectFit"></image>
+      </view>
+    </view>
 </view>

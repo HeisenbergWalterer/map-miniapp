@@ -1,9 +1,37 @@
 <!--favorite.wxml-->
 <view class="page">
+  <!-- 加载状态 -->
+  <view class="loading-container" wx:if="{{loading}}">
+    <view class="loading-text">加载中...</view>
+  </view>
+
   <!-- 收藏内容区域 -->
-  <view class="favorite-content">
+  <view class="favorite-content" wx:else>
+    
+    <!-- 收藏分类标签 - 一直显示 -->
+    <view class="category-tabs">
+      <view class="tab-item {{selectedCategory === 'all' ? 'active' : ''}}" bindtap="selectCategory" data-category="all">
+        <text class="tab-text">全部</text>
+      </view>
+      <view class="tab-item {{selectedCategory === 'toilet' ? 'active' : ''}}" bindtap="selectCategory" data-category="toilet">
+        <text class="tab-text">公共厕所</text>
+      </view>
+      <view class="tab-item {{selectedCategory === 'warm' ? 'active' : ''}}" bindtap="selectCategory" data-category="warm">
+        <text class="tab-text">暖心服务站</text>
+      </view>
+      <view class="tab-item {{selectedCategory === 'sinopec' ? 'active' : ''}}" bindtap="selectCategory" data-category="sinopec">
+        <text class="tab-text">爱心驿站</text>
+      </view>
+      <view class="tab-item {{selectedCategory === 'partner' ? 'active' : ''}}" bindtap="selectCategory" data-category="partner">
+        <text class="tab-text">合作商户</text>
+      </view>
+      <view class="tab-item {{selectedCategory === 'relay' ? 'active' : ''}}" bindtap="selectCategory" data-category="relay">
+        <text class="tab-text">接力站</text>
+      </view>
+    </view>
+
     <!-- 空状态显示 -->
-    <view class="empty-state">
+    <view class="empty-state" wx:if="{{showEmpty}}">
       <view class="empty-icon">❤️</view>
       <text class="empty-title">暂无收藏</text>
       <text class="empty-desc">您还没有收藏任何地点或服务</text>
@@ -12,30 +40,41 @@
       </view>
     </view>
 
-    <!-- 收藏列表框架（暂时隐藏） -->
-    <view class="favorite-list" style="display: none;">
-      <!-- 收藏分类标签 -->
-      <view class="category-tabs">
-        <view class="tab-item active">
-          <text class="tab-text">全部</text>
-        </view>
-        <view class="tab-item">
-          <text class="tab-text">地点</text>
-        </view>
-        <view class="tab-item">
-          <text class="tab-text">服务</text>
-        </view>
-      </view>
-
-      <!-- 收藏项目列表 -->
-      <view class="favorite-items">
-        <!-- 这里将来会显示实际的收藏内容 -->
-      </view>
-    </view>
-  </view>
-
-  <!-- 底部提示 -->
-  <view class="bottom-tip">
-    <text class="tip-text">收藏功能正在开发中，敬请期待</text>
+            <!-- 收藏项目列表 -->
+            <view class="favorite-items" wx:else>
+              <view 
+                class="favorite-card" 
+                wx:for="{{favorites}}" 
+                wx:key="_id"
+                bindtap="viewFavoriteDetail"
+                data-item="{{item}}"
+              >
+                <view class="card-content">
+                  <view class="favorite-photo">
+                    <image src="{{item.station_photoUrl || '../../images/default-station-photo.jpg'}}" class="photo-img" mode="aspectFill"></image>
+                  </view>
+                  <view class="favorite-info">
+                    <view class="favorite-name">{{item.station_name}}</view>
+                    <view class="favorite-type">{{item.typeName}}</view>
+                    <view class="favorite-address">
+                      <text class="address-icon">📍</text>
+                      <text class="address-text">{{item.station_address}}</text>
+                    </view>
+                    <view class="favorite-time" wx:if="{{item.station_serviceTime}}">
+                      <text class="time-icon">🕒</text>
+                      <text class="time-text">{{item.station_serviceTime}}</text>
+                    </view>
+                  </view>
+                  <view class="card-actions">
+                    <view class="action-btn navigate-btn" catchtap="navigateToFavorite" data-item="{{item}}">
+                      <image src="../../images/icons/navigate.png" class="action-icon" mode="aspectFit"></image>
+                    </view>
+                    <view class="action-btn remove-btn" catchtap="removeFavorite" data-id="{{item._id}}">
+                      <image src="../../images/icons/close.png" class="action-icon" mode="aspectFit"></image>
+                    </view>
+                  </view>
+                </view>
+              </view>
+            </view>
   </view>
 </view> 

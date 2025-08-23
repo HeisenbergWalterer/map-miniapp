@@ -1,45 +1,101 @@
 <view class="page">
-  <!-- 顶部切换按钮 -->
-  <view class="tabs">
-    <view class="tab {{activeTab==='venue' ? 'active' : ''}}" data-tab="venue" bindtap="switchTab">场馆预约</view>
-    <view class="tab {{activeTab==='activity' ? 'active' : ''}}" data-tab="activity" bindtap="switchTab">活动报名</view>
+  <!-- 顶部切换按钮（活动/场馆） - 仅在“活动”视图显示 -->
+  <view class="tabs" wx:if="{{activeTab2==='list'}}">
+    <view class="tab {{activeTab==='venue' ? 'active' : ''}}" data-tag="venue" bindtap="switchTab">场馆预约</view>
+    <view class="tab {{activeTab==='activity' ? 'active' : ''}}" data-tag="activity" bindtap="switchTab">活动报名</view>
   </view>
 
-  <!-- 列表区域 -->
-  <view class="activity-list">
+  <!-- 列表区域：活动/场馆 -->
+  <view class="activity-list" wx:if="{{activeTab2==='list'}}">
     <!-- 加载状态提示（本地静态数据可不显示，这里保留占位） -->
     <view wx:if="{{(activeTab==='venue' && loadingVenues) || (activeTab==='activity' && loadingActivities)}}" class="loading">加载中...</view>
 
     <!-- 场馆预约列表 -->
     <block wx:if="{{activeTab==='venue' && !loadingVenues}}">
-      <block wx:for="{{venues}}" wx:key="id">
-        <view class="card" bindtap="goVenueDetail" data-id="{{item.id}}">
+      <block wx:for="{{venue}}" wx:key="_id">
+        <view class="card" bindtap="goVenueDetail" data-id="{{item.id}}" data-_id="{{item._id}}">
           <view class="card-main">
-            <view class="card-title">{{item.title}}</view>
-            <view class="card-sub">地点：{{item.place}}</view>
-            <view class="card-sub slots">{{item.slots}}</view>
+            <view class="card-title">{{item.name}}</view>
+            <view class="card-sub">地点：{{item.address}}</view>
+            <view class="card-sub">联系电话：{{item.phone}}</view>
           </view>
-          <button class="reserve-btn" catchtap="goVenueDetail" data-id="{{item.id}}">去预约</button>
         </view>
       </block>
-      <view wx:if="{{!venues || venues.length===0}}" class="empty">暂无可预约场馆</view>
+      <view wx:if="{{!venue || venue.length===0}}" class="empty">暂无可预约场馆</view>
     </block>
 
-    <!-- 活动报名列表 -->
+    <!-- 活动报名列表（移除右侧按钮，整卡可点击） -->
     <block wx:elif="{{activeTab==='activity' && !loadingActivities}}">
-      <block wx:for="{{activities}}" wx:key="id">
-        <view class="card" bindtap="goDetail" data-id="{{item.id}}">
+      <block wx:for="{{activity}}" wx:key="_id">
+        <view class="card" bindtap="goDetail" data-_id="{{item._id}}" data-id="{{item.id}}">
           <view class="card-main">
             <view class="card-title">{{item.title}}</view>
             <view class="card-sub">地点：{{item.place}}</view>
-            <view class="card-sub">时间：{{item.time}}</view>
-            <view class="card-sub slots">{{item.slots}}</view>
+            <view class="card-sub">时间：{{item.dates}}</view>
           </view>
-          <button class="reserve-btn" catchtap="goDetail" data-id="{{item.id}}">去报名</button>
         </view>
       </block>
-      <view wx:if="{{!activities || activities.length===0}}" class="empty">暂无可报名活动</view>
+      <view wx:if="{{!activity || activity.length===0}}" class="empty">暂无可报名活动</view>
     </block>
+  </view>
+
+  <!-- 我的记录列表 -->
+  <view class="activity-list" wx:elif="{{activeTab2==='records'}}">
+    <!-- 记录类型筛选 -->
+    <view class="record-filter">
+      <view class="filter-tabs">
+        <view class="filter-tab {{recordFilter==='all' ? 'active' : ''}}" data-filter="all" bindtap="switchRecordFilter">
+          全部
+        </view>
+        <view class="filter-tab {{recordFilter==='activity' ? 'active' : ''}}" data-filter="activity" bindtap="switchRecordFilter">
+          活动报名
+        </view>
+        <view class="filter-tab {{recordFilter==='venue' ? 'active' : ''}}" data-filter="venue" bindtap="switchRecordFilter">
+          场馆预约
+        </view>
+      </view>
+    </view>
+
+    <!-- 筛选后的记录列表 -->
+    <block wx:if="{{filteredRecords && filteredRecords.length>0}}">
+      <block wx:for="{{filteredRecords}}" wx:key="_id">
+        <view class="card record-card {{item.type}}" data-item="{{item}}" bindtap="openRecordDetail">
+          <view class="card-main">
+            <!-- 活动报名记录 -->
+            <block wx:if="{{item.type === 'activity'}}">
+              <view class="card-title">
+                <text class="record-type-tag activity-tag">活动</text>
+                {{item._activity ? item._activity.title : '活动'}}
+              </view>
+              <view class="card-sub">地点：{{item._activity ? item._activity.place : ''}}</view>
+              <view class="card-sub">时间：{{item._activity ? item._activity.dates : ''}}</view>
+              <view class="card-sub">状态：{{item.status==='registered' ? '已报名' : '已取消'}}</view>
+            </block>
+            
+            <!-- 场馆预约记录 -->
+            <block wx:elif="{{item.type === 'venue'}}">
+              <view class="card-title">
+                <text class="record-type-tag venue-tag">场馆</text>
+                {{item._venue ? item._venue.name : '场馆预约'}}
+              </view>
+              <view class="card-sub">地点：{{item._venue ? item._venue.address : ''}}</view>
+              <view class="card-sub">时间：{{item._formattedTime || '时间待确认'}}</view>
+              <view class="card-sub">状态：{{item.status==='reserved' ? '已预约' : '已取消'}}</view>
+            </block>
+          </view>
+        </view>
+      </block>
+    </block>
+    <view wx:else class="empty">暂无相关记录</view>
+  </view>
+  <!-- 底部导航栏：活动 / 记录 -->
+  <view class="bottom-nav">
+    <view class="bottom-item {{activeTab2==='list' ? 'active' : ''}}" data-tag="list" bindtap="switchTab2">
+      <text class="bottom-text">活动</text>
+    </view>
+    <view class="bottom-item {{activeTab2==='records' ? 'active' : ''}}" data-tag="records" bindtap="switchTab2">
+      <text class="bottom-text">记录</text>
+    </view>
   </view>
 </view>
 

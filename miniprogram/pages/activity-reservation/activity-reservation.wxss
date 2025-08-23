@@ -33,7 +33,8 @@
 
 .card {
   position: relative;            /* 让右下角按钮可以绝对定位 */
-  display: block;
+  display: flex;
+  flex-direction: column;
   background: #ffffff;
   border-radius: 20rpx;
   padding: 24rpx;                /* 恢复正常内边距 */
@@ -69,20 +70,33 @@
 }
 
 .reserve-btn {
-  position: absolute;
-  right: 16rpx;
-  bottom: 16rpx;
-  z-index: 1;
+  align-self: flex-end;
   background: linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%);
   color: #fff;
-  display: inline-block;
   width: 100rpx;            
   height: 44rpx;
   line-height: 44rpx;
+  margin-top: 10rpx;
   padding: 0;
   border-radius: 22rpx;
   font-size: 24rpx;           /* 增大按钮文字 */
   font-weight: 600;
+}
+
+/* 活动卡片和场馆卡片移除右侧按钮后，文字区域占满 */
+.card:not(.has-action) .card-main {
+  padding-right: 0;
+}
+
+/* 场馆卡片样式优化 */
+.card {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-2rpx);
+  box-shadow: 0 12rpx 32rpx rgba(0, 0, 0, 0.1);
 }
 
 .loading, .empty {
@@ -90,6 +104,105 @@
   color: #999;
   padding: 40rpx 0;
   font-size: 26rpx;
+}
+
+/* 底部导航栏 */
+.bottom-nav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 100rpx;
+  display: flex;
+  background: #ffffff;
+  border-top: 1px solid #eee;
+  z-index: 10;
+}
+
+.bottom-item {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bottom-text {
+  font-size: 26rpx;
+  color: #666;
+}
+
+.bottom-item.active .bottom-text {
+  color: #3B82F6;
+  font-weight: 600;
+}
+
+/* 记录筛选样式 */
+.record-filter {
+  padding: 0 24rpx 16rpx;
+}
+
+.filter-tabs {
+  display: flex;
+  gap: 12rpx;
+  background: #f5f5f5;
+  border-radius: 12rpx;
+  padding: 6rpx;
+}
+
+.filter-tab {
+  flex: 1;
+  text-align: center;
+  background: transparent;
+  color: #666;
+  border-radius: 8rpx;
+  padding: 12rpx 0;
+  font-size: 26rpx;
+  transition: all 0.3s ease;
+}
+
+.filter-tab.active {
+  background: #ffffff;
+  color: #3B82F6;
+  font-weight: 600;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.1);
+}
+
+/* 记录卡片样式 */
+.record-card {
+  position: relative;
+}
+
+.record-card.activity {
+  border-left: 6rpx solid #10b981;
+}
+
+.record-card.venue {
+  border-left: 6rpx solid #f59e0b;
+}
+
+.record-type-tag {
+  display: inline-block;
+  padding: 4rpx 12rpx;
+  border-radius: 10rpx;
+  font-size: 20rpx;
+  font-weight: 600;
+  margin-right: 12rpx;
+  vertical-align: middle;
+}
+
+.activity-tag {
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+}
+
+.venue-tag {
+  background: rgba(245, 158, 11, 0.1);
+  color: #f59e0b;
+}
+
+/* 记录列表底部间距 */
+.activity-list {
+  padding-bottom: 120rpx; /* 为底部导航栏预留空间 */
 }
 
 

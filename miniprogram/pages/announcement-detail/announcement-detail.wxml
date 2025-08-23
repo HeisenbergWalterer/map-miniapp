@@ -1,0 +1,34 @@
+<!--announcement-detail.wxml-->
+<view class="page">
+  <!-- 自定义导航栏 -->
+  <view class="custom-nav-bar" style="padding-top: {{statusBarHeight}}px;">
+    <view class="nav-content">
+      <view class="nav-back" bindtap="goBack">
+        <text class="nav-back-icon">‹</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 页面标题 -->
+  <view class="page-header">
+    <text class="page-title">公告详情</text>
+  </view>
+
+  <!-- 公告内容容器 -->
+  <view class="content-container">
+    <!-- 公告标题 -->
+    <view class="announcement-header">
+      <text class="announcement-title">{{announcementTitle}}</text>
+    </view>
+
+    <!-- 公告内容 -->
+    <view class="announcement-content">
+      <text class="content-text">{{announcementContent}}</text>
+    </view>
+
+    <!-- 公告信息 -->
+    <view class="announcement-info">
+      <text class="info-text">发布时间：{{publishTime}}</text>
+    </view>
+  </view>
+</view>

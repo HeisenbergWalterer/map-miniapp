@@ -1,0 +1,62 @@
+{
+    "activity": {
+        "_id": "activity_001",
+        "id": 1,
+        "center_id": 1,
+        "notes": [""],
+        "remainingSlots": 20.0,
+        "status": "active",
+        "totalSlots": 20.0,
+        "contact": "021-59962836",
+        "dates": "2025-08-20 09:00-10:00",
+        "deadline": "2025-08-19 23:59",
+        "place": "二楼春舍图书室",
+        "title": "夏日\"音\"姿——八音琴DIY"
+    },
+    "activity_registration": {
+        "_id": "activity_registration_001",
+        "activity_id": "activity_001",
+        "center_id": 1,
+        "openid": "user_001",
+        "status": "registered",
+        "name": "张三",
+        "phone": "13800138000",
+        "party_size": 2
+    },
+    "venue": {
+        "_id": "venue_001",
+        "id": 1,
+        "center_id": 1,
+        "name": "乒乓球馆",
+        "address": "宝安公路4535号",
+        "phone": "021-59962836",
+        "booktable":[
+            [1,1,1,1,1,1,1],
+            [1,1,1,1,1,1,1],
+            [1,1,1,1,1,1,1],
+            [1,1,1,1,1,1,1],
+            [1,1,1,1,1,1,1],
+            [1,1,1,1,1,1,1],
+            [1,1,1,1,1,1,1],
+            [1,1,1,1,1,1,1],
+            [1,1,1,1,1,1,1],
+            [1,1,1,1,1,1,1],
+            [1,1,1,1,1,1,1],
+            [1,1,1,1,1,1,1],
+            [1,1,1,1,1,1,1],
+            [1,1,1,1,1,1,1],
+            [1,1,1,1,1,1,1]],
+        "notes": [""]
+    },
+    "venue_reservation": {
+        "_id": "venue_reservation_000",
+        "venue_id": 1,
+        "center_id": 1,
+        "openid": "00000000",
+        "status": "reserved",
+        "name": "张三",
+        "phone": "13800138000",
+        "party_size": 1,
+        "time_reserved": [[2,3],[2,4],[4,5]]
+    }
+}

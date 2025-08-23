@@ -1,16 +1,11 @@
 // profile.js
-const defaultAvatarUrl = '/images/default-avatar.png'
+const app = getApp();
 
 Page({
   data: {
     isLoggedIn: false,
-    showModal: false,
     userInfo: {
-      avatarUrl: '',
-      nickName: '',
-      phoneNumber: ''
-    },
-    tempUserInfo: {
+      openid: '',
       avatarUrl: '',
       nickName: '',
       phoneNumber: ''
@@ -30,6 +25,10 @@ Page({
     console.log('个人中心页面显示')
     // 每次显示页面时重新检查登录状态
     this.checkLoginStatus()
+    // 若已登录，尝试刷新云端资料到本地
+    if (this.data.isLoggedIn) {
+      this.refreshUserFromDB()
+    }
   },
 
   onHide() {
@@ -55,6 +54,7 @@ Page({
         this.setData({
           isLoggedIn: false,
           userInfo: {
+            openid: '',
             avatarUrl: '',
             nickName: '',
             phoneNumber: ''
@@ -66,127 +66,102 @@ Page({
     }
   },
 
-  // 显示登录弹窗
-  showLoginModal() {
-    this.setData({
-      showModal: true,
-      tempUserInfo: {
-        avatarUrl: defaultAvatarUrl,
-        nickName: '',
-        phoneNumber: ''
-      }
-    })
+  // 一键登录入口（必须在用户点击手势中立刻调用 getUserProfile，否则会被限制）
+  login() {
+    console.log('[登录] 开始一键登录流程（仅获取 OPENID）')
+    // 不请求头像昵称授权，仅以 OPENID 建立/读取账户
+    this._continueLogin(null)
   },
 
-  // 隐藏登录弹窗
-  hideLoginModal() {
-    this.setData({
-      showModal: false
-    })
-  },
+  // 授权完成后继续：获取 OPENID + 写库 + 更新本地
+  async _continueLogin(profile) {
+    wx.showLoading({ title: '登录中...', mask: true })
+    try {
+      // 获取 openid
+      const ctxRes = await wx.cloud.callFunction({ name: 'getContext' })
+      const { OPENID } = (ctxRes && ctxRes.result) || {}
+      console.log('[登录] getContext 结果：', ctxRes)
+      if (!OPENID) throw new Error('未获取到 OPENID')
+      console.log('[登录] 当前用户 OPENID：', OPENID)
 
-  // 阻止事件冒泡
-  stopPropagation() {
-    // 防止点击模态框内容时关闭弹窗
-  },
+      const avatarUrl = profile && profile.avatarUrl ? profile.avatarUrl : ''
+      const nickName = profile && profile.nickName ? profile.nickName : ''
 
-  // 选择头像
-  onChooseAvatar(e) {
-    const { avatarUrl } = e.detail
-    this.setData({
-      'tempUserInfo.avatarUrl': avatarUrl
-    })
-  },
+      // 写入/更新 users
+      const db = app.DBS ? app.DBS.getDB() : wx.cloud.database()
+      const now = new Date()
+      const baseData = { avatarUrl, nickName, updatedAt: now }
 
-  // 昵称输入
-  onNicknameChange(e) {
-    const { value } = e.detail
-    this.setData({
-      'tempUserInfo.nickName': value
-    })
-  },
-
-  // 获取手机号
-  onGetPhoneNumber(e) {
-    console.log('获取手机号结果：', e.detail)
-    
-    if (e.detail.errMsg === 'getPhoneNumber:ok') {
-      // 这里需要将 encryptedData 和 iv 发送到后端解密获取手机号
-      // 目前先模拟显示
-      wx.showToast({
-        title: '手机号获取成功',
-        icon: 'success'
-      })
-      
-      // 模拟手机号（实际开发中需要后端解密）
-      const phoneNumber = '138****8888'
-      this.setData({
-        'tempUserInfo.phoneNumber': phoneNumber
-      })
-    } else {
-      wx.showToast({
-        title: '手机号获取失败',
-        icon: 'none'
-      })
-    }
-  },
-
-  // 确认登录
-  confirmLogin() {
-    const { tempUserInfo } = this.data
-    
-    if (!tempUserInfo.nickName) {
-      wx.showToast({
-        title: '请输入昵称',
-        icon: 'none'
-      })
-      return
-    }
-
-    // 执行微信登录
-    wx.login({
-      success: (res) => {
-        if (res.code) {
-          console.log('登录成功，code：', res.code)
-          
-          // 保存用户信息到本地存储
-          try {
-            wx.setStorageSync('isLoggedIn', true)
-            wx.setStorageSync('userInfo', tempUserInfo)
-            
-            this.setData({
-              isLoggedIn: true,
-              userInfo: tempUserInfo,
-              showModal: false
-            })
-            
-            wx.showToast({
-              title: '登录成功',
-              icon: 'success'
-            })
-          } catch (error) {
-            console.error('保存用户信息失败：', error)
-            wx.showToast({
-              title: '登录失败，请重试',
-              icon: 'none'
-            })
-          }
-        } else {
-          console.error('登录失败：', res.errMsg)
-          wx.showToast({
-            title: '登录失败，请重试',
-            icon: 'none'
-          })
+      // 以 _openid 作为唯一标识查询
+      const existRes = await db.collection('users').where({ _openid: OPENID }).get()
+      console.log('[登录] 用户查询结果 count=', existRes.data.length)
+      let mergedForLocal = { avatarUrl, nickName }
+      if (existRes.data.length === 0) {
+        // 新用户：使用默认昵称与头像
+        const createData = {
+          nickName: '微信用户',
+          avatarUrl: '/images/default-avatar.png',
+          createdAt: now,
+          updatedAt: now
         }
-      },
-      fail: (err) => {
-        console.error('微信登录失败：', err)
-        wx.showToast({
-          title: '登录失败，请重试',
-          icon: 'none'
-        })
+        const addRes = await db.collection('users').add({ data: createData })
+        console.log('[登录] 新增用户成功：', addRes)
+        mergedForLocal = { avatarUrl: createData.avatarUrl, nickName: createData.nickName }
+      } else {
+        const docId = existRes.data[0]._id
+        // 合并非空头像/昵称，避免覆盖已有有效数据
+        const current = existRes.data[0]
+        const updatePayload = {}
+        if (avatarUrl) updatePayload.avatarUrl = avatarUrl
+        if (nickName) updatePayload.nickName = nickName
+        updatePayload.updatedAt = now
+
+        const updateRes = await db.collection('users').doc(docId).update({ data: updatePayload })
+        console.log('[登录] 更新用户成功：', updateRes)
+        mergedForLocal = {
+          avatarUrl: updatePayload.avatarUrl || current.avatarUrl || '',
+          nickName: updatePayload.nickName || current.nickName || '',
+          gender: current.gender || '',
+          description: current.description || '',
+          phoneNumber: current.phoneNumber || '',
+          age: current.age || ''
+        }
       }
-    })
+
+      // 本地缓存
+      const localUser = { openid: OPENID, ...mergedForLocal }
+      wx.setStorageSync('isLoggedIn', true)
+      wx.setStorageSync('userInfo', localUser)
+      this.setData({ isLoggedIn: true, userInfo: localUser })
+
+      wx.showToast({ title: '登录成功', icon: 'success' })
+    } catch (error) {
+      console.error('[登录] 流程失败：', error)
+      wx.showToast({ title: '登录失败', icon: 'none' })
+    } finally {
+      wx.hideLoading()
+    }
+  },
+
+  // 可选：已登录时刷新云端资料（避免本地信息过期）
+  async refreshUserFromDB() {
+    try {
+      const local = wx.getStorageSync('userInfo') || {}
+      // 兼容不同的openId字段名
+      const openid = wx.getStorageSync('openId') || wx.getStorageSync('openid') || local.openid || local.openId || local._openid;
+      
+      if (!openid) return
+      const db = app.DBS ? app.DBS.getDB() : wx.cloud.database()
+      const res = await db.collection('users').where({ _openid: openid }).get()
+      if (res.data && res.data.length > 0) {
+        const doc = res.data[0]
+        const merged = { ...local, ...doc, openid }
+        wx.setStorageSync('userInfo', merged)
+        this.setData({ userInfo: merged, isLoggedIn: true })
+      }
+    } catch (e) {
+      console.warn('[资料] 刷新用户资料失败：', e)
+    }
   },
 
   // 退出登录
@@ -208,6 +183,7 @@ Page({
             this.setData({
               isLoggedIn: false,
               userInfo: {
+                openid: '',
                 avatarUrl: '',
                 nickName: '',
                 phoneNumber: ''
@@ -229,8 +205,8 @@ Page({
   // 编辑个人资料
   editProfile() {
     if (!this.data.isLoggedIn) {
-      // 未登录时显示登录弹窗
-      this.showLoginModal()
+      // 未登录时执行一键登录
+      this.login()
       return
     }
     

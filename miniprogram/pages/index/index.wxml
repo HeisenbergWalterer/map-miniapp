@@ -12,39 +12,70 @@
   <!-- 主要内容区域 -->
   <view class="page__content">
     <!-- 欢迎信息 - 窄边框样式 -->
-    <view class="welcome-bar">
+    <view class="welcome-bar" bindtap="{{!isLoggedIn ? 'handleLogin' : ''}}">
       <image class="speaker-icon" src="/images/icons/扬声器.png" mode="aspectFit"></image>
-      <text class="welcome-text">欢迎回来{{userInfo.nickName || '用户'}}，这是微光驿站为您服务的第{{serviceDays}}天</text>
+      <view class="welcome-content">
+        <text wx:if="{{!isLoggedIn}}" class="welcome-text">
+          请<text class="login-highlight">登录</text>以使用完整功能
+        </text>
+        <text wx:else class="welcome-text">
+          欢迎回来<text class="username-highlight">{{userInfo.nickName || userInfo.name || '用户'}}</text>，这是微光驿站为您服务的第<text class="days-highlight">{{serviceDays}}</text>天
+        </text>
+      </view>
     </view>
 
-    <!-- 暖心公告区域 -->
+    <!-- 暖心公告区域 - 轮播卡片 -->
     <view class="notice-section">
       <view class="notice-header">
         <text class="notice-title">暖心公告</text>
-        <text class="notice-more">查看全部</text>
+        <text class="notice-more" bindtap="goToAnnouncements">查看全部</text>
       </view>
-      <view class="notice-content">
-        <view class="notice-item">
-          <text class="notice-text">{{noticeText}}</text>
-          <text class="notice-date">{{noticeDate}}</text>
-        </view>
+      
+      <!-- 轮播公告内容 -->
+      <swiper class="notice-swiper" 
+              indicator-dots="{{true}}" 
+              autoplay="{{true}}" 
+              interval="{{4000}}" 
+              duration="{{500}}"
+              circular="{{true}}"
+              indicator-color="rgba(59, 130, 246, 0.3)"
+              indicator-active-color="#3B82F6">
+        <swiper-item wx:for="{{announcements}}" wx:key="_id" class="notice-swiper-item">
+          <view class="notice-card" bindtap="onNoticeTap" data-notice="{{item}}">
+            <view class="notice-card-header">
+              <text class="notice-card-title">{{item.title}}</text>
+                                                <view class="notice-card-type">
+              <text class="type-text">{{item.type === 'article' ? '公众号' : '公告'}}</text>
+            </view>
+            </view>
+            <view class="notice-card-footer">
+              <text class="notice-card-date">{{item.created_at}}</text>
+              <text class="notice-card-views">{{item.view_count}} 次浏览</text>
+            </view>
+          </view>
+        </swiper-item>
+      </swiper>
+      
+      <!-- 无公告时的提示 -->
+      <view wx:if="{{!announcements || announcements.length === 0}}" class="notice-empty">
+        <text class="empty-text">暂无公告</text>
       </view>
     </view>
 
     <!-- 服务功能区域 - 圆角矩形按钮 -->
     <view class="function-grid">
       <navigator url="/pages/map/map" class="function-card" hover-class="function-card-hover">
-        <image class="function-icon-img" src="/images/icons/地图.png" mode="aspectFit"></image>
-        <text class="function-name">暖心地图</text>
+        <image class="function-icon-img" src="{{appCloudImg}}/images/icons/安新地图.png" mode="aspectFit"></image>
+        <text class="function-name">安新地图</text>
       </navigator>
               <view class="function-card contact-card" hover-class="function-card-hover" bindtap="goToContact">
-          <image class="function-icon-img" src="/images/icons/phone.png" mode="aspectFit"></image>
+          <image class="function-icon-img" src="{{appCloudImg}}/images/icons/安新联系.png" mode="aspectFit"></image>
           <text class="function-name">安新联系</text>
         </view>
 
       <navigator url="/pages/activity-reservation/activity-reservation" class="function-card" hover-class="function-card-hover">
-        <image class="function-icon-img" src="/images/icons/activity.png" mode="aspectFit"></image>
-        <text class="function-name">活动预约</text>
+        <image class="function-icon-img" src="{{appCloudImg}}/images/icons/安新活动.png" mode="aspectFit"></image>
+        <text class="function-name">安新活动</text>
       </navigator>
     </view>
     <!-- 底部装饰区域 -->

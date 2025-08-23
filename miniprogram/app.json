@@ -1,7 +1,8 @@
 {
   "pages": [
     "pages/index/index",
-    
+    "pages/announcements/announcements",
+    "pages/announcement-detail/announcement-detail",
     "pages/profile/profile",
     "pages/map/map",
     "pages/feedback/feedback",
@@ -14,7 +15,9 @@
     "pages/emergency-contact/emergency-contact",
     "pages/activity-reservation/activity-reservation",
     "pages/activity-detail/activity-detail",
-    "pages/venue-detail/venue-detail"
+    "pages/venue-detail/venue-detail",
+    "pages/venue-reserve/venue-reserve",
+    "pages/activity-enroll/activity-enroll"
   ],
   "window": {
     "backgroundColor": "#FFFFFF",
@@ -33,21 +36,21 @@
   ],
   "tabBar": {
     "color": "#999999",
-    "selectedColor": "#FF6B35",
+    "selectedColor": "#3B82F6",
     "backgroundColor": "#FFFFFF",
     "borderStyle": "black",
     "list": [
       {
         "pagePath": "pages/index/index",
         "text": "首页",
-        "iconPath": "images/icons/首页.png",
-        "selectedIconPath": "images/icons/首页.png"
+        "iconPath": "images/icons/首页-new.png",
+        "selectedIconPath": "images/icons/首页-new.png"
       },
       {
         "pagePath": "pages/profile/profile",
         "text": "个人中心",
-        "iconPath": "images/icons/usercenter.png",
-        "selectedIconPath": "images/icons/usercenter-active.png"
+        "iconPath": "images/icons/个人中心-new.png",
+        "selectedIconPath": "images/icons/个人中心-new.png"
       }
     ]
   },
