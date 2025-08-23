@@ -619,6 +619,7 @@ App({
             fail: function(err){ 
               console.error('获取用户收藏失败:', err); 
               reject(err); 
+            }
           });
       });
     },
