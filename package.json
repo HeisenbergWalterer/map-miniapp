@@ -9,6 +9,7 @@
     "preview": "vite preview --port 5174"
   },
   "dependencies": {
+    "@cloudbase/js-sdk": "^4.0.0",
     "file-saver": "^2.0.5",
     "vue": "^3.4.27",
     "vue-router": "^4.3.2",

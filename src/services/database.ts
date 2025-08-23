@@ -1,8 +1,9 @@
+import cloudBase from '@cloudbase/js-sdk'
 // CloudBase 封装（与原生版保持一致接口）
 
 const ENV_ID = 'cloud1-3gbydxui8864f9aa' // TODO: 替换为你的环境 ID
 
-const app = (window as any).cloudbase.init({ env: ENV_ID })
+const app = cloudBase.init({ env: ENV_ID })
 const auth = app.auth({ persistence: 'local' })
 const db = app.database()
 
