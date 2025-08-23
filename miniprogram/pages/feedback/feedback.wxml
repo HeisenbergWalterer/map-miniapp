@@ -38,9 +38,53 @@
       <view class="char-count">{{feedbackContent.length}}/500</view>
     </view>
 
+    <!-- 图片上传区域 -->
+    <view class="image-upload-section {{feedbackType === 'point' ? 'with-point-selection' : 'without-point-selection'}}">
+      <text class="section-title">添加图片（可选）</text>
+      <view class="image-container">
+        <view wx:for="{{images}}" wx:key="*this" class="image-item">
+          <image 
+            src="{{item}}" 
+            class="uploaded-image" 
+            mode="aspectFill"
+            bindtap="previewImage"
+            data-src="{{item}}">
+          </image>
+          <view class="delete-btn" bindtap="deleteImage" data-index="{{index}}">×</view>
+        </view>
+        <view wx:if="{{images.length < 3}}" class="add-image-btn" bindtap="chooseImage">
+          <text class="add-icon">+</text>
+          <text class="add-text">添加图片</text>
+        </view>
+      </view>
+      <text class="image-tip">最多可上传3张图片，帮助我们更好地了解问题</text>
+    </view>
+
+    <!-- 联系方式输入 -->
+    <view class="contact-section {{feedbackType === 'point' ? 'with-point-selection' : 'without-point-selection'}}">
+      <text class="section-title">联系方式（可选）</text>
+      <input 
+        class="contact-input" 
+        placeholder="如需回复，请留下手机号或微信号" 
+        value="{{contact}}" 
+        bind:input="onContactInput"
+        maxlength="50">
+      </input>
+      <text class="contact-tip">我们会保护您的隐私，仅用于反馈回复</text>
+    </view>
+
     <!-- 提交按钮 -->
     <view class="submit-section {{feedbackType === 'point' ? 'with-point-selection' : 'without-point-selection'}}">
-      <button class="submit-btn" bindtap="submitFeedback" hover-class="submit-btn-hover">提交反馈</button>
+      <button 
+        class="submit-btn {{isSubmitting ? 'submitting' : ''}}" 
+        bindtap="submitFeedback" 
+        hover-class="submit-btn-hover"
+        disabled="{{isSubmitting}}">
+        {{isSubmitting ? '提交中...' : '提交反馈'}}
+      </button>
     </view>
+
+    <!-- 底部间距 -->
+    <view class="bottom-spacing"></view>
   </view>
 </scroll-view>

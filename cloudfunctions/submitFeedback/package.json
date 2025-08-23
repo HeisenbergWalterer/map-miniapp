@@ -1,0 +1,15 @@
+{
+  "name": "submitFeedback",
+  "version": "1.0.0",
+  "description": "处理用户反馈提交的云函数",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["feedback", "miniprogram", "cloud-function"],
+  "author": "",
+  "license": "ISC"
+} 
