@@ -236,11 +236,18 @@ text{
   border-radius: 8px;
 }
 
-/* 导航按钮 */
-.nav {
+/* 操作按钮区域 */
+.action-buttons {
   position: absolute;
-  right: 30px;
-  bottom: 30px;
+  right: 20px;
+  bottom: 25px;
+  display: flex;
+  gap: 10px;
+  z-index: 999;
+}
+
+/* 操作按钮 */
+.action-btn {
   width: 40px;
   height: 40px;
   display: flex;
@@ -248,9 +255,46 @@ text{
   justify-content: center;
   background-color: #ffffff;
   border-radius: 25%;
-  /* border: 1px solid #453e3e; */
   box-shadow: #666 0px 0px 3px;
-  z-index: 999;
+  transition: all 0.2s ease;
+}
+
+.action-btn:active {
+  transform: scale(0.95);
+  box-shadow: #666 0px 0px 2px;
+}
+
+/* 收藏按钮 */
+.favorite-btn {
+  background-color: #ffffff;
+  transition: all 0.3s ease;
+}
+
+.favorite-btn.active {
+  background-color: #ffebee;
+  transform: scale(1.1);
+}
+
+.favorite-btn.active .action-icon {
+  filter: hue-rotate(340deg) saturate(1.5);
+}
+
+/* 操作图标 */
+.action-icon {
+  width: 24px;
+  height: 24px;
+}
+
+/* 导航按钮 */
+.nav {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  border-radius: 25%;
+  box-shadow: #666 0px 0px 3px;
 }
 /* 导航图标图标 */
 .nav_icon {

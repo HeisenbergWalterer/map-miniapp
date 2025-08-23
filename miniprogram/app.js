@@ -578,6 +578,145 @@ App({
           }
         });
       });
+    },
+
+    // -----收藏功能相关数据库操作-----
+    
+    // 添加收藏
+    addFavorite: function(favoriteData) {
+      const db = this.getDB();
+      const payload = {
+        station_id: favoriteData.station_id,
+        station_type: favoriteData.station_type,
+        createdAt: new Date()
+      };
+      return db.collection('favorites').add({ data: payload })
+        .then(res => { console.log('添加收藏成功:', res); return res; });
+    },
+
+    // 检查是否已收藏
+    checkFavorite: function(stationId, openid) {
+      const db = this.getDB();
+      const where = { station_id: stationId, _openid: openid };
+      return db.collection('favorites').where(where).get().then(res => {
+        console.log('检查收藏状态:', res.data);
+        return (res.data && res.data.length > 0) ? res.data[0] : null;
+      });
+    },
+
+    // 获取用户的所有收藏
+    getUserFavorites: function(openid) {
+      const db = this.getDB();
+      return new Promise((resolve, reject) => {
+        db.collection('favorites')
+          .where({ _openid: openid })
+          .orderBy('createdAt', 'desc')
+          .get({
+            success: function(res){ 
+              console.log('获取用户收藏:', res.data);
+              resolve(res.data || []); 
+            },
+            fail: function(err){ 
+              console.error('获取用户收藏失败:', err); 
+              reject(err); 
+          });
+      });
+    },
+
+    // 获取收藏的完整信息（包含站点详情）
+    getUserFavoritesWithDetails: async function(openid) {
+      try {
+        // 1. 获取用户的收藏列表
+        const favorites = await this.getUserFavorites(openid);
+        
+        // 2. 为每个收藏获取完整的站点信息
+        const favoritesWithDetails = await Promise.all(
+          favorites.map(async (favorite) => {
+            try {
+              // 根据站点类型和ID获取完整信息
+              const stationInfo = await this.findStationByID(
+                favorite.station_type, 
+                favorite.station_id
+              );
+              
+              if (stationInfo) {
+                const result = {
+                  ...favorite,
+                  station_name: stationInfo.name,
+                  station_address: stationInfo.address,
+                  station_latitude: stationInfo.latitude,
+                  station_longitude: stationInfo.longitude,
+                  station_photoUrl: stationInfo.photoUrl || '',
+                  station_serviceTime: stationInfo.serviceTime || '',
+                  station_serviceContent: stationInfo.serviceContent || '',
+                  typeName: this.getTypeName(favorite.station_type)
+                };
+                return result;
+              } else {
+                // 如果站点信息不存在，返回基本信息
+                return {
+                  ...favorite,
+                  station_name: '站点信息已删除',
+                  station_address: '',
+                  station_latitude: 0,
+                  station_longitude: 0,
+                  station_photoUrl: '',
+                  station_serviceTime: '',
+                  station_serviceContent: '',
+                  typeName: this.getTypeName(favorite.station_type)
+                };
+              }
+            } catch (error) {
+              console.error('获取站点详情失败:', error);
+              return {
+                ...favorite,
+                station_name: '获取信息失败',
+                station_address: '',
+                station_latitude: 0,
+                station_longitude: 0,
+                station_photoUrl: '',
+                station_serviceTime: '',
+                station_serviceContent: '',
+                typeName: this.getTypeName(favorite.station_type)
+              };
+            }
+          })
+        );
+        
+        return favoritesWithDetails;
+      } catch (error) {
+        console.error('获取收藏详情失败:', error);
+        throw error;
+      }
+    },
+
+    // 获取类型名称（辅助方法）
+    getTypeName: function(type) {
+      const typeMap = {
+        'toilet': '公共厕所',
+        'warm': '暖心服务站',
+        'sinopec': '爱心驿站',
+        'partner': '合作商户',
+        'relay': '接力站'
+      };
+      return typeMap[type] || '未知类型';
+    },
+
+    // 取消收藏
+    removeFavorite: function(favoriteId) {
+      const db = this.getDB();
+      return new Promise((resolve, reject) => {
+        db.collection('favorites').doc(favoriteId).remove({
+          success: function(res) {
+            console.log('取消收藏成功:', res);
+            resolve(res);
+          },
+          fail: function(err) {
+            console.error('取消收藏失败:', err);
+            reject(err);
+          }
+        });
+      });
     }
   }
 });

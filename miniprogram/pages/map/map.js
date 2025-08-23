@@ -43,6 +43,9 @@ Page({
     showSuggestions: false, //是否显示搜索建议
     searchSuggestions: [],  //搜索建议列表
     searchTimer: null,      //搜索防抖定时器
+    isFavorited: false,     //是否已收藏
+    currentStationId: '',   //当前选中的站点ID
+    userOpenid: '',         //用户openid
   },
 
   // 切换筛选器显示
@@ -80,6 +83,7 @@ Page({
       showTypeSelector: false,  // 隐藏分类选择器
     })
     this.showServiceStations(); // 显示服务站点
+    this.getUserOpenid(); // 获取用户openid
   },
 
   // 页面隐藏时
@@ -293,8 +297,12 @@ Page({
         textData: {
           name: markerData.name,
           desc: markerData.address || '详细地址信息'
-        }
+        },
+        currentStationId: id
       });
+      
+      // 检查收藏状态
+      this.checkFavoriteStatus();
     }
     console.log('选中的标记点信息:', markerData);
     console.log('选中的标记点数据:', this.data.textData);
@@ -407,4 +415,159 @@ Page({
 
   // 跳转到安新联系页面
 
+  // 获取用户openid
+  getUserOpenid: function() {
+    try {
+      // 方法1：从userInfo获取
+      const userInfo = wx.getStorageSync('userInfo');
+      if (userInfo && userInfo.openid) {
+        this.setData({
+          userOpenid: userInfo.openid
+        });
+        return;
+      }
+      
+      // 方法2：从其他存储位置获取
+      const openId = wx.getStorageSync('openId') || wx.getStorageSync('openid');
+      if (openId) {
+        this.setData({
+          userOpenid: openId
+        });
+        return;
+      }
+      
+      // 方法3：通过云函数获取
+      wx.cloud.callFunction({
+        name: 'quickstartFunctions',
+        data: {
+          type: 'getOpenId'
+        }
+      }).then(res => {
+        const newOpenId = res.result.openid;
+        
+        // 保存到本地存储
+        wx.setStorageSync('openId', newOpenId);
+        
+        // 更新用户信息
+        const currentUserInfo = wx.getStorageSync('userInfo') || {};
+        currentUserInfo.openid = newOpenId;
+        wx.setStorageSync('userInfo', currentUserInfo);
+        
+        this.setData({
+          userOpenid: newOpenId
+        });
+      }).catch(err => {
+        console.error('地图页面云函数获取OpenID失败:', err);
+      });
+      
+    } catch (error) {
+      console.error('获取用户openid失败：', error);
+    }
+  },
+
+  // 切换收藏状态
+  toggleFavorite: async function() {
+    if (!this.data.userOpenid) {
+      wx.showToast({
+        title: '请先登录',
+        icon: 'none'
+      });
+      return;
+    }
+
+    if (!this.data.currentStationId) {
+      wx.showToast({
+        title: '请先选择一个站点',
+        icon: 'none'
+      });
+      return;
+    }
+
+    try {
+      if (this.data.isFavorited) {
+        // 取消收藏
+        await this.removeFavorite();
+      } else {
+        // 添加收藏
+        await this.addFavorite();
+      }
+    } catch (error) {
+      console.error('收藏操作失败：', error);
+      wx.showToast({
+        title: '操作失败',
+        icon: 'none'
+      });
+    }
+  },
+
+  // 添加收藏
+  addFavorite: async function() {
+    const that = this;
+    const stationData = await db.findStationByID(this.data.currentType, this.data.currentStationId);
+    
+    if (!stationData) {
+      wx.showToast({
+        title: '站点信息不存在',
+        icon: 'none'
+      });
+      return;
+    }
+
+    // 只传递必要的引用信息
+    const favoriteData = {
+      station_id: stationData.id,
+      station_type: this.data.currentType
+    };
+
+    await db.addFavorite(favoriteData);
+    
+    this.setData({
+      isFavorited: true
+    });
+
+    wx.showToast({
+      title: '收藏成功',
+      icon: 'success'
+    });
+  },
+
+  // 取消收藏
+  removeFavorite: async function() {
+    const favoriteRecord = await db.checkFavorite(this.data.currentStationId, this.data.userOpenid);
+    
+    if (!favoriteRecord) {
+      wx.showToast({
+        title: '收藏记录不存在',
+        icon: 'none'
+      });
+      return;
+    }
+
+    await db.removeFavorite(favoriteRecord._id);
+    
+    this.setData({
+      isFavorited: false
+    });
+
+    wx.showToast({
+      title: '取消收藏成功',
+      icon: 'success'
+    });
+  },
+
+  // 检查收藏状态
+  checkFavoriteStatus: async function() {
+    if (!this.data.userOpenid || !this.data.currentStationId) {
+      return;
+    }
+
+    try {
+      const favoriteRecord = await db.checkFavorite(this.data.currentStationId, this.data.userOpenid);
+      this.setData({
+        isFavorited: !!favoriteRecord
+      });
+    } catch (error) {
+      console.error('检查收藏状态失败：', error);
+    }
+  }
 })
