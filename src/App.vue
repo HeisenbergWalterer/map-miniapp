@@ -70,6 +70,8 @@ function switchModule(key: string) {
   } else if (key === 'reservations'){
     console.log("switch to reservations")
     router.push({ name: 'reservations', params: { module: key } });
+  } else if (key === 'feedback') {
+    router.push({ name: 'feedback' })
   } else {
     router.push({ name: 'module', params: { module: key } })
   }

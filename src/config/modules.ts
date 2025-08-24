@@ -34,6 +34,13 @@ export const modules = {
     collection: 'reservations',
     searchFields: ['name', 'phone', 'address'],
     fallbackFields: ['id','name','phone'],
+  },
+  feedback: {
+    key: 'feedback',
+    title: '用户反馈',
+    collection: 'feedback',
+    searchFields: ['userName', 'phone', 'content', 'type'],
+    fallbackFields: ['userName', 'phone', 'content', 'type', 'createTime', 'status'],
   }
 }
 

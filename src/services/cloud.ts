@@ -26,6 +26,56 @@ export async function queryCollection(params: { collection: string, pageNo: numb
     return await querySitesCollection({ pageNo, pageSize, keyword, typeFilter })
   }
   
+  // 特殊处理 feedback 集合
+  if (collection === 'feedback') {
+    const where: any = {}
+    if (keyword) {
+      const reg = db.RegExp({ regexp: keyword, options: 'i' })
+      
+      // 反馈类型的中英文映射
+      const typeMapping: Record<string, string[]> = {
+        '地点反馈': ['point'],
+        '意见建议': ['suggestion'],
+        '问题反馈': ['bug'],
+        '投诉': ['complaint'],
+        '表扬': ['praise'],
+        '其他': ['other']
+      }
+      
+      // 检查是否搜索的是中文类型名称
+      let typeConditions = []
+      for (const [chineseType, englishTypes] of Object.entries(typeMapping)) {
+        if (chineseType.includes(keyword) || keyword.includes(chineseType)) {
+          typeConditions.push(...englishTypes.map(type => ({ type: db.RegExp({ regexp: type, options: 'i' }) })))
+        }
+      }
+      
+      // 如果搜索的是中文类型，优先使用类型匹配
+      if (typeConditions.length > 0) {
+        where['$or'] = [
+          ...typeConditions,  // 优先匹配类型
+          { content: reg },   // 反馈内容
+          { contact: reg },   // 联系方式
+          { selectedPoint: reg } // 选择定位
+        ]
+      } else {
+        // 普通搜索
+        where['$or'] = [
+          { type: reg },           // 反馈类型（英文）
+          { content: reg },        // 反馈内容
+          { contact: reg },        // 联系方式
+          { selectedPoint: reg }   // 选择定位
+        ]
+      }
+    }
+    console.log("feedback where:", where);
+    const skip = (pageNo - 1) * pageSize
+    const countRes = await db.collection(collection).where(where).count()
+    const total = countRes?.total || 0
+    const res = await db.collection(collection).where(where).orderBy('createTime', 'desc').skip(skip).limit(pageSize).get()
+    return { list: res.data || [], total }
+  }
+  
   const where: any = {}
   if (keyword) {
     const reg = db.RegExp({ regexp: keyword, options: 'i' })

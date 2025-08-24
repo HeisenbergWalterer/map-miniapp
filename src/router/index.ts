@@ -3,6 +3,7 @@ import Login from '../pages/Login.vue'
 import ModulePage from '../pages/ModulePage.vue'
 import SitesPage from '../pages/SitesPage.vue'
 import Reservations from '../pages/Reservations.vue'
+import FeedbackPage from '../pages/FeedbackPage.vue'
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -32,7 +33,8 @@ const router = createRouter({
           redirect: { name: 'venue-reservations' }
         }
       ]
-    }
+    },
+    { name: 'feedback', path: '/feedback', component: FeedbackPage }
   ],
 })
 
