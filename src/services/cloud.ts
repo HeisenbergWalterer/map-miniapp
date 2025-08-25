@@ -55,7 +55,8 @@ export async function queryCollection(params: { collection: string, pageNo: numb
         where['$or'] = [
           ...typeConditions,  // 优先匹配类型
           { content: reg },   // 反馈内容
-          { contact: reg },   // 联系方式
+          { phoneNumber: reg }, // 电话号码
+          { nickName: reg },    // 昵称
           { selectedPoint: reg } // 选择定位
         ]
       } else {
@@ -63,7 +64,8 @@ export async function queryCollection(params: { collection: string, pageNo: numb
         where['$or'] = [
           { type: reg },           // 反馈类型（英文）
           { content: reg },        // 反馈内容
-          { contact: reg },        // 联系方式
+          { phoneNumber: reg },    // 电话号码
+          { nickName: reg },       // 昵称
           { selectedPoint: reg }   // 选择定位
         ]
       }

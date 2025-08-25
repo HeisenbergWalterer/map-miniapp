@@ -4,7 +4,7 @@
     <div class="search-bar">
       <input 
         v-model="searchKeyword" 
-        placeholder="搜索反馈类型、内容、联系方式或位置..." 
+        placeholder="搜索反馈类型、内容、用户名、电话号码或位置..." 
         class="search-input"
         @input="onSearchInput"
       />
@@ -24,7 +24,7 @@
         <tbody>
           <tr v-for="row in list" :key="row._id">
             <td v-for="c in columns" :key="c" :class="cellClass(c)">
-              {{ displayValue(row[c], c) }}
+              {{ displayValue(row[c], c, row) }}
             </td>
             <td class="actions-cell">
               <button class="btn sm primary" @click="viewDetail(row)">查看详情</button>
@@ -55,7 +55,7 @@
           <label class="detail-label">{{ getColumnTitle(key) }}：</label>
           <div class="detail-value">
             <span v-if="key === 'content'" class="feedback-content">{{ selectedFeedback[key] }}</span>
-            <span v-else>{{ displayValue(selectedFeedback[key], key) }}</span>
+            <span v-else>{{ displayValue(selectedFeedback[key], key, selectedFeedback) }}</span>
           </div>
         </div>
       </div>
@@ -92,6 +92,7 @@ const columnTitles: Record<string, string> = {
   type: '反馈类型',
   content: '反馈内容',
   createTime: '提交时间',
+  nickName: '用户名',
   contact: '联系方式',
   selectedPoint: '选择定位',
   
@@ -108,8 +109,8 @@ function getColumnTitle(key: string): string {
   return columnTitles[key] || key
 }
 
-// 核心字段列表 - 固定顺序（5个核心字段）
-const coreFields = ['type', 'content', 'createTime', 'contact', 'selectedPoint']
+// 核心字段列表 - 固定顺序（6个核心字段）
+const coreFields = ['type', 'content', 'createTime', 'nickName', 'contact', 'selectedPoint']
 
 // 计算列 - 只显示核心字段
 function calcColumns(rows: any[]) {
@@ -118,7 +119,46 @@ function calcColumns(rows: any[]) {
 }
 
 // 显示值
-function displayValue(v: any, key: string): string {
+function displayValue(v: any, key: string, row?: any): string {
+  console.log(`displayValue被调用 - key: ${key}, v:`, v, 'row:', row)
+  
+  // 联系方式字段特殊处理：即使v为undefined也要继续执行
+  if (key === 'contact') {
+    console.log('=== 处理联系方式字段 ===')
+    console.log('key:', key)
+    console.log('v:', v)
+    console.log('row:', row)
+    
+    // 当key为contact时，直接使用row参数获取数据库中的实际字段
+    if (row) {
+      console.log('行数据中的字段:', Object.keys(row))
+      console.log('phoneNumber:', row.phoneNumber)
+      
+      // 只显示电话号码
+      if (row.phoneNumber) {
+        return row.phoneNumber
+      }
+    }
+    
+    // 如果contact字段是对象格式（这种情况应该不会发生，因为数据库中没有contact字段）
+    if (v && typeof v === 'object') {
+      const parts = []
+      if (v.userName) parts.push(`姓名: ${v.userName}`)
+      if (v.phone) parts.push(`电话: ${v.phone}`)
+      if (v.email) parts.push(`邮箱: ${v.email}`)
+      return parts.length > 0 ? parts.join(', ') : '无联系方式'
+    }
+    
+    // 如果contact字段是字符串（这种情况应该不会发生，因为数据库中没有contact字段）
+    if (v && typeof v === 'string') {
+      return v
+    }
+    
+    console.log('未找到联系方式信息，返回默认值')
+    return '未提供'
+  }
+  
+  // 其他字段的正常处理逻辑
   if (v == null || v === '') return getDefaultValue(key)
   
   // 时间字段
@@ -154,18 +194,6 @@ function displayValue(v: any, key: string): string {
       }
     }
     return v || '未选择位置'
-  }
-  
-  // 联系方式
-  if (key === 'contact') {
-    if (v && typeof v === 'object') {
-      const parts = []
-      if (v.userName) parts.push(`姓名: ${v.userName}`)
-      if (v.phone) parts.push(`电话: ${v.phone}`)
-      if (v.email) parts.push(`邮箱: ${v.email}`)
-      return parts.length > 0 ? parts.join(', ') : '无联系方式'
-    }
-    return v || '未提供'
   }
   
   // 反馈内容
@@ -256,6 +284,10 @@ async function load() {
       pageSize, 
       keyword: searchKeyword.value 
     })
+    
+    console.log('从数据库获取的原始数据:', rows)
+    console.log('数据字段:', rows.length > 0 ? Object.keys(rows[0]) : [])
+    
     list.value = rows
     total.value = t
     
