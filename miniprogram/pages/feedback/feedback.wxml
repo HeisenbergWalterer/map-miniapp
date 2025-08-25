@@ -38,27 +38,7 @@
       <view class="char-count">{{feedbackContent.length}}/500</view>
     </view>
 
-    <!-- 图片上传区域 -->
-    <view class="image-upload-section {{feedbackType === 'point' ? 'with-point-selection' : 'without-point-selection'}}">
-      <text class="section-title">添加图片（可选）</text>
-      <view class="image-container">
-        <view wx:for="{{images}}" wx:key="*this" class="image-item">
-          <image 
-            src="{{item}}" 
-            class="uploaded-image" 
-            mode="aspectFill"
-            bindtap="previewImage"
-            data-src="{{item}}">
-          </image>
-          <view class="delete-btn" bindtap="deleteImage" data-index="{{index}}">×</view>
-        </view>
-        <view wx:if="{{images.length < 3}}" class="add-image-btn" bindtap="chooseImage">
-          <text class="add-icon">+</text>
-          <text class="add-text">添加图片</text>
-        </view>
-      </view>
-      <text class="image-tip">最多可上传3张图片，帮助我们更好地了解问题</text>
-    </view>
+
 
     <!-- 联系方式输入 -->
     <view class="contact-section {{feedbackType === 'point' ? 'with-point-selection' : 'without-point-selection'}}">
