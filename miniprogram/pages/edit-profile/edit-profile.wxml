@@ -61,6 +61,10 @@
             <input class="phone-input" type="number" placeholder="请输入手机号" value="{{userInfo.phoneNumber}}" bindinput="onPhoneInput" maxlength="11" />
           </view>
         </view>
+        <!-- 手机号错误提示 -->
+        <view class="phone-error" wx:if="{{phoneError}}">
+          <text class="error-text">{{phoneError}}</text>
+        </view>
        
        <!-- 个人简介 -->
         <view class="info-item" bindtap="editDescription" hover-class="info-item-hover" hover-stay-time="100">

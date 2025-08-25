@@ -2,14 +2,6 @@
 <navigation-bar title="选择地点" back="{{true}}" color="white" background="transparent"></navigation-bar>
 <scroll-view class="scrollarea" scroll-y type="list">
   <view class="container">
-    <!-- 搜索区域 -->
-    <view class="search-section">
-      <view class="search-box">
-        <input class="search-input" placeholder="搜索地点..." value="{{searchKeyword}}" bind:input="onSearchInput" />
-        <view class="search-icon">🔍</view>
-      </view>
-    </view>
-
     <!-- 地点列表区域 -->
     <view class="point-list-section">
       <view class="category-tabs">
@@ -41,6 +33,9 @@
         <view wx:if="{{filteredPoints.length === 0 && !loading}}" class="empty-state">
           <text class="empty-text">暂无匹配的地点</text>
         </view>
+        
+        <!-- 底部安全间距 -->
+        <view class="bottom-safe-area"></view>
       </scroll-view>
     </view>
   </view>

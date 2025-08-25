@@ -1,15 +1,18 @@
-// feedback.js
 Page({
   data: {
     feedbackType: 'point', // 默认选择异常点位反馈
-    selectedPoint: '',
+    selectedPoint: null,   // 存储完整的地点信息对象
     feedbackContent: '',
-    isSubmitting: false,    // 防止重复提交
-    contact: ''            // 联系方式
+    isSubmitting: false,   // 防止重复提交
+    userInfo: {            // 用户信息（后台使用）
+      nickName: '',
+      phoneNumber: ''
+    }
   },
 
   onLoad(options) {
     console.log('反馈中心页面加载')
+    this.getUserInfo()
   },
 
   onReady() {
@@ -18,6 +21,8 @@ Page({
 
   onShow() {
     console.log('反馈中心页面显示')
+    // 重新获取用户信息，确保信息是最新的
+    this.getUserInfo()
   },
 
   onHide() {
@@ -28,12 +33,74 @@ Page({
     console.log('反馈中心页面卸载')
   },
 
+  // 获取用户信息（后台用于提交反馈）
+  async getUserInfo() {
+    try {
+      // 检查本地存储的用户信息
+      const localUserInfo = wx.getStorageSync('userInfo') || {}
+      // 兼容不同的openId字段名
+      const openid = wx.getStorageSync('openId') || wx.getStorageSync('openid') || localUserInfo.openid || localUserInfo.openId || localUserInfo._openid
+      
+      console.log('反馈页面获取用户信息 - openid:', openid)
+      
+      if (!openid) {
+        // 用户未登录
+        wx.showModal({
+          title: '需要登录',
+          content: '请先登录后再使用反馈功能',
+          showCancel: false,
+          confirmText: '去登录',
+          success: () => {
+            wx.switchTab({
+              url: '/pages/profile/profile'
+            })
+          }
+        })
+        return
+      }
+
+      // 从数据库获取最新用户信息
+      const db = wx.cloud.database()
+      const userResult = await db.collection('users').where({
+        _openid: openid
+      }).get()
+
+      console.log('用户信息查询结果:', userResult)
+
+      if (userResult.data.length > 0) {
+        const userDoc = userResult.data[0]
+        this.setData({
+          userInfo: {
+            nickName: userDoc.nickName || '微信用户',
+            phoneNumber: userDoc.phoneNumber || ''
+          }
+        })
+      } else {
+        // 用户数据不存在
+        this.setData({
+          userInfo: {
+            nickName: '微信用户',
+            phoneNumber: ''
+          }
+        })
+      }
+    } catch (error) {
+      console.error('获取用户信息失败:', error)
+      wx.showToast({
+        title: '获取用户信息失败',
+        icon: 'none'
+      })
+    }
+  },
+
+
+
   // 选择反馈类型
   selectType(e) {
     const type = e.currentTarget.dataset.type
     this.setData({
       feedbackType: type,
-      selectedPoint: type === 'suggestion' ? '' : this.data.selectedPoint // 切换到建议时清除选择的点位
+      selectedPoint: type === 'suggestion' ? null : this.data.selectedPoint // 切换到建议时清除选择的点位
     })
   },
 
@@ -52,22 +119,13 @@ Page({
     })
   },
 
-  // 联系方式输入
-  onContactInput(e) {
-    this.setData({
-      contact: e.detail.value
-    })
-  },
-
-
-
   // 提交反馈
   async submitFeedback() {
     if (this.data.isSubmitting) {
       return // 防止重复提交
     }
 
-    const { feedbackType, selectedPoint, feedbackContent, contact } = this.data
+    const { feedbackType, selectedPoint, feedbackContent } = this.data
 
     // 前端验证
     if (!feedbackContent.trim()) {
@@ -94,27 +152,26 @@ Page({
       return
     }
 
-    // 构建提交数据
-    const submitData = {
-      type: feedbackType,
-      selectedPoint: feedbackType === 'point' ? selectedPoint : null,
-      content: feedbackContent.trim(),
-      contact: contact.trim(),
-      clientTime: new Date().toISOString()
-    }
-
-    console.log('准备提交反馈数据:', submitData)
-
-    // 设置提交状态
+    // 设置提交状态，显示加载提示
     this.setData({
       isSubmitting: true
     })
 
-    wx.showLoading({
-      title: '提交中...'
-    })
+          wx.showLoading({
+        title: '提交中...'
+      })
 
-    try {
+      try {
+
+      // 构建提交数据 - 用户信息由云函数从users集合获取
+      const submitData = {
+        type: feedbackType,
+        selectedPoint: feedbackType === 'point' ? selectedPoint : null,
+        content: feedbackContent.trim()
+      }
+
+      console.log('准备提交反馈数据:', submitData)
+
       // 调用云函数提交反馈
       const result = await wx.cloud.callFunction({
         name: 'submitFeedback',
@@ -143,11 +200,33 @@ Page({
       } else {
         // 处理业务错误
         const error = result.result || {}
-        wx.showToast({
-          title: error.message || '提交失败，请重试',
-          icon: 'none',
-          duration: 3000
-        })
+        const errorMessage = error.message || '提交失败，请重试'
+        
+        // 根据错误类型提供不同的处理方式
+        if (errorMessage.includes('请先完善个人资料') || 
+            errorMessage.includes('请先绑定手机号') || 
+            errorMessage.includes('手机号格式不正确')) {
+          
+          wx.showModal({
+            title: '需要完善信息',
+            content: errorMessage + '\n是否前往个人资料页面？',
+            confirmText: '去完善',
+            cancelText: '取消',
+            success: (res) => {
+              if (res.confirm) {
+                wx.navigateTo({
+                  url: '/pages/edit-profile/edit-profile'
+                })
+              }
+            }
+          })
+        } else {
+          wx.showToast({
+            title: errorMessage,
+            icon: 'none',
+            duration: 3000
+          })
+        }
       }
 
     } catch (error) {
@@ -171,15 +250,17 @@ Page({
   resetForm() {
     this.setData({
       feedbackType: 'point',
-      selectedPoint: '',
+      selectedPoint: null,
       feedbackContent: '',
-      contact: '',
       isSubmitting: false
+      // 保留userInfo，不重置用户信息
     })
   },
   
   // 页面卸载时的清理已在resetForm中处理
   onUnload() {
     console.log('反馈中心页面卸载')
-  }
+  },
+
+
 })

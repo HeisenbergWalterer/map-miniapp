@@ -1,4 +1,3 @@
-/* edit-profile.wxss */
 page {
   width: 100%;
   height: 100vh;
@@ -346,4 +345,32 @@ page {
   color: #333;
   border: none;
   box-sizing: border-box;
+}
+
+/* 手机号输入框 */
+.phone-input {
+  width: 100%;
+  text-align: right;
+  font-size: 32rpx;
+  color: #333;
+  background: transparent;
+  border: none;
+  outline: none;
+}
+
+.phone-input::placeholder {
+  color: #bbb;
+  font-size: 28rpx;
+}
+
+/* 手机号错误提示 */
+.phone-error {
+  padding: 8rpx 40rpx 0 40rpx;
+  margin-bottom: 20rpx;
+}
+
+.error-text {
+  font-size: 28rpx;
+  color: #ff4757;
+  display: inline-block;
 }

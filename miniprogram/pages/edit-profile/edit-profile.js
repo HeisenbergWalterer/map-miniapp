@@ -1,4 +1,3 @@
-// edit-profile.js
 const app = getApp();
 
 Page({
@@ -19,7 +18,8 @@ Page({
     tempGender: '',
     tempAge: '',
     tempDescription: '',
-    hasChanges: false
+    hasChanges: false,
+    phoneError: '' // 手机号错误提示
   },
 
   onLoad(options) {
@@ -164,8 +164,39 @@ Page({
 
   // 手机号输入
   onPhoneInput(e) {
-    const val = (e.detail.value || '').replace(/\D/g, '').slice(0, 11)
+    let val = (e.detail.value || '').replace(/\D/g, '').slice(0, 11)
+    
+    // 格式验证提示
+    this.validatePhoneNumber(val)
+    
     this.setData({ 'userInfo.phoneNumber': val, hasChanges: true })
+  },
+
+  // 手机号格式验证
+  validatePhoneNumber(phoneNumber) {
+    if (!phoneNumber) {
+      // 清空时不显示错误
+      this.setData({ phoneError: '' })
+      return true
+    }
+    
+    let errorMsg = ''
+    
+    // 检查长度
+    if (phoneNumber.length > 0 && phoneNumber.length < 11) {
+      errorMsg = '手机号必须为11位数字'
+    }
+    // 检查第一位必须是1
+    else if (phoneNumber.length > 0 && phoneNumber[0] !== '1') {
+      errorMsg = '手机号第一位必须是1'
+    }
+    // 检查完整格式（11位且第一位是1）
+    else if (phoneNumber.length === 11 && !/^1\d{10}$/.test(phoneNumber)) {
+      errorMsg = '请输入正确的手机号格式'
+    }
+    
+    this.setData({ phoneError: errorMsg })
+    return errorMsg === ''
   },
 
   // 编辑个人简介
@@ -215,6 +246,14 @@ Page({
     if (!userInfo.nickName || !userInfo.nickName.trim()) {
       wx.showToast({ title: '请输入昵称', icon: 'none' })
       return
+    }
+
+    // 手机号格式验证（如果填写了手机号）
+    if (userInfo.phoneNumber) {
+      if (!this.validatePhoneNumber(userInfo.phoneNumber)) {
+        wx.showToast({ title: this.data.phoneError || '手机号格式不正确', icon: 'none' })
+        return
+      }
     }
 
     if (!hasChanges) {
@@ -302,7 +341,8 @@ Page({
               phoneNumber: merged.phoneNumber || '',
               description: merged.description || ''
             },
-            hasChanges: false
+            hasChanges: false,
+            phoneError: '' // 清除错误提示
           })
         }
       })

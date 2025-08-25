@@ -1,4 +1,3 @@
-// point-select.js
 // 获取app实例
 const app = getApp();
 // 获取数据库服务类
@@ -7,7 +6,6 @@ const db = app.DBS;
 Page({
   data: {
     selectedCategory: '', // 选中的种类
-    searchKeyword: '', // 搜索关键词
     allPoints: [], // 所有点位数据
     filteredPoints: [], // 过滤后的点位数据
     loading: true, // 加载状态
@@ -182,32 +180,14 @@ Page({
     this.filterPoints()
   },
 
-  // 搜索输入
-  onSearchInput(e) {
-    this.setData({
-      searchKeyword: e.detail.value
-    })
-    this.filterPoints()
-  },
-
   // 过滤点位
   filterPoints() {
-    const { allPoints, selectedCategory, searchKeyword } = this.data
+    const { allPoints, selectedCategory } = this.data
     let filtered = allPoints
 
     // 按种类过滤
     if (selectedCategory) {
       filtered = filtered.filter((point) => point.category === selectedCategory)
-    }
-
-    // 按搜索关键词过滤
-    if (searchKeyword.trim()) {
-      const keyword = searchKeyword.trim().toLowerCase()
-      filtered = filtered.filter((point) => 
-        point.name.toLowerCase().includes(keyword) || 
-        point.categoryName.toLowerCase().includes(keyword) ||
-        (point.address && point.address.toLowerCase().includes(keyword))
-      )
     }
 
     this.setData({
@@ -219,14 +199,25 @@ Page({
   selectPoint(e) {
     const point = e.currentTarget.dataset.point
     
+    // 构建完整的地点信息对象
+    const selectedPointData = {
+      id: point.id,                    // 地点在对应集合中的_id
+      name: point.name,                // 地点名称
+      category: point.category,        // 地点类型（toilet/sinopec/warm/partner/relay）
+      categoryName: point.categoryName,// 地点类型显示名称
+      address: point.address,          // 地址
+      serviceTime: point.serviceTime,  // 服务时间
+      serviceContent: point.serviceContent // 服务内容
+    }
+    
     // 获取上一页的页面实例
     const pages = getCurrentPages()
     const prevPage = pages[pages.length - 2]
     
     if (prevPage) {
-      // 将选中的点位传递给上一页
+      // 将完整的地点信息传递给上一页
       prevPage.setData({
-        selectedPoint: point.name
+        selectedPoint: selectedPointData
       })
     }
 

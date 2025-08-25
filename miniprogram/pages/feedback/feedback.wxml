@@ -18,8 +18,19 @@
     <view wx:if="{{feedbackType === 'point'}}" class="point-selection-section">
       <text class="section-title">选择地点</text>
       <view class="point-select-btn" bindtap="selectPoint" hover-class="point-select-btn-hover">
-        <text class="btn-text">{{selectedPoint || '点击选择地点'}}</text>
+        <text class="btn-text">{{selectedPoint ? selectedPoint.name : '点击选择地点'}}</text>
         <text class="arrow">></text>
+      </view>
+      <!-- 显示已选择地点的详细信息 -->
+      <view wx:if="{{selectedPoint}}" class="selected-point-info">
+        <view class="point-info-item">
+          <text class="info-label">类型:</text>
+          <text class="info-value">{{selectedPoint.categoryName}}</text>
+        </view>
+        <view class="point-info-item">
+          <text class="info-label">地址:</text>
+          <text class="info-value">{{selectedPoint.address}}</text>
+        </view>
       </view>
     </view>
 
@@ -36,21 +47,6 @@
         show-confirm-bar="{{false}}">
       </textarea>
       <view class="char-count">{{feedbackContent.length}}/500</view>
-    </view>
-
-
-
-    <!-- 联系方式输入 -->
-    <view class="contact-section {{feedbackType === 'point' ? 'with-point-selection' : 'without-point-selection'}}">
-      <text class="section-title">联系方式（可选）</text>
-      <input 
-        class="contact-input" 
-        placeholder="如需回复，请留下手机号或微信号" 
-        value="{{contact}}" 
-        bind:input="onContactInput"
-        maxlength="50">
-      </input>
-      <text class="contact-tip">我们会保护您的隐私，仅用于反馈回复</text>
     </view>
 
     <!-- 提交按钮 -->
