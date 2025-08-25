@@ -103,8 +103,7 @@ async function listFeedback(params, wxContext) {
         likeCount: true,
         contact: true,
         // 隐藏敏感信息
-        userInfo: false,
-        images: true
+        userInfo: false
       })
       .get()
 

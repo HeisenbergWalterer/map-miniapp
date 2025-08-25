@@ -6,21 +6,19 @@ page {
   min-height: 100vh;
   margin: 0;
   padding: 0;
-  background: linear-gradient(to bottom, 
-    #FF6B35 0%, 
-    rgba(255,107,53,0.85) 400rpx, 
-    #f5f5f5 470rpx, 
-    #f5f5f5 100%);
+  background: linear-gradient(135deg, #2563EB 0%, #3B82F6 25%, #60A5FA 50%, #3B82F6 75%, #2563EB 100%);
 }
 
 .scrollarea {
   width: 100%;
   height: 100vh;
   background: linear-gradient(to bottom, 
-    #FF6B35 0%, 
-    rgba(255,107,53,0.85) 400rpx, 
-    #f5f5f5 470rpx, 
-    #f5f5f5 100%);
+    #2563EB 0%, 
+    rgba(37, 99, 235, 0.9) 200rpx,
+    rgba(59, 130, 246, 0.8) 300rpx,
+    rgba(96, 165, 250, 0.6) 400rpx, 
+    rgba(248, 249, 250, 0.95) 470rpx, 
+    #f8f9fa 100%);
   margin: 0;
   padding: 0;
   padding-top: 0;
@@ -46,12 +44,17 @@ page {
 
 .search-box {
   position: relative;
-  background-color: #fff;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.9) 100%);
+  backdrop-filter: blur(10rpx);
+  border: 1rpx solid rgba(59, 130, 246, 0.1);
   border-radius: 50rpx;
   padding: 24rpx 60rpx 24rpx 40rpx;
-  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.1);
+  box-shadow: 
+    0 8rpx 32rpx rgba(37, 99, 235, 0.12),
+    0 4rpx 16rpx rgba(37, 99, 235, 0.08);
   display: flex;
   align-items: center;
+  transition: all 0.3s ease;
 }
 
 .search-input {
@@ -60,13 +63,14 @@ page {
   color: #333;
   border: none;
   outline: none;
+  background: transparent;
 }
 
 .search-icon {
   position: absolute;
   right: 30rpx;
   font-size: 32rpx;
-  color: #999;
+  color: #3B82F6;
 }
 
 /* 地点列表区域 */
@@ -77,11 +81,16 @@ page {
   bottom: 40rpx;
   left: 5%;
   right: 5%;
-  background-color: #fff;
-  border-radius: 20rpx;
-  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.1);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.9) 100%);
+  backdrop-filter: blur(10rpx);
+  border: 1rpx solid rgba(59, 130, 246, 0.1);
+  border-radius: 24rpx;
+  box-shadow: 
+    0 8rpx 32rpx rgba(37, 99, 235, 0.12),
+    0 4rpx 16rpx rgba(37, 99, 235, 0.08);
   overflow: hidden;
   z-index: 2;
+  transition: all 0.3s ease;
 }
 
 /* 分类标签 */
@@ -96,16 +105,34 @@ page {
 .tab-item {
   padding: 16rpx 24rpx;
   margin: 0 16rpx 16rpx 0;
-  background-color: #fff;
-  border: 2rpx solid #e0e0e0;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border: 2rpx solid #e2e8f0;
   border-radius: 40rpx;
   text-align: center;
-  transition: all 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.tab-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent 0%, rgba(59, 130, 246, 0.1) 50%, transparent 100%);
+  transition: left 0.5s ease;
+}
+
+.tab-item:active::before {
+  left: 100%;
 }
 
 .tab-item.active {
-  background-color: #FF6B35;
-  border-color: #FF6B35;
+  background: linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%);
+  border-color: #3B82F6;
+  box-shadow: 0 4rpx 12rpx rgba(59, 130, 246, 0.3);
 }
 
 .tab-text {
@@ -115,6 +142,17 @@ page {
 
 .tab-item.active .tab-text {
   color: #fff;
+}
+
+/* 加载状态 */
+.loading-state {
+  text-align: center;
+  padding: 100rpx 40rpx;
+}
+
+.loading-text {
+  font-size: 28rpx;
+  color: #666;
 }
 
 /* 地点容器 */
@@ -130,7 +168,25 @@ page {
   justify-content: space-between;
   padding: 30rpx 40rpx;
   border-bottom: 1rpx solid #f0f0f0;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.point-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2rpx;
+  background: linear-gradient(90deg, transparent 0%, #3B82F6 50%, transparent 100%);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.point-item:active::before {
+  transform: scaleX(1);
 }
 
 .point-item:last-child {
@@ -152,14 +208,30 @@ page {
 
 .point-category {
   font-size: 24rpx;
+  color: #2563EB;
+  margin-bottom: 6rpx;
+  font-weight: 500;
+}
+
+.point-address {
+  font-size: 22rpx;
+  color: #666;
+  margin-bottom: 4rpx;
+  line-height: 1.4;
+}
+
+.point-service {
+  font-size: 20rpx;
   color: #999;
+  line-height: 1.4;
 }
 
 .point-select {
   padding: 16rpx 32rpx;
-  background: linear-gradient(135deg, #FF6B35 0%, #ff8e53 100%);
+  background: linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%);
   border-radius: 40rpx;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 4rpx 12rpx rgba(59, 130, 246, 0.3);
 }
 
 .select-text {
@@ -176,10 +248,10 @@ page {
 
 .empty-text {
   font-size: 28rpx;
-  color: #999;
+  color: #666;
 }
 
 /* 悬停效果 */
 .point-item-hover {
-  background-color: #f5f5f5;
+  background-color: rgba(59, 130, 246, 0.05);
 }

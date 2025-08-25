@@ -1,10 +1,24 @@
 // point-select.js
+// 获取app实例
+const app = getApp();
+// 获取数据库服务类
+const db = app.DBS;
+
 Page({
   data: {
     selectedCategory: '', // 选中的种类
     searchKeyword: '', // 搜索关键词
     allPoints: [], // 所有点位数据
-    filteredPoints: [] // 过滤后的点位数据
+    filteredPoints: [], // 过滤后的点位数据
+    loading: true, // 加载状态
+    categories: [
+      { key: '', name: '全部' },
+      { key: 'toilet', name: '公共卫生间' },
+      { key: 'warm', name: '暖心服务站' },
+      { key: 'sinopec', name: '爱心驿站' },
+      { key: 'partner', name: '合作商户' },
+      { key: 'relay', name: '接力站' }
+    ]
   },
 
   onLoad(options) {
@@ -29,24 +43,131 @@ Page({
   },
 
   // 初始化点位数据
-  initPointData() {
-    const categories = ['公共卫生间', '暖心服务站', '司机休息室', '合作商户']
-    const allPoints = []
-
-    categories.forEach(category => {
-      for (let i = 1; i <= 4; i++) {
-        allPoints.push({
-          id: `${category}_${i}`,
-          name: `${category}${i}号`,
-          category: category
-        })
+  async initPointData() {
+    try {
+      this.setData({ loading: true })
+      
+      // 从云数据库获取所有类型的点位数据
+      const allPoints = []
+      
+      // 获取公共卫生间数据
+      try {
+        const toiletData = await db.findServStations('toilet')
+        if (toiletData) {
+          toiletData.forEach(point => {
+            allPoints.push({
+              id: point._id,
+              name: point.name,
+              category: 'toilet',
+              categoryName: '公共卫生间',
+              address: point.address,
+              serviceTime: point.serviceTime,
+              serviceContent: point.serviceContent
+            })
+          })
+        }
+      } catch (error) {
+        console.error('获取公共卫生间数据失败:', error)
       }
-    })
 
-    this.setData({
-      allPoints: allPoints,
-      filteredPoints: allPoints
-    })
+      // 获取暖心服务站数据
+      try {
+        const warmData = await db.findServStations('warm')
+        if (warmData) {
+          warmData.forEach(point => {
+            allPoints.push({
+              id: point._id,
+              name: point.name,
+              category: 'warm',
+              categoryName: '暖心服务站',
+              address: point.address,
+              serviceTime: point.serviceTime,
+              serviceContent: point.serviceContent
+            })
+          })
+        }
+      } catch (error) {
+        console.error('获取暖心服务站数据失败:', error)
+      }
+
+      // 获取爱心驿站数据
+      try {
+        const sinopecData = await db.findServStations('sinopec')
+        if (sinopecData) {
+          sinopecData.forEach(point => {
+            allPoints.push({
+              id: point._id,
+              name: point.name,
+              category: 'sinopec',
+              categoryName: '爱心驿站',
+              address: point.address,
+              serviceTime: point.serviceTime,
+              serviceContent: point.serviceContent
+            })
+          })
+        }
+      } catch (error) {
+        console.error('获取爱心驿站数据失败:', error)
+      }
+
+      // 获取合作商户数据
+      try {
+        const partnerData = await db.findServStations('partner')
+        if (partnerData) {
+          partnerData.forEach(point => {
+            allPoints.push({
+              id: point._id,
+              name: point.name,
+              category: 'partner',
+              categoryName: '合作商户',
+              address: point.address,
+              serviceTime: point.serviceTime,
+              serviceContent: point.serviceContent
+            })
+          })
+        }
+      } catch (error) {
+        console.error('获取合作商户数据失败:', error)
+      }
+
+      // 获取接力站数据
+      try {
+        const relayData = await db.findServStations('relay')
+        if (relayData) {
+          relayData.forEach(point => {
+            allPoints.push({
+              id: point._id,
+              name: point.name,
+              category: 'relay',
+              categoryName: '接力站',
+              address: point.address,
+              serviceTime: point.serviceTime,
+              serviceContent: point.serviceContent
+            })
+          })
+        }
+      } catch (error) {
+        console.error('获取接力站数据失败:', error)
+      }
+
+      console.log('获取到的所有点位数据:', allPoints)
+
+      this.setData({
+        allPoints: allPoints,
+        filteredPoints: allPoints,
+        loading: false
+      })
+    } catch (error) {
+      console.error('初始化点位数据失败:', error)
+      this.setData({ loading: false })
+      
+      // 如果获取失败，显示错误提示
+      wx.showToast({
+        title: '获取点位数据失败',
+        icon: 'none',
+        duration: 2000
+      })
+    }
   },
 
   // 选择种类
@@ -84,7 +205,8 @@ Page({
       const keyword = searchKeyword.trim().toLowerCase()
       filtered = filtered.filter((point) => 
         point.name.toLowerCase().includes(keyword) || 
-        point.category.toLowerCase().includes(keyword)
+        point.categoryName.toLowerCase().includes(keyword) ||
+        (point.address && point.address.toLowerCase().includes(keyword))
       )
     }
 

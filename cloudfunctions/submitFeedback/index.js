@@ -14,7 +14,7 @@ exports.main = async (event, context) => {
   console.log('用户上下文:', wxContext)
   
   try {
-    const { type, content, selectedPoint, images, contact, clientTime } = event
+    const { type, content, selectedPoint, contact, clientTime } = event
     
     // 数据验证
     if (!content || content.trim().length === 0) {
@@ -37,7 +37,6 @@ exports.main = async (event, context) => {
       type: type || 'suggestion',
       content: content.trim(),
       selectedPoint: selectedPoint || null,
-      images: images || [],
       contact: contact || '',
       clientTime: clientTime,
       serverTime: db.serverDate(),
