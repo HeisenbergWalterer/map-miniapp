@@ -8,6 +8,9 @@ Page({
     venue_id: '',          //场馆id
     center_id: '',         //中心id
     venueInfo: null,       //完整场馆信息
+    base_year: '',  // 基准年份 标记这一周的第一天
+    base_date: '',  // 基准日期 标记这一周的第一天
+    base_day: '',   // 基准星期 标记这一周的第一天是星期几
     today: '',      //今天星期几
     curdate: '',    //今天日期
     optdate: 0,     //选中日期索引
@@ -25,40 +28,34 @@ Page({
     submitting: false
   },
 
-  onLoad: function(options) {
+  onLoad: async function(options) {
     // 处理页面参数
-    if (options.data) {
-      try {
-        const venueData = JSON.parse(decodeURIComponent(options.data));
-        console.log('接收到的场馆数据:', venueData);
-        this.setData({
-          venue: venueData.name || '欢乐乒乓',
-          venue_id: venueData._id,
-          center_id: venueData.center_id,
-          venueInfo: {
-            name: venueData.name,
-            address: venueData.address,
-            phone: venueData.phone,
-            notes: venueData.notes
-          },
-          booktable: venueData.booktable
-        });
-      } catch (e) {
-        console.error('解析场馆数据失败:', e);
-        this.getVenueData(); // 降级到原有方法
-      }
-    } else {
-      this.getVenueData(); // 没有参数时使用原有方法
-    }
-    
-    this.getslots();
-    this.setcurrentdate();
+    this.handleParams(options.data);
+    // 获取场馆信息
+    await this.getVenueData();
+    // 获取时间段
+    await this.getslots();
+    // 获取当前日期
+    await this.setcurrentdate();
+    // 设置选择列表
     this.setoptlist();
+    // 检查登录状态
     this.checkLoginStatus();
   },
 
+  // 接收传入参数
+  handleParams: function(data) {
+    console.log("接收到的场馆数据:", data);
+    const decodedData = JSON.parse(decodeURIComponent(data));
+    console.log("解码后的场馆数据:", decodedData);
+    const { _id } = decodedData;
+    this.setData({
+      venue_id: _id
+    })
+  },
+
   // 检查登录状态
-  checkLoginStatus() {
+  checkLoginStatus: function() {
     // 这里应该检查实际的登录状态
     // 暂时模拟为已登录
     const userInfo = wx.getStorageSync('userInfo');
@@ -83,8 +80,6 @@ Page({
       });
       return;
     }
-
-
     this.setData({
       submitting: true
     });
@@ -155,7 +150,6 @@ Page({
     });
   },
 
-  // ------------------------------已修改--------------------------------
   // 选择日期
   selectDate(e) {
     const index = e.currentTarget.dataset.index;
@@ -193,12 +187,18 @@ Page({
   // 获取时间段数组
   getslots: async function() {
     const slots = await db.getCollection('time_slot');
-    const formatslot = slots.map(period => (
+    slots.sort((a, b) => a.id - b.id);  // 按id排序 确保时间段有序
+    // 解析出时间段数组
+    const formatslot = slots.filter(slot => slot.id && slot.id > 0).map(period => (
       `${period.start_time}-${period.end_time}`));
     const slot_count = formatslot.length;
+
     this.setData({ 
       time_slot: formatslot,
-      slot_count: slot_count
+      slot_count: slot_count,
+      base_date: slots[0].date,
+      base_day: slots[0].day,
+      base_year: slots[0].year
     });
   },
 
@@ -213,8 +213,12 @@ Page({
     const curdate = `${tm}/${td}`;
     const today = days[day];
     // 获取一周日期
-    const next7days = this.getnext7days(day);
-    const next7dates = this.getnext7dates(ty, tm, td);
+    console.log("基准年份", this.data.base_year);
+    console.log("基准日期", this.data.base_date);
+    console.log("基准星期", this.data.base_day);
+    const [cy, cm, cd] = this.data.base_date.split('-');
+    const next7days = this.getnext7days(0);
+    const next7dates = this.getnext7dates(cy, cm, cd);
     console.log("当前星期", next7days);
     console.log("当前周", next7dates);
     console.log("当前日期", curdate);
@@ -302,11 +306,15 @@ Page({
 
   // 获取场馆信息
   getVenueData: async function() {
-    const venue = await db.getElementByName('venue', '欢乐乒乓');
+    if (!this.data.venue_id) {
+      console.error("场馆id为空");
+      return;
+    }
+    console.log("获取场馆信息:", this.data.venue_id);
+    const venue = await db.getElementByID('venue', this.data.venue_id);
     console.log("场馆信息：", venue);
     const venueData = venue.data[0];
     this.setData({ 
-      venue_id: venueData._id,
       center_id: venueData.center_id,
       booktable: venueData.booktable,
       venueInfo: {

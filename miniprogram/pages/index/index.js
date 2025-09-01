@@ -1,6 +1,7 @@
 // index.js
 const app = getApp();
 
+
 Page({
   data: {
     userInfo: {},
@@ -14,7 +15,7 @@ Page({
     announcements: [], // 公告数据数组
   },
 
-  onLoad() {
+  async onLoad() {
     // 设置导航栏样式 - 优化胶囊按钮显示效果
     wx.setNavigationBarColor({
       frontColor: '#ffffff',
@@ -26,10 +27,11 @@ Page({
     });
     
     // 获取用户信息（异步）
-    this.getUserInfo();
+    await this.getUserInfo();
     
     // 获取公告数据
-    this.getAnnouncements();
+    await this.getAnnouncements();
+
   },
 
   onShow() {

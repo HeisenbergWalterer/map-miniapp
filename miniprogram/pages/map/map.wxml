@@ -48,7 +48,7 @@
 </view>
 <view class="map_container">
   <map class="map"
-      id="map" 
+      id="map"
       longitude="{{longitude}}" 
       latitude="{{latitude}}" 
       scale="14" 

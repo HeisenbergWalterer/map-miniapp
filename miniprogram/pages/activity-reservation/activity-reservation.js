@@ -263,8 +263,6 @@ Page({
     }
   },
 
-
-
   // 查看活动详情
   goDetail(e) {
     const { _id, id } = e.currentTarget.dataset;
@@ -287,7 +285,8 @@ Page({
   // 查看场馆详情
   goVenueDetail(e) {
     const { id, _id } = e.currentTarget.dataset;
-    const item = (_id && this.data.venue.find(a => a._id === _id)) || this.data.venue.find(a => String(a.id) === String(id));
+    console.log('查看场馆详情:', e.currentTarget.dataset);
+    const item =  { _id: _id };   //只传入venue的唯一id
     if (!item) return;
     const encoded = encodeURIComponent(JSON.stringify(item));
     wx.navigateTo({

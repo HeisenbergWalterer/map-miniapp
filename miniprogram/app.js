@@ -121,7 +121,7 @@ App({
     getElementByID: function(cll, id) {
       const db = this.getDB();
       return db.collection(cll).where({
-        id: id
+        _id: id
       }).get();
     },
 
@@ -133,6 +133,7 @@ App({
       });
     },
 
+    // 更新元素（id）
     updateElementByID: function(cll, id, data) {
       const db = this.getDB();
       return db.collection(cll).doc(id).update({
@@ -146,6 +147,7 @@ App({
       });
     },
 
+    // 更新元素（name）
     updateElementByName: function(cll, name, data) {
       const db = this.getDB();
       return db.collection(cll).where({

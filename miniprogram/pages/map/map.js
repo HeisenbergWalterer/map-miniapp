@@ -83,7 +83,8 @@ Page({
       showTypeSelector: false,  // 隐藏分类选择器
     })
     this.showServiceStations(); // 显示服务站点
-    this.getUserOpenid(); // 获取用户openid
+    // this.getUserOpenid(); // 获取用户openid
+    this.getOpenID(); // 获取用户openid
   },
 
   // 页面隐藏时
@@ -416,54 +417,70 @@ Page({
   // 跳转到安新联系页面
 
   // 获取用户openid
-  getUserOpenid: function() {
-    try {
-      // 方法1：从userInfo获取
-      const userInfo = wx.getStorageSync('userInfo');
-      if (userInfo && userInfo.openid) {
-        this.setData({
-          userOpenid: userInfo.openid
-        });
-        return;
+  getOpenID: function() {
+    const that = this;
+    wx.cloud.callFunction({
+      name: 'getContext',
+      success: function(res){
+        console.log("获取用户OPENID成功:", res);
+        that.setData({
+          userOpenid: res.result.OPENID
+        })
+      },
+      fail: function(err){
+        console.log("获取用户OPENID失败:", err);
       }
+    })
       
-      // 方法2：从其他存储位置获取
-      const openId = wx.getStorageSync('openId') || wx.getStorageSync('openid');
-      if (openId) {
-        this.setData({
-          userOpenid: openId
-        });
-        return;
-      }
-      
-      // 方法3：通过云函数获取
-      wx.cloud.callFunction({
-        name: 'quickstartFunctions',
-        data: {
-          type: 'getOpenId'
-        }
-      }).then(res => {
-        const newOpenId = res.result.openid;
-        
-        // 保存到本地存储
-        wx.setStorageSync('openId', newOpenId);
-        
-        // 更新用户信息
-        const currentUserInfo = wx.getStorageSync('userInfo') || {};
-        currentUserInfo.openid = newOpenId;
-        wx.setStorageSync('userInfo', currentUserInfo);
-        
-        this.setData({
-          userOpenid: newOpenId
-        });
-      }).catch(err => {
-        console.error('地图页面云函数获取OpenID失败:', err);
-      });
-      
-    } catch (error) {
-      console.error('获取用户openid失败：', error);
-    }
   },
+  // getUserOpenid: function() {
+  //   try {
+  //     // 方法1：从userInfo获取
+  //     const userInfo = wx.getStorageSync('userInfo');
+  //     if (userInfo && userInfo.openid) {
+  //       this.setData({
+  //         userOpenid: userInfo.openid
+  //       });
+  //       return;
+  //     }
+      
+  //     // 方法2：从其他存储位置获取
+  //     const openId = wx.getStorageSync('openId') || wx.getStorageSync('openid');
+  //     if (openId) {
+  //       this.setData({
+  //         userOpenid: openId
+  //       });
+  //       return;
+  //     }
+      
+  //     // 方法3：通过云函数获取
+  //     wx.cloud.callFunction({
+  //       name: 'quickstartFunctions',
+  //       data: {
+  //         type: 'getOpenId'
+  //       }
+  //     }).then(res => {
+  //       const newOpenId = res.result.openid;
+        
+  //       // 保存到本地存储
+  //       wx.setStorageSync('openId', newOpenId);
+        
+  //       // 更新用户信息
+  //       const currentUserInfo = wx.getStorageSync('userInfo') || {};
+  //       currentUserInfo.openid = newOpenId;
+  //       wx.setStorageSync('userInfo', currentUserInfo);
+        
+  //       this.setData({
+  //         userOpenid: newOpenId
+  //       });
+  //     }).catch(err => {
+  //       console.error('地图页面云函数获取OpenID失败:', err);
+  //     });
+      
+  //   } catch (error) {
+  //     console.error('获取用户openid失败：', error);
+  //   }
+  // },
 
   // 切换收藏状态
   toggleFavorite: async function() {
