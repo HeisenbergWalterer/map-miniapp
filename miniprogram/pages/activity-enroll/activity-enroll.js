@@ -112,20 +112,12 @@ Page({
       
       if (!openid) throw new Error('未获取到用户标识');
 
-      // 从 users 读取昵称与手机号
+      // 从 users 读取昵称（手机号不再验证，使用空值）
       const dbc = app.DBS ? app.DBS.getDB() : wx.cloud.database();
       const userRes = await dbc.collection('users').where({ _openid: openid }).get();
       const userDoc = (userRes.data && userRes.data[0]) || {};
       const name = userDoc.nickName || userInfo.nickName || '微信用户';
-      const phone = userDoc.phoneNumber || '';
-      if (!phone) {
-        this.setData({ submitting: false });
-        wx.showModal({
-          title: '完善手机号', content: '请先在个人资料中补充手机号后再尝试预约', confirmText: '去完善',
-          success: (res) => { if (res.confirm) wx.navigateTo({ url: '/pages/edit-profile/edit-profile' }); }
-        });
-        return;
-      }
+      const phone = ''; // 不再验证手机号，直接使用空值
 
       // 重复报名校验
       const actIdForReg = activity._id || activity.id;

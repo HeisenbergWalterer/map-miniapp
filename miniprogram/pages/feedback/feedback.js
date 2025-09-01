@@ -202,31 +202,11 @@ Page({
         const error = result.result || {}
         const errorMessage = error.message || '提交失败，请重试'
         
-        // 根据错误类型提供不同的处理方式
-        if (errorMessage.includes('请先完善个人资料') || 
-            errorMessage.includes('请先绑定手机号') || 
-            errorMessage.includes('手机号格式不正确')) {
-          
-          wx.showModal({
-            title: '需要完善信息',
-            content: errorMessage + '\n是否前往个人资料页面？',
-            confirmText: '去完善',
-            cancelText: '取消',
-            success: (res) => {
-              if (res.confirm) {
-                wx.navigateTo({
-                  url: '/pages/edit-profile/edit-profile'
-                })
-              }
-            }
-          })
-        } else {
-          wx.showToast({
-            title: errorMessage,
-            icon: 'none',
-            duration: 3000
-          })
-        }
+        wx.showToast({
+          title: errorMessage,
+          icon: 'none',
+          duration: 3000
+        })
       }
 
     } catch (error) {

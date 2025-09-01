@@ -210,9 +210,11 @@ Page({
       return
     }
     
-    // 跳转到个人资料编辑页面
-    wx.navigateTo({
-      url: '/pages/edit-profile/edit-profile'
+    // 提示该功能暂不支持
+    wx.showToast({
+      title: '该部分暂不支持',
+      icon: 'none',
+      duration: 2000
     })
   },
 

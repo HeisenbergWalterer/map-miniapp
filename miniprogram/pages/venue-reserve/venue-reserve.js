@@ -118,8 +118,8 @@ Page({
 
     // 2、add venue_reservation
     const reg_data = {
-      name: userInfo.nickName,
-      phone: userInfo.phoneNumber,
+      name: userInfo.nickName || '微信用户',
+      phone: '', // 不再使用手机号，改为空值
       party_size: 1,
       center_id: this.data.center_id,
       venue_id: this.data.venue_id,

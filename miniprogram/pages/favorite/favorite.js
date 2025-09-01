@@ -279,5 +279,11 @@ Page({
     return typeMap[type] || '未知类型';
   },
 
+  // 返回按钮处理
+  goBack: function() {
+    wx.navigateBack({
+      delta: 1
+    });
+  }
 
 }) 

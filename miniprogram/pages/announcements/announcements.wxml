@@ -11,7 +11,7 @@
 
   <!-- 页面标题 -->
   <view class="page-header">
-    <text class="page-title">暖心公告</text>
+    <text class="page-title">暖新公告</text>
     <text class="page-subtitle">查看所有社区公告信息</text>
   </view>
 
@@ -33,16 +33,12 @@
         <view class="card-header">
           <view class="title-section">
             <text class="announcement-title">{{item.title}}</text>
-                                              <view class="type-badge {{item.type === 'article' ? 'article' : 'text'}}">
-              <text class="badge-text">{{item.type === 'article' ? '公众号' : '公告'}}</text>
-            </view>
           </view>
         </view>
         
         <view class="card-footer">
           <view class="info-row">
             <text class="publish-time">{{item.created_at}}</text>
-            <text class="view-count">{{item.view_count}} 次浏览</text>
           </view>
         </view>
       </view>

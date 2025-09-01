@@ -41,52 +41,37 @@ exports.main = async (event, context) => {
       }
     }
 
-    // 从users集合获取用户信息
+    // 从users集合获取用户信息（可选，用于获取昵称）
     console.log('开始从users集合获取用户信息, openid:', wxContext.OPENID)
-    const userResult = await db.collection('users').where({
-      _openid: wxContext.OPENID
-    }).get()
+    let userInfo = null
+    let nickName = '微信用户'
+    
+    try {
+      const userResult = await db.collection('users').where({
+        _openid: wxContext.OPENID
+      }).get()
 
-    if (!userResult.data || userResult.data.length === 0) {
-      console.log('用户信息不存在，需要先完善个人资料')
-      return {
-        success: false,
-        message: '请先完善个人资料后再提交反馈'
+      if (userResult.data && userResult.data.length > 0) {
+        userInfo = userResult.data[0]
+        nickName = userInfo.nickName || '微信用户'
+        console.log('获取到的用户信息:', userInfo)
+      } else {
+        console.log('用户信息不存在，使用默认昵称')
       }
-    }
-
-    const userInfo = userResult.data[0]
-    console.log('获取到的用户信息:', userInfo)
-
-    // 验证用户是否已绑定手机号
-    if (!userInfo.phoneNumber || userInfo.phoneNumber.trim() === '') {
-      console.log('用户未绑定手机号')
-      return {
-        success: false,
-        message: '请先绑定手机号后再提交反馈'
-      }
-    }
-
-    // 验证手机号格式
-    const phoneRegex = /^1\d{10}$/
-    if (!phoneRegex.test(userInfo.phoneNumber.trim())) {
-      console.log('用户手机号格式不正确:', userInfo.phoneNumber)
-      return {
-        success: false,
-        message: '手机号格式不正确，请先修改为正确的11位手机号'
-      }
+    } catch (error) {
+      console.log('获取用户信息出错，使用默认昵称:', error)
     }
     
-    // 构建反馈数据 - 使用从users集合获取的最新信息
+    // 构建反馈数据 - 不再验证手机号，使用空值
     const feedbackData = {
       type: type || 'suggestion',
       content: content.trim(),
       selectedPoint: selectedPoint || null,
       createTime: db.serverDate(),
-      // 用户信息从users集合获取，确保数据一致性
+      // 用户信息
       openid: wxContext.OPENID,
-      nickName: userInfo.nickName || '微信用户',
-      phoneNumber: userInfo.phoneNumber.trim()
+      nickName: nickName,
+      phoneNumber: '' // 使用空值代替手机号
     }
     
     console.log('准备保存到数据库的数据:', feedbackData)

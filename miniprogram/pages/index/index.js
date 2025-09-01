@@ -246,12 +246,12 @@ Page({
     });
   },
 
-  // 跳转到暖心公告页面
+  // 跳转到暖新公告页面
   goToAnnouncements() {
     wx.navigateTo({
       url: '/pages/announcements/announcements',
       success: function(res) {
-        console.log('跳转到暖心公告页面成功');
+        console.log('跳转到暖新公告页面成功');
       },
       fail: function(err) {
         console.error('跳转失败:', err);

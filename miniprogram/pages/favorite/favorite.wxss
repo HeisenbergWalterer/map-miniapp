@@ -4,12 +4,62 @@
   min-height: 100vh;
 }
 
+/* 自定义导航栏 */
+.custom-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%);
+  padding-top: var(--status-bar-height, 44rpx);
+  padding-bottom: 15rpx; /* 减少底部内边距，提高下边缘 */
+  box-shadow: 0 2rpx 8rpx rgba(59, 130, 246, 0.2);
+}
+
+.navbar-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 110rpx; /* 增加导航栏内容高度 */
+  padding: 0 30rpx;
+  margin-top: 20rpx; /* 向下移动导航栏内容 */
+}
+
+.navbar-left {
+  width: 60rpx;
+  height: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.back-text {
+  font-size: 48rpx;
+  color: white;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.navbar-title {
+  font-size: 36rpx; /* 稍微增大字体 */
+  font-weight: bold;
+  color: white;
+  text-align: center;
+}
+
+.navbar-right {
+  width: 60rpx;
+  height: 60rpx;
+}
+
 /* 加载状态 */
 .loading-container {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 400rpx;
+  margin-top: calc(var(--status-bar-height, 44rpx) + 110rpx + 35rpx); /* 调整适应新的导航栏高度 */
 }
 
 .loading-text {
@@ -20,7 +70,7 @@
 /* 收藏内容区域 */
 .favorite-content {
   padding: 30rpx;
-  padding-top: 20rpx;
+  padding-top: calc(var(--status-bar-height, 44rpx) + 110rpx + 35rpx + 30rpx); /* 调整适应新的导航栏高度 */
 }
 
 
@@ -55,14 +105,14 @@
 }
 
 .browse-btn {
-  background: linear-gradient(135deg, #FF6B35 0%, #ff8e53 100%);
+  background: linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%);
   color: white;
   border: none;
   border-radius: 50rpx;
   padding: 20rpx 40rpx;
   font-size: 28rpx;
   font-weight: 500;
-  box-shadow: 0 4rpx 12rpx rgba(255, 107, 53, 0.3);
+  box-shadow: 0 4rpx 12rpx rgba(59, 130, 246, 0.3);
   transition: all 0.2s ease;
 }
 
@@ -97,10 +147,10 @@
 }
 
 .tab-item.active {
-  background: linear-gradient(135deg, #FF6B35 0%, #ff8e53 100%);
+  background: linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%);
   color: white;
-  border-color: #FF6B35;
-  box-shadow: 0 4rpx 12rpx rgba(255, 107, 53, 0.3);
+  border-color: #3B82F6;
+  box-shadow: 0 4rpx 12rpx rgba(59, 130, 246, 0.3);
 }
 
 .tab-text {
@@ -157,8 +207,8 @@
 
 .favorite-type {
   font-size: 22rpx;
-  color: #FF6B35;
-  background-color: #fff5f2;
+  color: #3B82F6;
+  background-color: #eff6ff;
   padding: 4rpx 12rpx;
   border-radius: 12rpx;
   display: inline-block;

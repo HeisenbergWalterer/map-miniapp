@@ -136,18 +136,7 @@ Page({
       const userRes = await dbc.collection('users').where({ _openid: openid }).get();
       const userDoc = (userRes.data && userRes.data[0]) || {};
       const name = userDoc.nickName || userInfo.nickName || '微信用户';
-      const phone = userDoc.phoneNumber || '';
-
-      if (!phone) {
-        this.setData({ submitting: false });
-        wx.showModal({
-          title: '完善手机号',
-          content: '请先在个人资料中补充手机号后再尝试预约',
-          confirmText: '去完善',
-          success: (res) => { if (res.confirm) wx.navigateTo({ url: '/pages/edit-profile/edit-profile' }); }
-        });
-        return;
-      }
+      const phone = ''; // 不再验证手机号，直接使用空值
 
       // 重复报名校验（按 activity._id 优先，其次 id）
       const actIdForReg = activity._id || activity.id;

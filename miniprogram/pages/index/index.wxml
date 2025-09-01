@@ -27,7 +27,7 @@
     <!-- 暖心公告区域 - 轮播卡片 -->
     <view class="notice-section">
       <view class="notice-header">
-        <text class="notice-title">暖心公告</text>
+        <text class="notice-title">暖新公告</text>
         <text class="notice-more" bindtap="goToAnnouncements">查看全部</text>
       </view>
       
@@ -44,13 +44,9 @@
           <view class="notice-card" bindtap="onNoticeTap" data-notice="{{item}}">
             <view class="notice-card-header">
               <text class="notice-card-title">{{item.title}}</text>
-                                                <view class="notice-card-type">
-              <text class="type-text">{{item.type === 'article' ? '公众号' : '公告'}}</text>
-            </view>
             </view>
             <view class="notice-card-footer">
               <text class="notice-card-date">{{item.created_at}}</text>
-              <text class="notice-card-views">{{item.view_count}} 次浏览</text>
             </view>
           </view>
         </swiper-item>
