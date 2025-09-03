@@ -28,6 +28,7 @@ Page({
     submitting: false
   },
 
+  // 页面加载
   onLoad: async function(options) {
     // 处理页面参数
     this.handleParams(options.data);

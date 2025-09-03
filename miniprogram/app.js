@@ -17,11 +17,16 @@ App({
       });
     }
   },
-  
 
+  // ---------------使用图片/云存储---------------
   img: {
     defaultIcon: "/images/icons/point.png",
     cloud: "cloud://cloud1-3gbydxui8864f9aa.636c-cloud1-3gbydxui8864f9aa-1369623166",
+  },
+
+  // ---------------使用时间信息---------------
+  time: {
+    base_id: 'timeslot_000',
   },
 
   // ---------------使用数据库---------------
@@ -123,6 +128,12 @@ App({
       return db.collection(cll).where({
         _id: id
       }).get();
+    },
+
+    // 条件查询
+    queryElement: function(cll, params) {
+      const db = this.getDB();
+      return db.collection(cll).where(params).get();
     },
 
     // 添加元素
@@ -443,17 +454,6 @@ App({
         db.collection('venue').where({ _id: _.in(venueIds) }).get({
           success: function(res){ resolve(res.data || []); },
           fail: function(err){ console.error('批量获取场馆失败:', err); reject(err); }
-        });
-      });
-    },
-
-    // 获取时间段配置
-    getTimeSlots: function() {
-      const db = this.getDB();
-      return new Promise((resolve, reject) => {
-        db.collection('time_slot').orderBy('id', 'asc').get({
-          success: function(res){ resolve(res.data || []); },
-          fail: function(err){ console.error('获取时间段失败:', err); reject(err); }
         });
       });
     },

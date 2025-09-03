@@ -76,11 +76,11 @@
             <block wx:elif="{{item.type === 'venue'}}">
               <view class="card-title">
                 <text class="record-type-tag venue-tag">场馆</text>
-                {{item._venue ? item._venue.name : '场馆预约'}}
+                {{ item.venue_name }}
               </view>
-              <view class="card-sub">地点：{{item._venue ? item._venue.address : ''}}</view>
-              <view class="card-sub">时间：{{item._formattedTime || '时间待确认'}}</view>
-              <view class="card-sub">状态：{{item.status==='reserved' ? '已预约' : '已取消'}}</view>
+              <view class="card-sub">地点：{{item.place}}</view>
+              <view class="card-sub">时间：{{item.time || '时间待确认'}}</view>
+              <view class="card-sub">状态：{{item.status_text }}</view>
             </block>
           </view>
         </view>

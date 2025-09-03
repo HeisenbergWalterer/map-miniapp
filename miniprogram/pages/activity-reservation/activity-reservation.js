@@ -4,6 +4,7 @@
 // - 订单：展示当前用户报名记录，整卡进入详情（可取消）
 const app = getApp();
 const db = app.DBS; // 获取数据库服务类
+const time = app.time; // 获取时间信息
 
 Page({
   data: {
@@ -16,17 +17,25 @@ Page({
     myRecords: [], // 活动报名记录
     myVenueRecords: [], // 场馆预约记录
     filteredRecords: [], // 筛选后的记录
+    // 日期和时间
+    base_date: '',    // 基准日期
+    base_day: '',     // 基准星期
+    curdate: '',      // 当前日期
+    curday: '',       // 当前星期
+    timeslots: [],    // 时间段
+    next7dates: [],   // 基准7天日期
   },
 
-  onLoad: function() {
+  onLoad: async function() {
     console.log('活动预约页面加载');
+    await this.setslots();    // 设置基准日期和时间
   },
 
   onShow: function() {
     console.log('活动预约页面显示');
     this.loadDataFromDB();
     if (this.data.activeTab2 === 'records') {
-      this.loadMyRecords();
+      this.loadAllMyRecords();
     }
   },
   
@@ -36,6 +45,119 @@ Page({
     const data = await db.getCollection(tag);
     this.setData({ [tag]: data });
   },
+
+  // ----------------------已修改--------------------------
+
+  // 设置日期和时间
+  setslots: async function() {
+    const slots = await db.getCollection('time_slot');
+    // 按照 id 排序时间段信息
+    slots.sort((a, b) => a.id - b.id);
+    // 格式化时间段数组
+    const formatslot = slots.filter(slot => slot.id && slot.id > 0).map(period => (
+      `${period.start_time}-${period.end_time}`));
+    
+    const base_date = slots[0].date;
+    const [ cy, cm, cd ] = base_date.split('-');
+    console.log("解析后的基准日期", cy, cm, cd)
+    const next7dates = this.getnext7dates(cy, cm, cd);
+    console.log("解析后的7天日期", next7dates)
+    // 设置基准时间和时间段数组
+    this.setData({
+      timeslots: formatslot,
+      next7dates: next7dates
+    });
+  },
+
+  // 加载场馆预约记录
+  loadVenueRes: async function (openid) {
+    const that = this;
+    console.log("loadVenueRes_用户信息：", openid);
+    const res = await db.queryElement('venue_reservation', {_openid: openid});
+    console.log("loadVenueRes_场馆预约记录：", res);
+
+    const reslist = res.data.map(record => {
+      // 解包需要处理的字段
+      const { venue_id, status, time_reserved } = record;
+
+      // 解析status字段
+      const status_text = (status === 'reserved' ? '已预约' : '已取消');
+
+      // 解析place字段
+      const place = that.data.venue.find(item => item._id === venue_id).address;
+      const name = that.data.venue.find(item => item._id === venue_id).name;
+
+      // 解析time字段
+      const time = time_reserved.map(item =>{
+        const [ slotnum, datenum ] = item;
+        // slot解析
+        const slot = that.data.timeslots[slotnum];
+        // date解析
+        const date = that.data.next7dates[datenum];        
+
+        return `${date} ${slot}`;
+      });
+      return {
+        ...record,
+        time: time,
+        place: place,
+        status_text: status_text,
+        venue_name: name
+      }
+    })
+    console.log("解析后的预约列表reslist：", reslist);
+    return reslist;
+
+
+  },
+
+  // 计算一周日期
+  getnext7dates : function(cy, cm, cd) {
+    let next7days = [];
+    let dm;
+    let y=cy;
+    let m=cm;
+    let d=cd;
+    switch(m) {
+      case 1:
+      case 3:
+      case 5:
+      case 7:
+      case 8:
+      case 10:
+      case 12:
+        dm = 31;
+        break;
+      case 4:
+      case 6:
+      case 9:
+      case 11:
+        dm = 30;
+        break;
+      case 2:
+        dm = ((ty % 4 == 0 && ty % 100 != 0 || ty % 400 == 0) ? 29 : 28);
+        break;
+      default:
+        break;
+    }
+    for(let i = 0; i < 7; i++) {
+      if(d > dm) {
+        d -= dm;
+        m++;
+      }
+      if(m > 12) {
+        m = 1;
+        y = ty + 1;
+      }
+      next7days.push(`${m}/${d}`);
+      d++;
+    }
+    return next7days;
+  },
+
+  // -----------------------------------------------------
+  // -----------------------------------------------------
+  // -----------------------------------------------------
 
   // 底部切换 活动/记录
   switchTab2: async function(e) {
@@ -86,10 +208,10 @@ Page({
   // 加载所有记录（活动+场馆）
   loadAllMyRecords: async function() {
     try {
-      const userInfo = wx.getStorageSync('userInfo') || {};
+      const userInfo = await wx.getStorageSync('userInfo');
       // 兼容不同的openId字段名
-      const openid = wx.getStorageSync('openId') || wx.getStorageSync('openid') || userInfo.openid || userInfo.openId || userInfo._openid;
-      
+      const openid = userInfo._openid;
+
       console.log('记录页面获取用户信息 - openid:', openid);
       console.log('记录页面获取用户信息 - userInfo:', userInfo);
       
@@ -99,11 +221,15 @@ Page({
         return;
       }
 
+      await this.loadVenueRes(openid);
+
       // 并发获取活动报名记录和场馆预约记录
       const [activityRecords, venueReservations] = await Promise.all([
         this.loadActivityRecords(openid),
-        this.loadVenueRecords(openid)
+        this.loadVenueRes(openid)
       ]);
+
+      console.log("场馆预约记录内容格式：", venueReservations)
 
       this.setData({ 
         myRecords: activityRecords,
@@ -135,57 +261,6 @@ Page({
       console.error('加载活动报名记录失败:', e);
       return [];
     }
-  },
-
-  // 加载场馆预约记录
-  loadVenueRecords: async function(openid) {
-    try {
-      const list = await db.getMyVenueReservations(openid);
-      const venueIds = (list || []).map(r => r.venue_id).filter(Boolean);
-      const venues = await db.getVenuesByIds(venueIds);
-      const timeSlots = await db.getTimeSlots();
-      
-      // 建立映射 _id -> 场馆信息
-      const venueMap = {};
-      venues.forEach(v => { venueMap[v._id] = v; });
-      
-      // 建立时间段映射 index -> 时间段
-      const timeSlotMap = {};
-      timeSlots.forEach((slot, index) => {
-        timeSlotMap[index] = `${slot.start_time}-${slot.end_time}`;
-      });
-      
-      // 合并显示字段并格式化预约时间
-      return (list || []).map(r => {
-        const venue = venueMap[r.venue_id];
-        let formattedTimeSlots = '';
-        if (r.time_reserved && Array.isArray(r.time_reserved)) {
-          const timeStrings = r.time_reserved.map(([slotIndex, dateIndex]) => {
-            const timeSlot = timeSlotMap[slotIndex] || `时段${slotIndex}`;
-            // 计算具体日期（假设dateIndex是从预约时间开始的天数偏移）
-            const baseDate = r._createTime ? new Date(r._createTime) : new Date();
-            const targetDate = new Date(baseDate.getTime() + dateIndex * 24 * 60 * 60 * 1000);
-            const dateStr = `${targetDate.getMonth() + 1}/${targetDate.getDate()}`;
-            return `${dateStr} ${timeSlot}`;
-          });
-          formattedTimeSlots = timeStrings.join(', ');
-        }
-        
-        return {
-          ...r,
-          _venue: venue,
-          _formattedTime: formattedTimeSlots || '时间待确认'
-        };
-      });
-    } catch (e) {
-      console.error('加载场馆预约记录失败:', e);
-      return [];
-    }
-  },
-
-  // 兼容旧的方法名（避免其他地方调用出错）
-  loadMyRecords: async function() {
-    await this.loadAllMyRecords();
   },
 
   // 查看记录详情（根据类型跳转）
