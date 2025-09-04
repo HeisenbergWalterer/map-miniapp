@@ -6,6 +6,8 @@ var amapFile = require('../../components/amap-wx.130')
 const app = getApp();
 // 获取数据库服务类
 const db = app.DBS; 
+// 获取云存储路径
+const cloudimg = app.img.cloud;
 // 创建一个高德地图实例
 var myAmap = new amapFile.AMapWX({
   key: gaode_key.Config.key
@@ -46,6 +48,7 @@ Page({
     isFavorited: false,     //是否已收藏
     currentStationId: '',   //当前选中的站点ID
     userOpenid: '',         //用户openid
+    appCloudImg: app.img.cloud, // 云存储路径
   },
 
   // 切换筛选器显示
@@ -389,7 +392,7 @@ Page({
     console.log('过滤后的服务站点数据:', filtered);
     const markers = filtered.map(station => {
       // 为合作商户选择个性化图标
-      let iconPath = station.iconUrl || `/images/icons/${station.type}-station.png`;
+      let iconPath = station.iconUrl ? cloudimg + station.iconUrl : `${cloudimg}/images/icons/${station.type}-station.png`;
       
       return {
         id: station.id,

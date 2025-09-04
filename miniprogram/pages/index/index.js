@@ -10,8 +10,8 @@ Page({
     welcomeMessage: '请登录以使用完整功能', // 欢迎信息
     noticeText: '【活动预告】微光驿站便民服务活动即将开始，敬请期待！',
     noticeDate: '07-23',
-    titlesrc: 'cloud://cloud1-3gbydxui8864f9aa.636c-cloud1-3gbydxui8864f9aa-1369623166/images/title-new.png',
-    appCloudImg: 'cloud://cloud1-3gbydxui8864f9aa.636c-cloud1-3gbydxui8864f9aa-1369623166', // 云存储路径
+    titlesrc: app.img.cloud + '/images/title-new.png',
+    appCloudImg: app.img.cloud, // 云存储路径
     announcements: [], // 公告数据数组
   },
 
