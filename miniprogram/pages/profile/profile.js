@@ -9,7 +9,8 @@ Page({
       avatarUrl: '',
       nickName: '',
       phoneNumber: ''
-    }
+    },
+    appCloudImg: app.img.cloud
   },
 
   onLoad(options) {

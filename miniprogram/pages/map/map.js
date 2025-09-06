@@ -393,7 +393,7 @@ Page({
     const markers = filtered.map(station => {
       // 为合作商户选择个性化图标
       let iconPath = station.iconUrl ? cloudimg + station.iconUrl : `${cloudimg}/images/icons/${station.type}-station.png`;
-      
+      console.log('iconPath:', iconPath);
       return {
         id: station.id,
         latitude: station.latitude,

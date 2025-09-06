@@ -69,7 +69,7 @@
             <text class="service-text">反馈中心</text>
           </view>
           <view class="service-item" bindtap="goToFavorite" hover-class="service-item-hover" hover-stay-time="100">
-            <image class="service-icon" src="/images/favorite.png" mode="aspectFit"></image>
+            <image class="service-icon" src="{{appCloudImg}}/images/icons/favorite.png" mode="aspectFit"></image>
             <text class="service-text">我的收藏</text>
           </view>
           <view class="service-item hidden">
