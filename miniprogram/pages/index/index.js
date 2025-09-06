@@ -430,14 +430,5 @@ Page({
         });
       }
     });
-  },
-
-  // 处理活动功能暂时关闭
-  onActivityDisabled() {
-    wx.showToast({
-      title: '功能暂时关闭',
-      icon: 'none',
-      duration: 2000
-    });
   }
 });

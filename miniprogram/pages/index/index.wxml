@@ -69,10 +69,10 @@
           <text class="function-name">安新联系</text>
         </view>
 
-      <view class="function-card" hover-class="function-card-hover" bindtap="onActivityDisabled">
+      <navigator url="/pages/activity-reservation/activity-reservation" class="function-card" hover-class="function-card-hover">
         <image class="function-icon-img" src="{{appCloudImg}}/images/icons/安新活动.png" mode="aspectFit"></image>
         <text class="function-name">安新活动</text>
-      </view>
+      </navigator>
     </view>
     <!-- 底部装饰区域 -->
     <view class="bottom-decoration">
