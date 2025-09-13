@@ -203,22 +203,6 @@ Page({
     })
   },
 
-  // 编辑个人资料
-  editProfile() {
-    if (!this.data.isLoggedIn) {
-      // 未登录时执行一键登录
-      this.login()
-      return
-    }
-    
-    // 提示该功能暂不支持
-    wx.showToast({
-      title: '该部分暂不支持',
-      icon: 'none',
-      duration: 2000
-    })
-  },
-
   // 跳转到反馈中心
   goToFeedback() {
     if (!this.data.isLoggedIn) {

@@ -43,21 +43,8 @@
     
     
     
-    <!-- 内容容器 (包含编辑按钮和服务板块) -->
+    <!-- 内容容器 (包含服务板块) -->
     <view class="content-container">
-      <!-- 个人资料编辑按钮 -->
-      <view class="edit-profile-section">
-        <view class="edit-btn" bindtap="editProfile" hover-class="edit-btn-hover" hover-stay-time="100">
-          <view class="edit-icon-wrapper">
-            <image class="edit-icon" src="/images/edit.png" mode="aspectFit"></image>
-          </view>
-          <view class="edit-text-wrapper">
-            <text class="edit-title">个人资料</text>
-            <text class="edit-subtitle">{{isLoggedIn ? '编辑个人信息' : '登录后可编辑'}}</text>
-          </view>
-        </view>
-      </view>
-      
       <!-- 我的服务板块 -->
       <view class="my-services-section">
         <view class="section-title">

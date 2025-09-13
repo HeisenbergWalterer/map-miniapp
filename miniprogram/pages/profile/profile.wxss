@@ -340,34 +340,10 @@ page {
   min-height: calc(100vh - 370rpx);
 }
 
-/* 个人资料编辑按钮 */
-.edit-profile-section {
-  margin: 0 auto 20rpx auto;
-  width: 95%;
-  box-sizing: border-box;
-}
-
-.edit-btn {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  background: linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%);
-  border-radius: 16rpx;
-  padding: 32rpx;
-  box-shadow: 0 4rpx 16rpx rgba(59, 130, 246, 0.3);
-  transition: all 0.2s ease;
-  box-sizing: border-box;
-}
-
 /* hover-class 样式 */
 .login-hover {
   transform: scale(0.98);
   background: linear-gradient(135deg, #2563EB 0%, #3B82F6 100%) !important;
-}
-
-.edit-btn-hover {
-  transform: scale(0.98);
-  box-shadow: 0 2rpx 8rpx rgba(255, 107, 53, 0.4);
 }
 
 .logout-btn-hover {
@@ -385,40 +361,6 @@ page {
 
 .confirm-btn-hover {
   background-color: #e55a2f !important;
-}
-
-.edit-icon-wrapper {
-  width: 80rpx;
-  height: 80rpx;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 12rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 24rpx;
-}
-
-.edit-icon {
-  width: 48rpx;
-  height: 48rpx;
-}
-
-.edit-text-wrapper {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.edit-title {
-  font-size: 36rpx;
-  font-weight: bold;
-  color: #fff;
-  margin-bottom: 8rpx;
-}
-
-.edit-subtitle {
-  font-size: 28rpx;
-  color: rgba(255, 255, 255, 0.8);
 }
 
 /* 我的服务板块 */
