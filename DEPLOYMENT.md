@@ -30,7 +30,7 @@ npx tcb framework deploy
 ```
 - 指定环境 ID（推荐，避免交互）：
 ```bash
-npx tcb framework deploy -e "$VITE_CLOUD_ENV_ID"
+npx tcb framework deploy -e "cloud1-3gbydxui8864f9aa"
 # 或直接写死：npx tcb framework deploy -e cloud1-xxxxxxxx
 ```
 

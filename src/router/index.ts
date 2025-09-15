@@ -4,6 +4,7 @@ import ModulePage from '../pages/ModulePage.vue'
 import SitesPage from '../pages/SitesPage.vue'
 import Reservations from '../pages/Reservations.vue'
 import FeedbackPage from '../pages/FeedbackPage.vue'
+import Announcements from '../pages/Announcements.vue'
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -35,6 +36,7 @@ const router = createRouter({
       ]
     },
     { name: 'feedback', path: '/feedback', component: FeedbackPage }
+    ,{ name: 'announcements', path: '/announcements', component: Announcements }
   ],
 })
 

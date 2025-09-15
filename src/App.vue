@@ -28,6 +28,7 @@
         <div class="nav-group">
           <div class="nav-group-title">其他</div>
           <a :class="{active: currentModuleKey==='feedback'}" href="javascript:void(0)" @click="switchModule('feedback')">用户反馈</a>
+          <a :class="{active: currentModuleKey==='announcements'}" href="javascript:void(0)" @click="switchModule('announcements')">公告管理</a>
         </div>
       </nav>
     </aside>
@@ -93,6 +94,8 @@ function switchModule(key: string) {
     router.push({ name: 'reservations', params: { module: key } });
   } else if (key === 'feedback') {
     router.push({ name: 'feedback' })
+  } else if (key === 'announcements') {
+    router.push({ name: 'announcements' })
   } else {
     router.push({ name: 'module', params: { module: key } })
   }
