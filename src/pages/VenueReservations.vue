@@ -83,7 +83,10 @@
        <div class="modal" @click.stop>
          <div class="modal-header">
            <h3>场馆管理 - {{ currentVenue?.name || '未命名场馆' }}</h3>
-           <button @click="closeVenueModal" class="close-btn">×</button>
+           <div class="header-actions">
+             <button @click="openTimeslotModal" class="btn sm primary">预约时段管理</button>
+             <button @click="closeVenueModal" class="close-btn">×</button>
+           </div>
          </div>
          <div class="modal-body">
            <div class="venue-details">
@@ -104,14 +107,66 @@
          </div>
        </div>
      </div>
+
+     <!-- 预约时段管理弹窗 -->
+     <div v-if="showTimeslotModal" class="modal-mask" @click="closeTimeslotModal">
+       <div class="modal" @click.stop>
+         <div class="modal-header">
+           <h3>预约时段管理</h3>
+           <div class="header-actions">
+             <button @click="closeTimeslotModal" class="close-btn">×</button>
+           </div>
+         </div>
+         <div class="modal-body">
+           <!-- 预约时段管理表格 -->
+           <div class="timeslot-table-container">
+             <table class="timeslot-table">
+               <thead>
+                 <tr>
+                   <th class="time-slot-header">时间段</th>
+                   <th 
+                     v-for="day in dayslist" 
+                     :key="day" 
+                     class="day-header"
+                   >
+                     {{ day }}
+                   </th>
+                 </tr>
+               </thead>
+               <tbody>
+                 <tr v-for="(slot, rowIndex) in slotslist" :key="rowIndex">
+                   <td class="time-slot-label">{{ slot }}</td>
+                   <td 
+                     v-for="(day, colIndex) in dayslist" 
+                     :key="colIndex" 
+                     class="timeslot-cell"
+                   >
+                     <button 
+                       :class="['timeslot-btn', { unavailable: !(curtable[rowIndex] && curtable[rowIndex][colIndex] === 1) }]"
+                       @click="toggleSlot($event, rowIndex, colIndex)"
+                     >
+                       {{ curtable[rowIndex] && curtable[rowIndex][colIndex] === 1 ? '√' : '×' }}
+                     </button>
+                   </td>
+                 </tr>
+               </tbody>
+             </table>
+           </div>
+         </div>
+         <div class="modal-footer">
+           <button @click="closeTimeslotModal" class="btn">关闭</button>
+           <button @click="saveConfig" class="btn primary">保存</button>
+         </div>
+       </div>
+     </div>
    </div>
  </template>
 
 <script setup lang="ts">
   import { ref, onMounted } from 'vue'
   import { getCollection, queryElements, updateElement } from '../services/database'
-  import * as XLSX from 'xlsx'
   import { saveAs } from 'file-saver'
+  import * as XLSX from 'xlsx'
 
   // 场馆列表
   const venues = ref<any[]>([]);
@@ -141,6 +196,13 @@
     'notes': '备注信息'
   };
 
+  // 预约时段管理弹窗
+  const showTimeslotModal = ref(false);
+  const dayslist = ref<any[]>(['周日', '周一', '周二', '周三', '周四', '周五', '周六']);
+  const slotslist = ref<any[]>([]);
+  const curtable = ref<any[]>([]);
+  const config_id = ref<string>('');
+
   // 日期筛选
   const selectedDate = ref<string>('');
   const filteredReservedList = ref<any[]>([]);
@@ -157,17 +219,14 @@
   async function loadVenus() {
     console.log("loading venues...");
     const res = await getCollection('venue');
-    console.log("res:", res);
     venues.value = res;
   }
 
   // 加载时间段
   async function loadTimeSlots() {
     const res = await getCollection('time_slot');
-    console.log("time_slot:", res);
     timeslots.value = res;
     basedate.value = res.find((t: any) => t.id == 0).date;
-    console.log("basedate:", basedate.value);
   }
 
   // 初始化日期
@@ -202,10 +261,8 @@
     const cancelledUsers: any[] = [];
     
     reslist.value.forEach((res: any) => {
-      console.log("res:", res);
       const slots = res.time_reserved;
       const order = slots.map((slot: any) => {
-        console.log("slot:", slot);
         const slot_id = slot[0] + 1;
         const start_time = timeslots.value.find((t: any) => t.id === slot_id)?.start_time;
         const end_time = timeslots.value.find((t: any) => t.id === slot_id)?.end_time;
@@ -259,7 +316,6 @@
 
   // 计算指定日期
   function calcdate(date: string, num: number) {
-    console.log("calcdate:", date, num);
     for (let i = 0; i < num; i++) {
       date = nextdate(date);
     }
@@ -268,7 +324,6 @@
 
   // 计算下一个日期
   function nextdate(date: string) {
-    console.log("nextdate:", date);
     const dateobj = date.split('-');
     var month = parseInt(dateobj[0]);
     var day = parseInt(dateobj[1]);
@@ -398,10 +453,12 @@
     showVenueModal.value = true;
   }
   
+  // 关闭场馆管理弹窗
   function closeVenueModal() {
     showVenueModal.value = false;
   }
   
+  // 保存场馆数据
   async function saveVenueData() {
     // 更新currentVenue中的值
     Object.keys(venueDisplayFields).forEach(fieldKey => {
@@ -424,4 +481,72 @@
       closeVenueModal();
     }
   }
+
+  // 预约时段管理弹窗控制
+  function openTimeslotModal() {
+    showTimeslotModal.value = true;
+    loadConfigTable();
+  }
+  function closeTimeslotModal() {
+    showTimeslotModal.value = false;
+  }
+
+  // 加载未来时段表
+  async function loadConfigTable() {
+    // 获取当前场馆预约时段设置表
+    const venue_id = currentVenue.value._id;
+    const configres = await queryElements('venue_table_config', { venue_id: venue_id});
+    curtable.value = configres[0].table_config;
+    config_id.value = configres[0]._id;
+    // 解析时段表
+    const templist = timeslots.value.filter((t: any) => t.id > 0);
+    templist.sort((a: any, b: any) => a.id - b.id);
+    const dclist = templist.map((t: any) => {
+      if (t.id > 0) 
+        return `${t.start_time}-${t.end_time}`;
+    })
+    slotslist.value = dclist;
+  }
+
+  // 切换单元格选中状态
+  function toggleSlot(event: MouseEvent, rowIndex: number, colIndex: number) {
+    console.log("event:", event);
+    // 确保curtable数组已初始化
+    if (!curtable.value[rowIndex]) {
+      curtable.value[rowIndex] = [];
+    }
+    
+    // 如果当前值不存在，初始化为0
+    if (curtable.value[rowIndex][colIndex] === undefined) {
+      curtable.value[rowIndex][colIndex] = 0;
+    }
+    
+    // if (curtable.value[rowIndex][colIndex] === 1){
+    //   // 如果当前是1，切换为0
+    //   curtable.value[rowIndex][colIndex] = 0;
+    //   // 切换样式
+    //   event.target && (event.target.style.border = "2px solid #DC3545");
+    // }
+    // else {
+    //   // 否则切换为1
+    //   curtable.value[rowIndex][colIndex] = 1;
+    //   // 切换样式
+    //   event.target && (event.target.style.border = "2px solid #28A745");
+    // }
+    // 直接切换curtable中的值（0/1）
+    curtable.value[rowIndex][colIndex] = curtable.value[rowIndex][colIndex] === 1 ? 0 : 1;
+  }
+
+  // 保存配置
+  async function saveConfig() {
+    console.log("保存配置:", curtable.value);
+    const venue_id = currentVenue.value._id;
+    updateElement('venue_table_config', config_id.value, {
+      table_config: curtable.value
+    });
+    closeTimeslotModal();
+  }
 </script>
+
+
+

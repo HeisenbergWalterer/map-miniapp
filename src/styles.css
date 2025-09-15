@@ -518,3 +518,147 @@ tbody tr:hover { background: #f6faff; }
   font-size: 14px;
 }
 
+/* 弹窗标题区域样式 */
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.modal-header h3 {
+  margin: 0;
+  flex: 1;
+}
+
+.modal-header .header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.modal-header .close-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #666;
+  padding: 4px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.modal-header .close-btn:hover {
+  background-color: #f5f5f5;
+  color: #333;
+}
+.timeslot-table-container {
+  width: 100%;
+  overflow-x: auto;
+  margin-top: 20px;
+}
+
+.timeslot-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.timeslot-table th,
+.timeslot-table td {
+  border: 1px solid #ddd;
+  text-align: center;
+  padding: 8px;
+}
+
+.time-slot-header,
+.day-header {
+  background-color: #f5f5f5;
+  font-weight: bold;
+  color: #333;
+}
+
+.time-slot-label {
+  background-color: #f9f9f9;
+  font-weight: 500;
+  min-width: 120px;
+  text-align: left;
+  padding-left: 12px;
+}
+
+.timeslot-cell {
+  padding: 4px;
+  width: 60px;
+  height: 40px;
+}
+
+.timeslot-table-container {
+  width: 100%;
+  overflow-x: auto;
+  margin-top: 20px;
+}
+
+.timeslot-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.timeslot-table th,
+.timeslot-table td {
+  border: 1px solid #ddd;
+  text-align: center;
+  padding: 8px;
+}
+
+.time-slot-header,
+.day-header {
+  background-color: #f5f5f5;
+  font-weight: bold;
+  color: #333;
+}
+
+.time-slot-label {
+  background-color: #f9f9f9;
+  font-weight: 500;
+  min-width: 120px;
+  text-align: left;
+  padding-left: 12px;
+}
+
+.timeslot-cell {
+  padding: 4px;
+  width: 60px;
+  height: 40px;
+}
+
+.timeslot-btn {
+  width: 40px;
+  height: 32px;
+  border: 2px solid #28A745;
+  background-color: white;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.timeslot-btn:hover {
+  background-color: #f8f8f8;
+  border-color: #999;
+}
+
+.timeslot-btn.unavailable {
+  border: 2px solid #DC3545;
+
+}
+
+
+
+
