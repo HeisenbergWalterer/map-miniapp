@@ -1,0 +1,36 @@
+name: Deploy to CloudBase Hosting
+
+on:
+  push:
+    branches: [ web-admin ]
+  workflow_dispatch: {}
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+        env:
+          VITE_CLOUD_ENV_ID: ${{ secrets.TCB_ENV_ID }}
+
+      - name: Deploy to CloudBase Hosting
+        uses: TencentCloudBase/cloudbase-action@v2.0.1
+        with:
+          secretId: ${{ secrets.TC_SECRET_ID }}
+          secretKey: ${{ secrets.TC_SECRET_KEY }}
+          envId: ${{ secrets.TCB_ENV_ID }}
+        env:
+          ENV_ID: ${{ secrets.TCB_ENV_ID }}

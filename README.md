@@ -18,6 +18,16 @@ npm run build
 ```
 将 `dist/` 上传到云静态网站托管。
 
+### 使用 CloudBase 托管（本地 CLI 部署）
+
+本仓库已内置 CloudBase Framework 配置（`cloudbaserc.json`）。你可以通过本地 CLI 一键部署到静态网站托管：
+
+1. 登录（若未登录）：`tcb login`（或 `npx tcb login`）
+2. 构建：`npm run build`
+3. 部署：`tcb framework deploy`（或 `tcb framework deploy -e <你的环境ID>`）
+
+注意：本项目使用 hash 路由（`createWebHashHistory()`），无需额外 404 回退配置，适合静态托管。
+
 ## 配置
 
 在 `src/services/cloud.ts` 设置环境 ID：
