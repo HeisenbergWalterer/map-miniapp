@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview --port 5174"
+    "preview": "vite preview --port 5174",
+    "deploy:tcb": "tcb framework deploy"
   },
   "dependencies": {
     "@cloudbase/js-sdk": "^4.0.0",
@@ -16,6 +17,7 @@
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
+    "@cloudbase/cli": "^2.9.5",
     "@types/file-saver": "^2.0.7",
     "@vitejs/plugin-vue": "^5.0.4",
     "vite": "^5.3.1"

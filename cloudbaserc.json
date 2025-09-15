@@ -1,0 +1,19 @@
+{
+  "envId": "{{env.ENV_ID}}",
+  "version": "2.0",
+  "framework": {
+    "name": "map-miniapp-web",
+    "plugins": {
+      "website": {
+        "use": "@cloudbase/framework-plugin-website",
+        "inputs": {
+          "outputRoot": "dist",
+          "cloudPath": "/",
+          "ignore": [
+            "**/*.map"
+          ]
+        }
+      }
+    }
+  }
+}

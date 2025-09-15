@@ -36,6 +36,8 @@ body { margin:0; background: var(--bg); color: var(--text); font-family: -apple-
 .sidebar a:hover { background: #f3f4f6; }
 .sidebar a.active { background:#eef2ff; color:#3730a3; border:1px solid #c7d2fe; }
 .sidebar a.active::before { content: ''; position:absolute; left:-12px; top: 10px; bottom: 10px; width: 4px; border-radius: 2px; background: #6366f1; }
+.nav-group { margin-bottom: 10px; }
+.nav-group-title { font-size: 12px; color: #94a3b8; padding: 6px 12px; text-transform: none; }
 .content { flex:1; padding: 18px 22px; overflow:auto; }
 .table-wrapper { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 16px; box-shadow: var(--shadow-sm); }
 table { width: 100%; border-collapse: collapse; table-layout: fixed; }

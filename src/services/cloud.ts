@@ -1,7 +1,8 @@
 import cloudbase from "@cloudbase/js-sdk"
 // CloudBase 封装（与原生版保持一致接口）
 
-const ENV_ID = 'cloud1-3gbydxui8864f9aa' // TODO: 替换为你的环境 ID
+// 优先从 Vite 环境变量读取，便于 CI/CD 注入；保留原值作为本地回退
+const ENV_ID = (import.meta as any)?.env?.VITE_CLOUD_ENV_ID || 'cloud1-3gbydxui8864f9aa'
 
 const app = cloudbase.init({ env: ENV_ID })
 const auth = app.auth({ persistence: 'local' })
@@ -121,7 +122,7 @@ export async function querySitesCollection(params: { pageNo: number, pageSize: n
   })
   
   const results = await Promise.all(queryPromises)
-  const allData = results.flat().sort((a, b) => (a.name || '').localeCompare(b.name || ''))
+  const allData = results.flat().sort((a: any, b: any) => (a.name || '').localeCompare(b.name || ''))
   
   // 分页处理
   const total = allData.length
