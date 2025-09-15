@@ -12,7 +12,7 @@ exports.main = async (event, context) => {
     // 遍历场馆数据
     for (const venue of venues) {
         // 更新数组
-        const res = await db.collection('table_config').where({
+        const res = await db.collection('venue_table_config').where({
             venue_id: venue._id
         }).get();
         const table_config = res.data[0].table_config;
@@ -25,8 +25,9 @@ exports.main = async (event, context) => {
         });
         console.log("update_res", update_res);
         // 删除预约记录
-        const delete_res = await db.collection('venue_reservation').where({}).remove();
-        console.log("delete_res", delete_res);
+        const delete_res = await db.collection('venue_reservation').where({ venue_id: venue._id }).remove();
+        console.log("delete all the records");
+        console.log("delete_res:", delete_res);
         // 更新基准日期
         const base_date = await getBaseDate();
         const year = base_date.split('-')[0];
@@ -38,7 +39,6 @@ exports.main = async (event, context) => {
         })
         console.log("date_res", date_res);
     }
-
 }
 
 // 获取基准日期
@@ -65,4 +65,4 @@ async function getBaseDate() {
 // Promise封装sleep
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
-  }
+}
