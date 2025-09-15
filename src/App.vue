@@ -1,7 +1,7 @@
 <template>
   <header class="page-header">
     <button class="icon-btn" @click="toggleSidebar" aria-label="展开/收起导航">☰</button>
-    <h1>安新联系 · 管理后台</h1>
+  <h1>微光驿站 · 管理后台</h1>
     <div class="header-actions">
       <input v-model.trim="keyword" type="text" placeholder="搜索关键词" />
       <button class="btn" @click="onSearch">搜索</button>
@@ -12,7 +12,23 @@
   <div class="layout">
     <aside v-show="sidebarVisible" class="sidebar">
       <nav>
-        <a v-for="m in moduleList" :key="m.key" href="javascript:void(0)" :class="{active: m.key===currentModuleKey}" @click="switchModule(m.key)">{{ m.title }}</a>
+        <div class="nav-group">
+          <div class="nav-group-title">安新地图</div>
+          <a :class="{active: currentModuleKey==='sites'}" href="javascript:void(0)" @click="switchModule('sites')">点位修改</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-group-title">安新联系</div>
+          <a :class="{active: currentModuleKey==='contact'}" href="javascript:void(0)" @click="switchModule('contact')">联系信息</a>
+          <a :class="{active: currentModuleKey==='emergency'}" href="javascript:void(0)" @click="switchModule('emergency')">紧急服务</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-group-title">安新活动</div>
+          <a :class="{active: currentModuleKey==='reservations' || currentRouteIsReservation}" href="javascript:void(0)" @click="switchModule('reservations')">预约管理</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-group-title">其他</div>
+          <a :class="{active: currentModuleKey==='feedback'}" href="javascript:void(0)" @click="switchModule('feedback')">用户反馈</a>
+        </div>
       </nav>
     </aside>
     <router-view v-slot="{ Component }">
@@ -46,6 +62,11 @@ const currentModuleKey = computed(() => {
   }
   
   return route.name;
+})
+
+const currentRouteIsReservation = computed(() => {
+  const name = router.currentRoute.value.name
+  return name === 'reservations' || name === 'venue-reservations' || name === 'event-registrations'
 })
 
 ensureLogin().catch(() => router.replace({ name: 'login' }))

@@ -28,6 +28,8 @@ npm run build
 
 注意：本项目使用 hash 路由（`createWebHashHistory()`），无需额外 404 回退配置，适合静态托管。
 
+更多关于“修改代码后如何再次部署”，请查看 `DEPLOYMENT.md`。
+
 ## 配置
 
 在 `src/services/cloud.ts` 设置环境 ID：
