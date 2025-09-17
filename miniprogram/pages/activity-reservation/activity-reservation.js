@@ -281,7 +281,7 @@ Page({
       // 场馆预约记录，可以跳转到场馆详情或显示预约详情
       wx.showModal({
         title: '预约详情',
-        content: `场馆：${item._venue ? item._venue.name : '未知场馆'}\n时间：${item._formattedTime}\n状态：${item.status === 'reserved' ? '已预约' : '已取消'}`,
+        content: `场馆：${item.venue_name || '未知场馆'}\n时间：${item.time}\n状态：${item.status === 'reserved' ? '已预约' : '已取消'}`,
         showCancel: true,
         cancelText: '返回',
         confirmText: item.status === 'reserved' ? '取消预约' : '确定',
