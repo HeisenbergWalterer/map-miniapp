@@ -42,7 +42,7 @@
       <view class="date-tabs">
         <block wx:for="{{next7dates}}" wx:key="index">
           <view 
-            class="date-tab {{optdate === index ? 'active' : ''}}"
+            class="date-tab {{optdate === index ? 'active' : ''}} {{disabledDates[index] === 1 ? 'disabled' : ''}}"
             data-index="{{index}}"
             bindtap="selectDate"
           >

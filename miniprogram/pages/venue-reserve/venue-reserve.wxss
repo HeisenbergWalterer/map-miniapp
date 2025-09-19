@@ -157,6 +157,22 @@
   color: #fff;
 }
 
+.date-tab.disabled {
+  background: #e5e7eb !important;
+  color: #9ca3af !important;
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.date-tab.disabled .date-display {
+  color: #9ca3af !important;
+}
+
+.date-tab.disabled .date-value {
+  color: #9ca3af !important;
+}
+
 .date-display {
   font-size: 22rpx;
   color: #666;
