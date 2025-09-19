@@ -24,6 +24,15 @@ exports.main = async (event, context) => {
             }
         });
         console.log("update_res", update_res);
+        // config数组恢复默认
+        const default_table = inittable();
+        const config_rollback = await db.collection('venue_table_config').where({
+            venue_id: venue._id
+        }).update({
+            data: {
+                table_config: default_table
+            }
+        });
         // 删除预约记录
         const delete_res = await db.collection('venue_reservation').where({ venue_id: venue._id }).remove();
         console.log("delete all the records");
@@ -39,6 +48,32 @@ exports.main = async (event, context) => {
         })
         console.log("date_res", date_res);
     }
+}
+
+// 创建一个默认数组
+function inittable() {
+    let arr = [
+        [1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1]
+    ];
+    return arr;
 }
 
 // 获取基准日期

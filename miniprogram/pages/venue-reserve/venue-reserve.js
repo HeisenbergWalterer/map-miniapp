@@ -17,6 +17,7 @@ Page({
     optslots: [],   //选择时段索引  [(slot_index, date_index).....]
     next7days: [],  //一周星期
     next7dates: [], //一周日期
+    disabledDates: [], //禁用的日期索引数组
     booktable: [],  //场馆预约表    0/1 表示是否被预约
     selfbook: [],   //用户预约表
     time_slot: [],  //时间段       从数据库读取预设的时间段
@@ -154,6 +155,17 @@ Page({
   // 选择日期
   selectDate(e) {
     const index = e.currentTarget.dataset.index;
+    
+    // 检查日期是否为今日之前，如果是则不允许选择
+    if (this.isDateBeforeToday(index)) {
+      wx.showToast({
+        title: '不能选择过去的日期',
+        icon: 'none',
+        duration: 1500
+      });
+      return;
+    }
+    
     this.setData({ optdate: index });
     this.setoptlist();
   },
@@ -220,15 +232,58 @@ Page({
     const [cy, cm, cd] = this.data.base_date.split('-');
     const next7days = this.getnext7days(0);
     const next7dates = this.getnext7dates(cy, cm, cd);
+    
+    // 计算哪些日期应该被禁用
+    const disabledDates = [0,0,0,0,0,0,0]; // 初始化为全不禁用
+    for (let i = 0; i < next7dates.length; i++) {
+      if (this.isDateBeforeToday(i, next7dates)) {
+        disabledDates[i] = 1; // 标记为禁用
+      }
+    }
+    
+    for (let i = 0; i < next7dates.length; i++) {
+      if (disabledDates[i] === 0) {
+        this.setData({ optdate: i }); // 设置为下一个可选日期
+        break;
+      }
+    }
     console.log("当前星期", next7days);
     console.log("当前周", next7dates);
     console.log("当前日期", curdate);
+    console.log("禁用日期索引", disabledDates);
+    
     this.setData({ 
       today: today,
       curdate: curdate,
       next7days: next7days,
-      next7dates: next7dates });
+      next7dates: next7dates,
+      disabledDates: disabledDates
+    });
 
+  },
+
+  // 判断日期是否为今日之前（应该被禁用）
+  isDateBeforeToday: function(dateIndex, dateArray = null) {
+    const today = new Date();
+    const todayMonth = today.getMonth() + 1;
+    const todayDate = today.getDate();
+    
+    const dates = dateArray || this.data.next7dates;
+    const targetDate = dates[dateIndex];
+    const [targetMonth, targetDay] = targetDate.split('-').map(num => parseInt(num));
+    
+    console.log("检查日期：", targetDate, "  今天：", `${todayMonth}-${todayDate}`);
+    // 如果月份小于当前月份，肯定是过去的日期
+    if (targetMonth < todayMonth) {
+      return true;
+    }
+    
+    // 如果月份相同，比较日期
+    if (targetMonth === todayMonth && targetDay < todayDate) {
+      return true;
+    }
+    
+    return false;
   }, 
 
   // 计算一周星期
