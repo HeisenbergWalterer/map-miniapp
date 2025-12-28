@@ -1,0 +1,6 @@
+{"_id":"toilet_1","address":"花园浜路泰盛别墅","longitude":121.217424,"name":"方泰新公厕","photoUrl":"/images/stations/toilet-1.jpg","type":"toilet","id":1.0,"latitude":31.314409,"serviceContent":"公共厕所","serviceTime":"5:00-21:00","_lastTestUpdate":"2025-08-14T07:23:20.303Z"}
+{"_id":"toilet_2","id":2.0,"longitude":121.216674,"photoUrl":"/images/stations/toilet-2.jpg","serviceTime":"5:00-20:00","type":"toilet","address":"方锦路44号花园新村东面","latitude":31.317756,"name":"方泰菜场公厕","serviceContent":"公共厕所"}
+{"_id":"toilet_3","address":"方中路101弄1号旁边","id":3.0,"latitude":31.319254,"longitude":121.21552,"serviceContent":"公共厕所","serviceTime":"5:00-20:00","name":"方中路1号公厕","photoUrl":"/images/stations/toilet-3.jpg","type":"toilet"}
+{"_id":"toilet_4","serviceContent":"公共厕所","serviceTime":"5:00-20:00","latitude":31.319004,"name":"泰富路265号公厕","type":"toilet","address":"泰富路265号成人学校旁边","id":4.0,"longitude":121.218929,"photoUrl":"/images/stations/toilet-4.jpg"}
+{"_id":"toilet_5","id":5.0,"latitude":31.319059,"longitude":121.219847,"name":"泰富路222号公厕","photoUrl":"/images/stations/toilet-5.jpg","serviceTime":"5:00-20:00","address":"泰富路方宝佳苑","serviceContent":"公共厕所","type":"toilet"}
+{"_id":"toilet_6","longitude":121.216661,"name":"方中路84号公厕","photoUrl":"/images/stations/toilet-6.jpg","type":"toilet","id":6.0,"latitude":31.3207,"serviceContent":"公共厕所","serviceTime":"24小时","address":"方中路77弄花中苑对面"}

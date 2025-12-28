@@ -1,0 +1,4 @@
+{"_id":"1b86d9bb68a92e200300cd2c02390bc4","station_type":"relay","_openid":"oICdIvrtZoCpLNc6JA8vMvbi5YMU","createdAt":{"$date":"2025-08-23T02:57:33.195Z"},"station_id":4.0}
+{"_id":"2ccbb81568a92e240306295964e7f8df","_openid":"oICdIvrtZoCpLNc6JA8vMvbi5YMU","createdAt":{"$date":"2025-08-23T02:57:37.218Z"},"station_id":2.0,"station_type":"sinopec"}
+{"_id":"51c51eb668a92e270313927c47cd68a6","_openid":"oICdIvrtZoCpLNc6JA8vMvbi5YMU","createdAt":{"$date":"2025-08-23T02:57:41.02Z"},"station_id":3.0,"station_type":"warm"}
+{"_id":"3ff6635968ca8d29010968dd0eccce19","_openid":"oICdIvmG4rdWYyN2tMmBYs4Q8xwk","createdAt":{"$date":"2025-09-17T10:27:53.461Z"},"station_id":2.0,"station_type":"relay"}
